@@ -1,4 +1,5 @@
 {
+  "verison": "1.0.0",
   "name": "general-tutorial",
   "version": false,
   "globalDependencies": {
