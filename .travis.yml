@@ -1,4 +1,7 @@
 install:
   - npm install
+  - typings install
 script:
   - npm run build
+node_js:
+  - "6.9.x"
