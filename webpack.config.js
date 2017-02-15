@@ -5,7 +5,8 @@ module.exports = {
   entry: './src/script.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'script.js'
+    filename: 'script.js',
+    publicPath: '/static/'
   },
   module: {
         loaders: [
@@ -25,10 +26,5 @@ module.exports = {
   },
   plugins: [
         new ExtractTextPlugin("style.css")
-  ],
-  devServer: {
-   contentBase: path.join(__dirname, "dist"),
-   compress: true,
-   port: 9000
- }
+  ]
 };
