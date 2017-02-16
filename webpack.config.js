@@ -1,13 +1,17 @@
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/script.tsx',
+  entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'script.js',
-    publicPath: '/static/'
+    publicPath: '/'
   },
+  resolve: {
+      extensions: ["web.js", ".js", ".jsx", ".ts", ".tsx", ".less", ".html"]
+    },
   module: {
         loaders: [
             { 
@@ -16,15 +20,33 @@ module.exports = {
             },
             { 
               test: /\.ts|.tsx$/,
-              loader: ['ts-loader']
+              loader: 'ts-loader'
             },
             { 
               test: /\.html$/,
-              loader: ['file-loader']
+              loader: 'html-loader'
             }
         ]
   },
   plugins: [
-        new ExtractTextPlugin("style.css")
+    new ExtractTextPlugin("style.css"),
+
+    // Minify and optimize the index.html
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+      inject: false,
+    }),
   ]
 };
