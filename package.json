@@ -6,7 +6,9 @@
   "scripts": {
     "build": "webpack",
     "serve": "node dev-server.js",
-    "lint": "eslint src/*.js"
+    "lint": "eslint src/*.js",
+    "e2e": "protractor ./e2e.config.js",
+    "e2e:serve": "webdriver-manager start"
   },
   "author": "",
   "license": "MIT",
@@ -31,6 +33,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.2",
+    "protractor": "^5.1.1",
     "style-loader": "^0.13.1",
     "ts-loader": "^2.0.0",
     "tsd": "^0.6.5",
