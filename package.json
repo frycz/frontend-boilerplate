@@ -24,6 +24,7 @@
     "express": "^4.14.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
     "file-loader": "^0.10.0",
+    "font-awesome-webpack": "0.0.4",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.28.0",
     "jasmine": "^2.5.3",
@@ -33,18 +34,23 @@
     "karma-jasmine": "^1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^1.0.2",
+    "less": "^2.7.2",
     "protractor": "^5.1.1",
     "style-loader": "^0.13.1",
     "ts-loader": "^2.0.0",
     "tsd": "^0.6.5",
     "typescript": "^2.1.6",
+    "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
+    "materialize-css": "^0.98.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-materialize": "^0.18.1",
     "react-router": "^3.0.2"
   }
 }

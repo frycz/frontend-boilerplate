@@ -3,7 +3,10 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: [
+    './node_modules/materialize-css/dist/js/materialize.min.js',
+    './src/index.ts'
+  ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'script.js',
@@ -25,6 +28,14 @@ module.exports = {
             { 
               test: /\.html$/,
               loader: 'html-loader'
+            },
+            { 
+              test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+              loader: "url-loader?limit=10000&minetype=application/font-woff" 
+            },
+            {
+               test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+              loader: "file-loader" 
             }
         ]
   },
