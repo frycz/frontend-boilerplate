@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import { Row, Col, Navbar, NavItem, } from 'react-materialize';
+
 interface IMainProps {
 }
 
@@ -14,18 +16,17 @@ class Main extends React.Component<IMainProps, void> {
   public render() {
     
     return (
-      <div>
-        <h1>Main Frame</h1>
-        <div>
-          <ul>
-            <li><a href={'/#/'}>dashboard</a></li>
-            <li><a href={'/#/about'}>about</a></li>
-            <li><a href={'/#/users'}>users</a></li>
-            <li><a href={'/#/user'}>user</a></li>
-          </ul>  
-        </div>
-        <div>{this.children}</div>
-      </div>
+      <Row> 
+        <Navbar className="teal darken-1" brand='QuickNote' right>
+          <NavItem href={'/#/'}>Home</NavItem>
+          <NavItem href={'/#/about'}>About</NavItem>
+          <NavItem href={'/#/users'}>Users</NavItem>
+          <NavItem href={'/#/user'}>My Account</NavItem>
+        </Navbar>
+        <Col s={12}>
+          <div>{this.children}</div>
+        </Col>
+      </Row>
     );
   }
 }
