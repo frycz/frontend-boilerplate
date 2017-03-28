@@ -7,10 +7,8 @@ interface IMainProps {
 }
 
 class Main extends React.Component<IMainProps, void> {
-    children: any;
     constructor(props, context) {
       super(props, context);
-      this.children = props.children;
     }
 
   public render() {
@@ -24,7 +22,7 @@ class Main extends React.Component<IMainProps, void> {
           <NavItem href={'/#/user'}>My Account</NavItem>
         </Navbar>
         <Col s={12}>
-          <div>{this.children}</div>
+          <div>{this.props.children}</div>
         </Col>
       </Row>
     );

@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
-import Main from '../containers/main';
 import { Input, Button } from 'react-materialize';
 
 interface INotesProps {

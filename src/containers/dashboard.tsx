@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { addNote } from '../actions/notes';
 
-import Main from './main';
 import Notes from '../components/notes';
 
 import { Button, Row, Col } from 'react-materialize';
@@ -22,14 +21,11 @@ class Dashboard extends React.Component<IDashboardProps, void> {
   public render() {
     console.log('-> this.props.notes', this.props.notes);
     const notes = this.props.notes;
-    // not working because of Main element
     return (
-      <Main>
         <Notes
           notes = { notes }
           onAddNote = { this.props.addNote }
         ></Notes>
-      </Main>
     );
   }
 }
