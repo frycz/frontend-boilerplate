@@ -50,6 +50,14 @@ class Notes extends React.Component<INotesProps, NoteTextInputState> {
     this.setState(merge({}, this.state, {showAddNote: true}));
   }
 
+  onNoteHover() {
+    console.log('note hover');
+  }
+
+  onNoteLeave() {
+    console.log('note leave');
+  }
+
   addNote() {
     if (this.state.note !== '') {
       this.props.onAddNote(this.state.title, this.state.note);
@@ -102,14 +110,21 @@ class Notes extends React.Component<INotesProps, NoteTextInputState> {
               {this.props.notes.map(note =>
                 <Card 
                   key={note.id}
-                  style={{margin: '20px 0'}}>
+                  style={{margin: '20px 0'}}
+                  onMouseEnter={this.onNoteHover.bind(this)}
+                  onMouseLeave={this.onNoteLeave.bind(this)}>
                   <CardTitle
                     title={note.title}
                     className={note.title ? '' : 'hidden'}
                   />
-                  <CardText style={{'paddingBottom': '8px'}}>
+                  <CardText>
                     { note.text }
                   </CardText>
+                  <CardActions
+                    className={'test'}>
+                    <FlatButton label="Action1" />
+                    <FlatButton label="Action2" />
+                  </CardActions>
                 </Card>
               )}
           </div>
