@@ -2,7 +2,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
-import { Input, Button } from 'react-materialize';
+import * as onClickOutside from 'react-onclickoutside';
+
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 
 interface INotesProps {
   notes: Array<any>,
@@ -11,6 +15,7 @@ interface INotesProps {
 
 interface NoteTextInputState {
   note: string;
+  showAddNote: boolean;
 }
 
 class Notes extends React.Component<INotesProps, NoteTextInputState> {
@@ -18,51 +23,79 @@ class Notes extends React.Component<INotesProps, NoteTextInputState> {
       super(props, context);
       console.log('props', props);
       this.state = {
-          note: ''
+          note: '',
+          showAddNote: false
       };
   }
 
   componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps nextProps', nextProps);
-    }
+
+  }
+
+  handleClickOutside(e) {
+    this.setState(merge({}, this.state, {showAddNote: false}));
+  }
 
   handleChange(e) {
     this.setState(merge({}, this.state, {note: e.target.value}));
   }
 
+  onFocus() {
+    this.setState(merge({}, this.state, {showAddNote: true}));
+  }
+
   addNote() {
-    this.props.onAddNote(this.state.note);
+    if (this.state.note !== '') {
+      this.props.onAddNote(this.state.note);
+      this.setState(merge({}, this.state, {note: '', showAddNote: false}));
+    }
   }
 
   public render() {
-console.log('this.props.notes', this.props.notes);
+    console.log('this.props.notes', this.props.notes);
+    const style = {
+      'maxWidth': '650px',
+      'margin': '0 auto'
+    }
     return (
-        <div>
-          <div className="row">
-            <div className="input-field col s12">
-              <textarea 
-                placeholder="Create note..." 
-                id="note_input" 
-                className="materialize-textarea"
-                value={this.state.note}
-                onChange={this.handleChange.bind(this)}
-              ></textarea>
-            </div>
-            <div className="col s12">
-              <Button onClick={this.addNote.bind(this)}>Save</Button>
-            </div>
-            <div>
-              <ul className="todo-list">
-                {this.props.notes.map(note =>
-                  <li key={note.id} >{ note.text }</li>
-                )}
-              </ul>
-            </div>
+      <div 
+        
+        style={style}>
+        <div className="row">
+          <div style={{padding: '40px 0'}} className="input-field col s12">
+
+            <Card>
+              <CardText>
+                <TextField 
+                  placeholder="Create note..." 
+                  id="note_input"
+                  multiLine={true}
+                  fullWidth={true} 
+                  value={this.state.note}
+                  onFocus={this.onFocus.bind(this)}
+                  onChange={this.handleChange.bind(this)}
+                ></TextField>
+              </CardText>
+              <CardActions className={this.state.showAddNote ? '' : 'hidden'}>
+                <FlatButton onClick={this.addNote.bind(this)} label="Add Note" primary={true}/>
+              </CardActions>
+            </Card>
+          </div>
+          <div className="col s12">
+              {this.props.notes.map(note =>
+                <Card 
+                key={note.id}
+                style={{margin: '20px 0'}}>
+                  <CardText style={{'paddingBottom': '8px'}}>
+                    { note.text }
+                  </CardText>
+                </Card>
+              )}
           </div>
         </div>
+      </div>
     );
   }
 }
 
-export default Notes;
-//export default connect()(Notes);
+export default onClickOutside(Notes);

@@ -1,30 +1,45 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
-import { Row, Col, Navbar, NavItem, } from 'react-materialize';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { teal700 } from 'material-ui/styles/colors';
+import AppBar from 'material-ui/AppBar';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: teal700
+  }
+});
+
+const iconStyles = {
+  marginRight: 24,
+};
+
+injectTapEventPlugin();
 
 interface IMainProps {
 }
 
 class Main extends React.Component<IMainProps, void> {
-    constructor(props, context) {
-      super(props, context);
-    }
+  constructor(props, context) {
+    super(props, context);
+    
+  }
 
   public render() {
     
     return (
-      <Row> 
-        <Navbar className="teal darken-1" brand='QuickNote' right>
-          <NavItem href={'/#/'}>Home</NavItem>
-          <NavItem href={'/#/about'}>About</NavItem>
-          <NavItem href={'/#/users'}>Users</NavItem>
-          <NavItem href={'/#/user'}>My Account</NavItem>
-        </Navbar>
-        <Col s={12}>
+      <MuiThemeProvider muiTheme={muiTheme}> 
+        <div>
+          <AppBar
+            title="QuickNote"
+          />
           <div>{this.props.children}</div>
-        </Col>
-      </Row>
+
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
