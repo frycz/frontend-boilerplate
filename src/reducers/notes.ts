@@ -15,7 +15,8 @@ export default function notesApp(state = initialState, action) {
       const newState = (<any>Object).assign({}, state, { 
         notes: [(<any>Object).assign({}, [], {
           id: state.notes.reduce((maxId, note) => Math.max(note.id, maxId), -1) + 1,
-          text: action.note
+          title: action.title,
+          text: action.note,
         }),
         ...state.notes]
       })

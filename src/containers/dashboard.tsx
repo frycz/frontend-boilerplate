@@ -39,7 +39,7 @@ const mapStateToProps = function(state){
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      addNote: (note) => dispatch(addNote(note))
+      addNote: (title, note) => dispatch(addNote(title, note))
   }
 };
 
