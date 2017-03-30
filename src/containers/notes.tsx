@@ -10,11 +10,12 @@ import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
-import { addNote } from '../actions/notes';
+import { addNote, editNote } from '../actions/notes';
 
 interface INotesProps {
   notes: Array<any>,
   addNote(stirng, string): void
+  editNote(number, stirng, string): void
 }
 
 interface NoteState {
@@ -31,14 +32,6 @@ class Notes extends React.Component<INotesProps, NoteState> {
 
   componentWillReceiveProps(nextProps) {
 
-  }
-
-  onNoteHover() {
-    console.log('note hover');
-  }
-
-  onNoteLeave() {
-    console.log('note leave');
   }
 
   public render() {
@@ -59,7 +52,8 @@ class Notes extends React.Component<INotesProps, NoteState> {
           </div>
           <div className="col s12">
               <NotesList
-                notes={ this.props.notes }>
+                notes={ this.props.notes }
+                editNote={this.props.editNote.bind(this)}>
               </NotesList>
           </div>
         </div>
@@ -76,7 +70,8 @@ const mapStateToProps = function(state){
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      addNote: (title, note) => dispatch(addNote(title, note))
+      addNote: (title, note) => dispatch(addNote(title, note)),
+      editNote: (id, title, note) => dispatch(editNote(id, title, note))
   }
 };
 

@@ -9,7 +9,7 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
 interface INoteInputProps {
-  addNote(stirng, string): void
+  addNote(title, text): void
 }
 
 interface NoteInputState {
@@ -36,7 +36,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
     this.setState(merge({}, this.state, { title: '', text: '', showAddNote: false }));
   }
 
-  handleNoteChange(e) {
+  handleTextChange(e) {
     this.setState(merge({}, this.state, { text: e.target.value }));
   }
 
@@ -77,7 +77,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 fullWidth={true} 
                 value={this.state.text}
                 onFocus={this.onFocus.bind(this)}
-                onChange={this.handleNoteChange.bind(this)}
+                onChange={this.handleTextChange.bind(this)}
             ></TextField>
             </CardText>
             <CardActions className={this.state.showAddNote ? '' : 'hidden'}>

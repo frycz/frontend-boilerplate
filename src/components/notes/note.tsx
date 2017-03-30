@@ -3,15 +3,20 @@ import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
+import * as onClickOutside from 'react-onclickoutside';
+
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
 interface INoteProps {
-    note: any
+    note: any,
+    editNote(id, title, text): void
 }
 
 interface NoteState {
+    title: string,
+    text: string,
     showActionButtons: boolean,
     isEdited: false
 }
@@ -20,9 +25,24 @@ class NotesList extends React.Component<INoteProps, NoteState> {
   constructor(props, context) {
       super(props, context);
       this.state = {
+        title: '',
+        text: '',
         showActionButtons: false,
         isEdited: false,
       };
+  }
+
+  componentDidMount() {
+      this.setState(merge({}, this.state, { title: this.props.note.title, text: this.props.note.text }));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(merge({}, this.state, { isEdited: false, title: nextProps.note.title, text: nextProps.note.text }));
+  }
+
+  handleClickOutside(e) {
+    this.props.editNote(this.props.note.id, this.state.title, this.state.text);
+    this.setState(merge({}, this.state, { isEdited: false }));
   }
 
   onNoteHover() {
@@ -33,19 +53,23 @@ class NotesList extends React.Component<INoteProps, NoteState> {
     this.setState(merge({}, this.state, { showActionButtons: false }));
   }
 
-  handleNoteChange(e) {
-    this.setState(merge({}, this.state, { text: e.target.value }));
+  handleEdit() {
+      if(!this.state.isEdited) { 
+        this.setState(merge({}, this.state, { isEdited: true }));
+      }
   }
 
   handleTitleChange(e) {
-    this.setState(merge({}, this.state, { title: e.target.value }));
+      this.setState(merge({}, this.state, { title: e.target.value }));
   }
 
-  editNote() {
-    /*if (this.state.text !== '') {
-      this.props.addNote(this.state.title, this.state.text);
-      this.setState(merge({}, this.state, {title: '', text: '', showAddNote: false}));
-    }*/
+  handleTextChange(e) {
+      this.setState(merge({}, this.state, { text: e.target.value }));
+    this.props.note.text = e.target.value;
+  }
+
+  editNote(e) {
+        this.props.editNote(this.props.note.id, this.state.title, this.state.text);
   }
 
   public render() {
@@ -55,13 +79,14 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                 className={this.state.isEdited ? 'hidden' : ''}
                 style={{margin: '20px 0'}}
                 onMouseEnter={this.onNoteHover.bind(this)}
-                onMouseLeave={this.onNoteLeave.bind(this)}>
+                onMouseLeave={this.onNoteLeave.bind(this)}
+                onClick={this.handleEdit.bind(this)}>
                 <CardTitle
-                    title={this.props.note.title}
-                    className={this.props.note.title ? '' : 'hidden'}
+                    title={this.state.title}
+                    className={this.state.title ? '' : 'hidden'}
                 />
                 <CardText>
-                    { this.props.note.text }
+                    { this.state.text }
                 </CardText>
                 <CardActions style={{ minHeight: '36px' }}>
                     <FlatButton label="Action1" className={this.state.showActionButtons ? '' : 'hidden'}/>
@@ -70,13 +95,14 @@ class NotesList extends React.Component<INoteProps, NoteState> {
             </Card>
 
             <Card
-                className={this.state.isEdited ? '' : 'hidden'}>
+                className={this.state.isEdited ? '' : 'hidden'}
+                style={{margin: '20px 0'}}>
                 <CardText>
                 <TextField 
                     hintText="Title" 
                     multiLine={false}
                     fullWidth={true} 
-                    value={this.props.note.title}
+                    value={this.state.title}
                     onChange={this.handleTitleChange.bind(this)}
                 ></TextField>
                 <TextField 
@@ -85,8 +111,8 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                     ref="noteInput" 
                     multiLine={true}
                     fullWidth={true} 
-                    value={this.props.note.text}
-                    onChange={this.handleNoteChange.bind(this)}
+                    value={this.state.text}
+                    onChange={this.handleTextChange.bind(this)}
                 ></TextField>
                 </CardText>
                 <CardActions>
@@ -98,4 +124,4 @@ class NotesList extends React.Component<INoteProps, NoteState> {
   }
 }
 
-export default NotesList;
+export default onClickOutside(NotesList);

@@ -4,7 +4,8 @@ import { merge } from 'lodash';
 import Note from './note';
 
 interface INotesListProps {
-    notes: Array<any>
+    notes: Array<any>,
+    editNote(id, title, text): void
 }
 
 interface NotesListState {
@@ -25,7 +26,8 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
             {this.props.notes.map(note =>
                 <Note
                     key={ note.id }
-                    note={ note }>
+                    note={ note }
+                    editNote={ this.props.editNote }>
                 </Note>
             )}
         </div>
