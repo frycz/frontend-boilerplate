@@ -7,6 +7,7 @@ import * as onClickOutside from 'react-onclickoutside';
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 interface INoteInputProps {
   addNote(title, text): void
@@ -81,7 +82,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
             ></TextField>
             </CardText>
             <CardActions className={this.state.showAddNote ? '' : 'hidden'}>
-            <FlatButton onClick={this.addNote.bind(this)} label="Add Note" primary={true}/>
+            <RaisedButton onClick={this.addNote.bind(this)} label="Add Note" primary={true}/>
             </CardActions>
         </Card>
     );

@@ -16,6 +16,7 @@ export default function notesApp(state = initialState, action) {
           id: state.notes.reduce((maxId, note) => Math.max(note.id, maxId), -1) + 1,
           title: action.title,
           text: action.text,
+          isInTrash: false
         }),
         ...state.notes]
       })
@@ -26,6 +27,15 @@ export default function notesApp(state = initialState, action) {
         notes: state.notes.map(note =>
         note.id === action.id
           ? (<any>Object).assign({}, note, {title: action.title, text: action.text}) : note
+        )
+      })
+    }
+
+    case constants.MOVE_NOTE_TO_TRASH: {
+      return (<any>Object).assign({}, state, { 
+        notes: state.notes.map(note =>
+        note.id === action.id
+          ? (<any>Object).assign({}, note, {isInTrash: true}) : note
         )
       })
     }
