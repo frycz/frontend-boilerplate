@@ -7,9 +7,16 @@ import * as classNames from 'classnames';
 import * as onClickOutside from 'react-onclickoutside';
 
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
+import { grey600 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
+import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import ArchiveIcon from 'material-ui/svg-icons/content/archive';
+import CopyIcon from 'material-ui/svg-icons/content/content-copy';
+import StarIcon from 'material-ui/svg-icons/toggle/star';
 
 interface INoteProps {
     note: any,
@@ -84,6 +91,9 @@ class NotesList extends React.Component<INoteProps, NoteState> {
 
     const viewClasses = classNames({hidden: this.state.isEdited}, {hovered: this.state.showActionButtons});
     const editClasses = classNames({hidden: !this.state.isEdited}, 'hovered');
+    const buttonClass = this.state.showActionButtons ? '' : 'invisible';
+    const iconStyle = {width: 18, height: 18, color: grey600};
+    const buttonStyle = {width: 36, height: 36, padding: 0};
     return (
         <div>
             <Card 
@@ -100,15 +110,43 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                 <CardText>
                     { this.state.text }
                 </CardText>
-                <CardActions style={{ minHeight: '36px' }}>
-                    <FlatButton 
-                        primary={true}
-                        label="Edit" 
-                        className={this.state.showActionButtons ? '' : 'hidden'}/>
-                    <FlatButton 
-                        label="Move to trash" 
-                        className={this.state.showActionButtons ? '' : 'hidden'}
-                        onClick={this.handleMoveToTrash.bind(this)} />
+                <CardActions style={{ minHeight: '36px'}}>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle} 
+                        className={buttonClass}
+                        tooltip="Add to favorite">
+                        <StarIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle} 
+                        className={buttonClass}
+                        tooltip="Edit">
+                        <ModeEditIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={buttonClass}
+                        tooltip="Copy">
+                        <CopyIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={buttonClass}
+                        tooltip="Archive">
+                        <ArchiveIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={buttonClass}
+                        onClick={this.handleMoveToTrash.bind(this)}
+                        tooltip="Move to trash">
+                        <DeleteIcon />
+                    </IconButton>
                 </CardActions>
             </Card>
 
@@ -122,6 +160,7 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                     fullWidth={true} 
                     value={this.state.title}
                     onChange={this.handleTitleChange.bind(this)}
+                    style={{fontWeight: 'bold', fontSize: '18px'}}
                 ></TextField>
                 <TextField 
                     hintText="Create note..." 
@@ -129,6 +168,7 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                     fullWidth={true} 
                     value={this.state.text}
                     onChange={this.handleTextChange.bind(this)}
+                    style={{fontSize: '14px'}}
                 ></TextField>
                 </CardText>
                 <CardActions>

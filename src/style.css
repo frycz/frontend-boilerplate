@@ -9,7 +9,14 @@ body {
 }
 
 .invisible {
-    visibility: hidden !important;
+    /*visibility: hidden !important;*/
+    filter: alpha(opacity=0);
+    opacity: 0;
+    -webkit-transition: opacity .15s ease-in-out;
+    -moz-transition: opacity .15s ease-in-out;
+    -ms-transition: opacity .15s ease-in-out;
+    -o-transition: opacity .15s ease-in-out;
+    transition: opacity .15s ease-in-out;
 }
 
 .hovered {

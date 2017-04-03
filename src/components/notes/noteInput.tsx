@@ -69,6 +69,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 className={this.state.showAddNote ? '' : 'hidden'}
                 value={this.state.title}
                 onChange={this.handleTitleChange.bind(this)}
+                style={{fontWeight: 'bold', fontSize: '18px'}}
             ></TextField>
             <TextField 
                 hintText="Create note..." 
@@ -79,6 +80,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 value={this.state.text}
                 onFocus={this.onFocus.bind(this)}
                 onChange={this.handleTextChange.bind(this)}
+                style={{fontSize: '14px'}}
             ></TextField>
             </CardText>
             <CardActions className={this.state.showAddNote ? '' : 'hidden'}>
