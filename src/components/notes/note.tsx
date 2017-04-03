@@ -95,6 +95,7 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                 <CardTitle
                     title={this.state.title}
                     className={this.state.title ? '' : 'hidden'}
+                    titleStyle={{fontWeight: 'bold', fontSize: '18px'}}
                 />
                 <CardText>
                     { this.state.text }
