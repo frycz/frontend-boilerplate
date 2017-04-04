@@ -7,9 +7,10 @@ import { Provider } from 'react-redux'
 import * as firebase from "firebase"
 
 import Main from './containers/main'
+import Unauthorized from './containers/unauthorized'
 import Notes from './containers/notes'
-import About from './containers/about'
-import Users from './containers/users'
+import Login from './containers/login'
+import Register from './containers/register'
 import User from './containers/user'
 import Nomatch from './containers/nomatch'
 import notes from './reducers/notes'
@@ -23,17 +24,20 @@ firebase.initializeApp({
   messagingSenderId: ""
 });
 
-console.log('firebase', firebase);
-
 let store = createStore(notes);
 
 ReactDOM.render((<Provider store={store}>
+
       <Router history={hashHistory}>
-        <Route component={Main}>
-          <Route path="/" component={Notes}/>
-          <Route path="/about" component={About}/>
-          <Route path="/user" component={User}/>
-          <Route path="/users" component={Users}/>
+        <Route >
+          <Route path="/" component={Main}>
+            <Route path="notes" component={Notes}/>
+            <Route path="settings" component={User}/>
+          </Route>
+          <Route path="/" component={Unauthorized}>
+            <Route path="register" component={Register}/>
+            <Route path="login" component={Login}/>
+          </Route>
           <Route path="*" component={Nomatch}/>
         </Route>
       </Router>

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-interface IUsersProps {
+interface IRegisterProps {
 }
 
-export default class Users extends React.Component<IUsersProps, {}> {
+export default class Register extends React.Component<IRegisterProps, {}> {
   public render(): React.ReactElement<{}> {
 
     return (
-            <h1>Users</h1>
+            <h1>Register</h1>
     );
   }
 }
