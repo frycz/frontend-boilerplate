@@ -4,13 +4,26 @@ import { Router, Route, Link, hashHistory, DefaultRoute } from 'react-router';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
-import Main from './containers/main';
-import Notes from './containers/notes';
-import About from './containers/about';
-import Users from './containers/users';
-import User from './containers/user';
-import Nomatch from './containers/nomatch';
-import notes from './reducers/notes';
+import * as firebase from "firebase"
+
+import Main from './containers/main'
+import Notes from './containers/notes'
+import About from './containers/about'
+import Users from './containers/users'
+import User from './containers/user'
+import Nomatch from './containers/nomatch'
+import notes from './reducers/notes'
+
+firebase.initializeApp({
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: ""
+});
+
+console.log('firebase', firebase);
 
 let store = createStore(notes);
 
