@@ -1,22 +1,45 @@
 import * as React from 'react';
 import {  Link } from 'react-router';
 import * as ReactDOM from 'react-dom';
+import {connect} from 'react-redux'
 
 import TextField from 'material-ui/TextField';
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { loginUser } from './actions'
+
+import { login } from '../../services/userService';
+
 interface ILoginProps {
+  loginUser(email, password): void 
 }
 
-class Login extends React.Component<ILoginProps, {}> {
+interface ILoginState {
+    email: string,
+    password: string
+}
+
+class Login extends React.Component<ILoginProps, ILoginState> {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      email: '',
+      password: ''
+    };
+  }
 
+  onEmailChange(e) {
+    this.setState({email: e.target.value});
+  }
+
+  onPasswordChange(e) {
+    this.setState({password: e.target.value});
   }
 
   onLogin() {
     console.log('login');
+    this.props.loginUser(this.state.email, this.state.password);
   }
 
   public render() {
@@ -37,11 +60,15 @@ class Login extends React.Component<ILoginProps, {}> {
                 <TextField
                   fullWidth={true} 
                   floatingLabelText="Email"
+                  value={this.state.email}
+                  onChange={this.onEmailChange.bind(this)}
                 /><br />
                 <TextField
                   fullWidth={true} 
                   floatingLabelText="Password"
                   type="password"
+                  value={this.state.password}
+                  onChange={this.onPasswordChange.bind(this)}
                 />
                 <RaisedButton onClick={this.onLogin.bind(this)} label="Sign in" primary={true} fullWidth={true} style={{marginTop: '25px'}}/>
                 <div style={{paddingTop: '12px'}}>or</div>
@@ -55,4 +82,18 @@ class Login extends React.Component<ILoginProps, {}> {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      loginUser: (email, password) => dispatch(loginUser(email, password))
+  }
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login);
