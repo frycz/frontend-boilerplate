@@ -43,51 +43,15 @@ class Unauthorized extends React.Component<IUnauthorizedProps, UnauthorizedState
     this.state = {open: false};
   }
 
-  menuClicked() {
-    console.log('menu cliked');
-  }
-
-  handleToggle = () => this.setState({open: !this.state.open});
-
   public render() {
-
-    const LeftIcons = (props) => (
-      <div>
-        <IconButton><SearchIcon color='#fff' /></IconButton>
-      </div>
-    );
     
     return (
       <MuiThemeProvider muiTheme={muiTheme}> 
         <div>
           <AppBar
-            title="QuickNote - Unauthorized"
-            onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
-            iconElementRight={<LeftIcons/>}
+            title="QuickNote"
+            showMenuIconButton={false}
           />
-
-          <Drawer open={this.state.open} docked={false} onRequestChange={this.handleToggle.bind(this)}>
-          <MenuItem onClick={this.handleToggle.bind(this)} leftIcon={
-            <div style={
-              {
-                width: '40px',
-                height: '40px', 
-                borderRadius: '50%', 
-                backgroundColor: 'green', 
-                color: 'white', 
-                fontSize: '22px', 
-                textAlign: 'center', 
-                lineHeight: '40px', 
-                fontWeight: 'lighter'
-              }
-            }>A</div>}
-             style={{fontSize: '12px'}}>
-            <div style={{fontWeight: 'bold'}}>Adam Sawicki</div>
-            <div style={{marginTop: '-30px'}}>adamsawicki89@gmail.com</div>
-          </MenuItem>
-          <Divider />
-          <MenuItem primaryText="Settings" leftIcon={<SettingsIcon />} style={{fontSize: '14px'}}/>
-        </Drawer>
 
           <div>{this.props.children}</div>
 

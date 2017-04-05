@@ -84,7 +84,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
             ></TextField>
             </CardText>
             <CardActions className={this.state.showAddNote ? '' : 'hidden'}>
-            <RaisedButton onClick={this.addNote.bind(this)} label="Add Note" primary={true}/>
+              <RaisedButton onClick={this.addNote.bind(this)} label="Add Note" primary={true}/>
             </CardActions>
         </Card>
     );
