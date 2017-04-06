@@ -15,7 +15,7 @@ export function loginUserSuccess(user) {
   }
 }
 
-export function moveNoteToTrash(error) {
+export function loginUserError(error) {
   return {
     type: constants.LOGIN_USER_ERROR,
     error

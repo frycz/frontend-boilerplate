@@ -18,9 +18,9 @@ import * as Firebase from 'firebase';
       return userRegister; */
     }
 
-    export function login(User: any) {
+    export function login(email: string, password: string) {
       console.log('login user');
-      const userLogin = Firebase.auth().signInWithEmailAndPassword(User.email, User.password);
+      const userLogin = Firebase.auth().signInWithEmailAndPassword(email, password);
 
       userLogin.then(function(data) {
         console.log(data);

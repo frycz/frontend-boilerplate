@@ -17,7 +17,8 @@ import Login from './containers/login/login'
 import Register from './containers/register'
 import User from './containers/user'
 import Nomatch from './containers/nomatch'
-import notes from './reducers/notes'
+import notesReducer from './reducers/notes'
+import loginReducer from './containers/login/reducers'
 
 firebase.initializeApp({
   apiKey: "",
@@ -32,9 +33,15 @@ const sagaMiddleware = createSagaMiddleware();
 
 const initialState = {}
 
-let store = createStore(notes, initialState, compose(
-    applyMiddleware(sagaMiddleware)
-));
+let store = createStore(combineReducers({
+        login: loginReducer,
+        notes: notesReducer
+    }), 
+    initialState,
+    compose(
+      applyMiddleware(sagaMiddleware)
+    )
+  );
 
 function* sagas() {
     yield [fork(loginSaga)];
