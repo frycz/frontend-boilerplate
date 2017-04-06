@@ -12,6 +12,7 @@ import { loginUser } from './actions'
 import { login } from '../../services/userService';
 
 interface ILoginProps {
+  error: any,
   loginUser(email, password): void 
 }
 
@@ -57,6 +58,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
               <Card>
                 <CardTitle title="Login"/>
                 <CardText>
+                  <div style={{color: '#bd4141'}}>{this.props.error ? this.props.error.message : null}</div>
                 <TextField
                   fullWidth={true} 
                   floatingLabelText="Email"
@@ -84,6 +86,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
 const mapStateToProps = (state) => {
   return {
+    error: state.login.error
   }
 };
 
