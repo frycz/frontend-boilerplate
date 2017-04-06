@@ -19,6 +19,7 @@ import User from './containers/user'
 import Nomatch from './containers/nomatch'
 import notesReducer from './reducers/notes'
 import loginReducer from './containers/login/reducers'
+import spinnerReducer from './containers/spinner/reducers'
 
 firebase.initializeApp({
   apiKey: "",
@@ -35,6 +36,7 @@ const initialState = {}
 
 let store = createStore(combineReducers({
         login: loginReducer,
+        spinner: spinnerReducer,
         notes: notesReducer
     }), 
     initialState,

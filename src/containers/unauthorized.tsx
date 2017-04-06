@@ -17,6 +17,8 @@ import RefreshIcon from 'material-ui/svg-icons/navigation/refresh';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 
+import GlobalSpinner from './spinner/globalSpinner'
+
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: teal700,
@@ -54,7 +56,7 @@ class Unauthorized extends React.Component<IUnauthorizedProps, UnauthorizedState
           />
 
           <div>{this.props.children}</div>
-
+          <GlobalSpinner />
         </div>
       </MuiThemeProvider>
     );
