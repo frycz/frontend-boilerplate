@@ -21,3 +21,9 @@ export function loginUserError(error) {
     error
   }
 }
+
+export function logoutUser() {
+  return {
+    type: constants.LOGOUT_USER
+  }
+}

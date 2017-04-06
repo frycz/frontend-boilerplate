@@ -1,6 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
+
+import { logoutUser } from './login/actions'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -16,6 +19,7 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import RefreshIcon from 'material-ui/svg-icons/navigation/refresh';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import LogoutIcon from 'material-ui/svg-icons/action/power-settings-new';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -31,6 +35,7 @@ const iconStyles = {
 injectTapEventPlugin();
 
 interface IMainProps {
+  logout(): void
 }
 
 interface MainState {
@@ -87,6 +92,7 @@ class Main extends React.Component<IMainProps, MainState> {
           </MenuItem>
           <Divider />
           <MenuItem primaryText="Settings" leftIcon={<SettingsIcon />} style={{fontSize: '14px'}}/>
+          <MenuItem onClick={this.props.logout} primaryText="Log out" leftIcon={<LogoutIcon />} style={{fontSize: '14px'}}/>
         </Drawer>
 
           <div>{this.props.children}</div>
@@ -97,4 +103,15 @@ class Main extends React.Component<IMainProps, MainState> {
   }
 }
 
-export default Main;
+const mapStateToProps = function(state){
+  return {
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      logout: () => dispatch(logoutUser()),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

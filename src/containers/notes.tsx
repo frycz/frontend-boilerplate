@@ -65,7 +65,7 @@ class Notes extends React.Component<INotesProps, NoteState> {
 
 const mapStateToProps = function(state){
   return {
-    notes: state.notes
+    notes: state.notes.notes
   }
 };
 

@@ -2,7 +2,7 @@ import * as Firebase from 'firebase';
 
 
     export async function register(User: any) {
-        /*
+        
       console.log('register user');
 
       let userRegister: any;
@@ -15,36 +15,13 @@ import * as Firebase from 'firebase';
           console.log(error);
       }
 
-      return userRegister; */
+      return userRegister; 
     }
 
     export function login(email: string, password: string) {
-      console.log('login user');
-      const userLogin = Firebase.auth().signInWithEmailAndPassword(email, password);
-
-      userLogin.then(function(data) {
-        console.log(data);
-      },
-      function(error){
-        console.log(error);
-      });
-
-      return userLogin;
-
-      //console.log('login completed');
+      return Firebase.auth().signInWithEmailAndPassword(email, password);
     }
 
     export function logout() {
-      console.log('login user');
-      const userLogout = Firebase.auth().signOut();
-
-      userLogout.then(function() {
-        // Sign-out successful.
-      }, function(error) {
-        // An error happened.
-      });
-
-      return userLogout;
-
-      //console.log('login completed');
+      return Firebase.auth().signOut();
     }

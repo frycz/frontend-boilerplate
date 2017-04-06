@@ -32,7 +32,7 @@ firebase.initializeApp({
 
 const sagaMiddleware = createSagaMiddleware();
 
-const initialState = {}
+const initialState: any = {}
 
 let store = createStore(combineReducers({
         login: loginReducer,
@@ -48,13 +48,23 @@ let store = createStore(combineReducers({
 function* sagas() {
     yield [fork(loginSaga)];
 }
+
 sagaMiddleware.run(sagas);
+
+function requireAuth(nextState, replace) {
+  if (!store.getState().login.user) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
 
 ReactDOM.render((<Provider store={store}>
 
       <Router history={hashHistory}>
         <Route >
-          <Route path="/" component={Main}>
+          <Route path="/" component={Main} onEnter={requireAuth}>
             <Route path="notes" component={Notes}/>
             <Route path="settings" component={User}/>
           </Route>

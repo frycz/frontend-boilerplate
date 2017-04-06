@@ -13,12 +13,13 @@ const userReducer = (state = initialState, action) => {
             return Object.assign({}, state, {});
         
         case (constants.LOGIN_USER_SUCCESS):
-            console.log('LOGIN_USER_SUCCESS reducer', action);
             return Object.assign({}, state, {user: action.user});
         
         case (constants.LOGIN_USER_ERROR):
-            console.log('LOGIN_USER_ERROR reducer', action);
             return Object.assign({}, state, {error: action.error});
+
+        case (constants.LOGOUT_USER):
+            return Object.assign({}, state, {user: null});
 
         default:
             return state;
