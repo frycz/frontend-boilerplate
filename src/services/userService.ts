@@ -18,7 +18,14 @@ import * as Firebase from 'firebase';
       return userRegister; 
     }
 
-    export function login(email: string, password: string) {
+    export function loginWithGoogle() {
+      const provider = new Firebase.auth.GoogleAuthProvider();
+      provider.addScope('profile');
+      provider.addScope('email');
+      return Firebase.auth().signInWithPopup(provider);
+    }
+
+    export function loginWithEmail(email: string, password: string) {
       return Firebase.auth().signInWithEmailAndPassword(email, password);
     }
 

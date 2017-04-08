@@ -51,8 +51,10 @@ class NotesList extends React.Component<INoteProps, NoteState> {
   }
 
   handleClickOutside(e) {
-    this.props.editNote(this.props.note.id, this.state.title, this.state.text);
-    this.setState(merge({}, this.state, { isEdited: false }));
+    if(this.state.isEdited) { 
+        this.props.editNote(this.props.note.id, this.state.title, this.state.text);
+        this.setState(merge({}, this.state, { isEdited: false }));
+    }
   }
 
   onNoteHover() {

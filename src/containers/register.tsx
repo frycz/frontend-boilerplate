@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {  Link } from 'react-router';
+import {  Link, hashHistory } from 'react-router';
 import * as ReactDOM from 'react-dom';
 
 import TextField from 'material-ui/TextField';
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 interface IRegisterProps {
 }
@@ -13,6 +14,10 @@ class Register extends React.Component<IRegisterProps, {}> {
   constructor(props, context) {
     super(props, context);
 
+  }
+
+  onLoginClick() {
+    hashHistory.push('/login');
   }
 
   onRegister() {
@@ -49,8 +54,7 @@ class Register extends React.Component<IRegisterProps, {}> {
                   type="password"
                 />
                 <RaisedButton onClick={this.onRegister.bind(this)} label="Register" primary={true} fullWidth={true} style={{marginTop: '25px'}}/>
-                <div style={{paddingTop: '12px'}}>or</div>
-                <Link style={{display: 'inline-block', boxSizing: 'border-box', width: '100%', padding: '12px'}} to={'/login'} >login</Link>
+                <FlatButton onClick={this.onLoginClick.bind(this)} label="Login" style={{marginTop: '25px'}}/>
                 </CardText>
               </Card>
             </div>

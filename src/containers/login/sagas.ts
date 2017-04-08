@@ -3,14 +3,31 @@ import * as actions from './actions'
 import { call, put, take, fork } from 'redux-saga/effects'
 import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../spinner/actions'
-import { login, logout } from '../../services/userService'
+import { loginWithGoogle, loginWithEmail, logout } from '../../services/userService'
 
-export function* loginUser() {
+export function* loginUserWithGoogle() {
     while (true) {
         try {
-            const action = yield take(constants.LOGIN_USER);
+            const action = yield take(constants.LOGIN_USER_WITH_GOOGLE);
             yield put(showSpinner());
-            const response = yield login(action.email, action.password);
+            const response = yield loginWithGoogle();
+            yield put(actions.loginUserSuccess(response));
+            yield put(hideSpinner());
+            hashHistory.push('/notes');
+        }
+        catch (error) {
+            yield put(actions.loginUserError(error));
+            yield put(hideSpinner());
+        }
+    }
+}
+
+export function* loginUserWithEmail() {
+    while (true) {
+        try {
+            const action = yield take(constants.LOGIN_USER_WITH_EMAIL);
+            yield put(showSpinner());
+            const response = yield loginWithEmail(action.email, action.password);
             yield put(actions.loginUserSuccess(response));
             yield put(hideSpinner());
             hashHistory.push('/notes');
@@ -36,4 +53,4 @@ function startSagas(...sagas) {
     }
 }
 
-export default startSagas(loginUser, logoutUser)
+export default startSagas(loginUserWithGoogle, loginUserWithEmail, logoutUser)
