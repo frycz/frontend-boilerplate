@@ -22,6 +22,7 @@ import * as Firebase from 'firebase';
       const provider = new Firebase.auth.GoogleAuthProvider();
       provider.addScope('profile');
       provider.addScope('email');
+      provider.addScope('https://www.googleapis.com/auth/drive');
       return Firebase.auth().signInWithPopup(provider);
     }
 

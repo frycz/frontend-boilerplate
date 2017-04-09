@@ -94,11 +94,11 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 <CardText>
                   <div style={{color: '#bd4141'}}>{this.props.error ? this.props.error.message : null}</div>
                   <div className={loginMethodsClasses}>
-                    <RaisedButton onClick={this.onLoginUserWithGoogle.bind(this)} label="Google" fullWidth={true} style={{marginTop: '15px'}}/>
-                    <RaisedButton onClick={this.onLoginUserWithGithub.bind(this)}  label="Github" fullWidth={true} style={{marginTop: '15px'}}/>
-                    <RaisedButton onClick={this.onLoginUserWithTwitter.bind(this)} label="Twitter" fullWidth={true} style={{marginTop: '15px'}}/>
-                    <RaisedButton onClick={this.onLoginUserWithFacebook.bind(this)} label="Facebook" fullWidth={true} style={{marginTop: '15px'}}/>
-                    <RaisedButton onClick={this.toggleEmailLogin.bind(this)} label="Email" fullWidth={true} style={{marginTop: '15px'}}/>
+                    <RaisedButton onClick={this.onLoginUserWithGoogle.bind(this)} label="Google" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
+                    <RaisedButton onClick={this.onLoginUserWithGithub.bind(this)}  label="Github" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
+                    <RaisedButton onClick={this.onLoginUserWithTwitter.bind(this)} label="Twitter" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
+                    <RaisedButton onClick={this.onLoginUserWithFacebook.bind(this)} label="Facebook" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
+                    <RaisedButton onClick={this.toggleEmailLogin.bind(this)} label="Email" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
                   </div>
                   <div className={loginFormClasses}>
                     <TextField

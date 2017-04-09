@@ -53,6 +53,7 @@ class Unauthorized extends React.Component<IUnauthorizedProps, UnauthorizedState
           <AppBar
             title="QuickNote"
             showMenuIconButton={false}
+            style={{ position: "fixed", top: 0, }}
           />
 
           <div>{this.props.children}</div>

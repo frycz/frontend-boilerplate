@@ -69,6 +69,7 @@ class Main extends React.Component<IMainProps, MainState> {
             title="QuickNote"
             onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
             iconElementRight={<LeftIcons/>}
+            style={{ position: "fixed", top: 0, }}
           />
 
           <Drawer open={this.state.open} docked={false} onRequestChange={this.handleToggle.bind(this)}>
