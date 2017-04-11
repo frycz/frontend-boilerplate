@@ -17,11 +17,13 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
+import CloudUploadIcon from 'material-ui/svg-icons/file/cloud-upload';
 
 interface INoteProps {
     note: any,
-    editNote(id, title, text): void
-    moveNoteToTrash(id): void
+    editNote(id, title, text): void,
+    moveNoteToTrash(id): void,
+    uploadToGoogleDrive(title, text): void
 }
 
 interface NoteState {
@@ -74,6 +76,11 @@ class NotesList extends React.Component<INoteProps, NoteState> {
   handleMoveToTrash(e) {
     e.stopPropagation();
     this.props.moveNoteToTrash(this.props.note.id);
+  }
+
+  handleUploadToGoogleDrive(e) {
+    e.stopPropagation();
+    this.props.uploadToGoogleDrive(this.state.title, this.state.text);
   }
 
   handleTitleChange(e) {
@@ -148,6 +155,14 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                         onClick={this.handleMoveToTrash.bind(this)}
                         tooltip="Move to trash">
                         <DeleteIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={buttonClass}
+                        onClick={this.handleUploadToGoogleDrive.bind(this)}
+                        tooltip="Upload to Google Drive">
+                        <CloudUploadIcon />
                     </IconButton>
                 </CardActions>
             </Card>

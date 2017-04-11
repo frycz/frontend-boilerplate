@@ -2,8 +2,6 @@ import * as Firebase from 'firebase';
 
 
     export async function register(User: any) {
-        
-      console.log('register user');
 
       let userRegister: any;
 

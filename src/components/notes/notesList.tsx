@@ -5,8 +5,9 @@ import Note from './note';
 
 interface INotesListProps {
     notes: Array<any>,
-    editNote(id, title, text): void
-    moveNoteToTrash(id): void
+    editNote(id, title, text): void,
+    moveNoteToTrash(id): void,
+    uploadToGoogleDrive(title, text): void
 }
 
 interface NotesListState {
@@ -29,7 +30,8 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
                     key={ note.id }
                     note={ note }
                     editNote={ this.props.editNote }
-                    moveNoteToTrash={ this.props.moveNoteToTrash }>
+                    moveNoteToTrash={ this.props.moveNoteToTrash }
+                    uploadToGoogleDrive={ this.props.uploadToGoogleDrive }>
                 </Note>
             )}
         </div>

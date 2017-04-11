@@ -2,6 +2,7 @@ import { ADD_NOTE } from '../constants/actions'
 import { EDIT_NOTE } from '../constants/actions'
 import { MOVE_NOTE_TO_TRASH } from '../constants/actions'
 import { REMOVE_NOTE } from '../constants/actions'
+import { UPLOAD_TO_GOOGLE_DRIVE } from '../constants/actions'
 
 export function addNote(title, text) {
   return {
@@ -24,5 +25,13 @@ export function moveNoteToTrash(id) {
   return {
     type: MOVE_NOTE_TO_TRASH,
     id
+  }
+}
+
+export function uploadToGoogleDrive(title, text) {
+  return {
+    type: UPLOAD_TO_GOOGLE_DRIVE,
+    title,
+    text
   }
 }

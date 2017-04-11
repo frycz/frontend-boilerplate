@@ -41,9 +41,9 @@ export function* loginUserWithEmail() {
 
 export function* logoutUser() {
     while (true) {
-            const action = yield take(constants.LOGOUT_USER);
-            yield logout();
-            hashHistory.push('/login');
+        yield take(constants.LOGOUT_USER);
+        yield logout();
+        hashHistory.push('/login');
     }
 }
 

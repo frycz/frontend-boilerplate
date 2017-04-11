@@ -10,13 +10,14 @@ import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
-import { addNote, editNote, moveNoteToTrash } from '../actions/notes';
+import { addNote, editNote, moveNoteToTrash, uploadToGoogleDrive } from '../actions/notes';
 
 interface INotesProps {
   notes: Array<any>,
   addNote(stirng, string): void,
   editNote(id, title, text): void,
   moveNoteToTrash(id): void
+  uploadToGoogleDrive(title, text): void
 }
 
 interface NoteState {
@@ -54,7 +55,8 @@ class Notes extends React.Component<INotesProps, NoteState> {
               <NotesList
                 notes={ this.props.notes }
                 editNote={this.props.editNote.bind(this)}
-                moveNoteToTrash={this.props.moveNoteToTrash.bind(this)}>
+                moveNoteToTrash={this.props.moveNoteToTrash.bind(this)}
+                uploadToGoogleDrive={this.props.uploadToGoogleDrive.bind(this)}>
               </NotesList>
           </div>
         </div>
@@ -73,7 +75,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
       addNote: (title, note) => dispatch(addNote(title, note)),
       editNote: (id, title, note) => dispatch(editNote(id, title, note)),
-      moveNoteToTrash: (id) => dispatch(moveNoteToTrash(id))
+      moveNoteToTrash: (id) => dispatch(moveNoteToTrash(id)),
+      uploadToGoogleDrive: (title, text) => dispatch(uploadToGoogleDrive(title, text))
   }
 };
 

@@ -9,6 +9,7 @@ import { fork } from 'redux-saga/effects'
 import * as firebase from "firebase"
 
 import loginSaga from "./containers/login/sagas"
+import notesSaga from "./sagas/notes"
 
 import Main from './containers/main'
 import Unauthorized from './containers/unauthorized'
@@ -46,7 +47,7 @@ let store = createStore(combineReducers({
   );
 
 function* sagas() {
-    yield [fork(loginSaga)];
+    yield [fork(loginSaga), fork(notesSaga)];
 }
 
 sagaMiddleware.run(sagas);
