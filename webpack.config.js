@@ -4,13 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: [
-    './node_modules/materialize-css/dist/js/materialize.min.js',
-    './src/index.ts'
+    './src/index.ts',
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'script.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   resolve: {
       extensions: ["web.js", ".js", ".jsx", ".ts", ".tsx", ".less", ".html"]

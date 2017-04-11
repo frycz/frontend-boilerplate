@@ -42,16 +42,16 @@
     "tsd": "^0.6.5",
     "typescript": "^2.1.6",
     "url-loader": "^0.5.7",
-    "webpack": "^2.2.1",
+    "webpack": "^2.3.3",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1"
   },
   "dependencies": {
     "classnames": "^2.2.5",
     "font-awesome": "^4.7.0",
+    "google-client-api": "^1.0.4",
     "lodash": "^4.17.4",
     "material-ui": "^0.17.1",
-    "materialize-css": "^0.98.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-materialize": "^0.18.1",
