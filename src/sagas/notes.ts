@@ -9,8 +9,8 @@ import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } fr
 export function* uploadFileToGoogleDrive() {
     while (true) {
         const action = yield take(constants.UPLOAD_TO_GOOGLE_DRIVE);
+        yield put(showSpinner());
         try {
-            yield put(showSpinner());
             const gapi = yield initGapi();
             yield  loadClientAuth(gapi);
             yield  initClient(gapi);
@@ -21,11 +21,11 @@ export function* uploadFileToGoogleDrive() {
                 }
                 yield  uploadFile(gapi, action.title, action.text);
             }
-            yield put(hideSpinner());
         }
         catch (error) {
 
         }
+        yield put(hideSpinner());
     }
 }
 

@@ -21,6 +21,8 @@ import SearchIcon from 'material-ui/svg-icons/action/search';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import LogoutIcon from 'material-ui/svg-icons/action/power-settings-new';
 
+import GlobalSpinner from './spinner/globalSpinner'
+
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: teal700,
@@ -97,7 +99,7 @@ class Main extends React.Component<IMainProps, MainState> {
         </Drawer>
 
           <div>{this.props.children}</div>
-
+          <GlobalSpinner />
         </div>
       </MuiThemeProvider>
     );
