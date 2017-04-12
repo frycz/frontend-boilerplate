@@ -3,14 +3,14 @@ import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
-import NoteInput from '../components/notes/noteInput';
-import NotesList from '../components/notes/notesList';
+import NoteInput from '../../components/notes/note-input';
+import NotesList from '../../components/notes/notes-list';
 
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
-import { addNote, editNote, moveNoteToTrash, uploadToGoogleDrive } from '../actions/notes';
+import { addNote, editNote, moveNoteToTrash, uploadToGoogleDrive } from './actions';
 
 interface INotesProps {
   notes: Array<any>,

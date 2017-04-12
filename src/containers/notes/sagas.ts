@@ -1,9 +1,9 @@
-import * as constants from '../constants/actions'
-import * as actions from '../actions/notes'
+import * as constants from './constants'
+import * as actions from './actions'
 import { call, put, take, fork } from 'redux-saga/effects'
 import {hashHistory} from 'react-router'
-import { showSpinner, hideSpinner } from '../containers/spinner/actions'
-import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } from '../services/googleService'
+import { showSpinner, hideSpinner } from '../../containers/spinner/actions'
+import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } from '../../services/googleService'
 
 
 export function* uploadFileToGoogleDrive() {

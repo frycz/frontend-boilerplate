@@ -1,7 +1,7 @@
-import * as constants from '../constants/actions'
+import * as constants from './constants'
 
-import { addNote } from '../actions/notes'
-import { editNote } from '../actions/notes'
+import { addNote } from './actions'
+import { editNote } from './actions'
 
 const initialState = {
   notes: []

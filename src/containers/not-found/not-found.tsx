@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-interface INomatchProps {
+interface INotFoundProps {
 }
 
-export default class Nomatch extends React.Component<INomatchProps, {}> {
+export default class NotFound extends React.Component<INotFoundProps, {}> {
   public render(): React.ReactElement<{}> {
 
     return (

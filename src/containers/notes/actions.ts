@@ -1,8 +1,8 @@
-import { ADD_NOTE } from '../constants/actions'
-import { EDIT_NOTE } from '../constants/actions'
-import { MOVE_NOTE_TO_TRASH } from '../constants/actions'
-import { REMOVE_NOTE } from '../constants/actions'
-import { UPLOAD_TO_GOOGLE_DRIVE } from '../constants/actions'
+import { ADD_NOTE } from './constants'
+import { EDIT_NOTE } from './constants'
+import { MOVE_NOTE_TO_TRASH } from './constants'
+import { REMOVE_NOTE } from './constants'
+import { UPLOAD_TO_GOOGLE_DRIVE } from './constants'
 
 export function addNote(title, text) {
   return {

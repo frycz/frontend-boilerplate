@@ -9,16 +9,16 @@ import { fork } from 'redux-saga/effects'
 import * as firebase from "firebase"
 
 import loginSaga from "./containers/login/sagas"
-import notesSaga from "./sagas/notes"
+import notesSaga from "./containers/notes/sagas"
 
-import Main from './containers/main'
+import Authorized from './containers/authorized'
 import Unauthorized from './containers/unauthorized'
-import Notes from './containers/notes'
+import Notes from './containers/notes/notes'
 import Login from './containers/login/login'
-import Register from './containers/register'
-import User from './containers/user'
-import Nomatch from './containers/nomatch'
-import notesReducer from './reducers/notes'
+import Register from './containers/register/register'
+import Settings from './containers/settings/settings'
+import NotFound from './containers/not-found/not-found'
+import notesReducer from './containers/notes/reducers'
 import loginReducer from './containers/login/reducers'
 import spinnerReducer from './containers/spinner/reducers'
 
@@ -65,15 +65,15 @@ ReactDOM.render((<Provider store={store}>
 
       <Router history={hashHistory}>
         <Route >
-          <Route path="/" component={Main} onEnter={requireAuth}>
+          <Route path="/" component={Authorized} onEnter={requireAuth}>
             <Route path="notes" component={Notes}/>
-            <Route path="settings" component={User}/>
+            <Route path="settings" component={Settings}/>
           </Route>
           <Route path="/" component={Unauthorized}>
             <Route path="register" component={Register}/>
             <Route path="login" component={Login}/>
           </Route>
-          <Route path="*" component={Nomatch}/>
+          <Route path="*" component={NotFound}/>
         </Route>
       </Router>
     </Provider>), document.getElementById('app'));
