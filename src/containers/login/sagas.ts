@@ -5,6 +5,7 @@ import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../spinner/actions'
 import { loadNotesSuccess } from '../notes/actions'
 import { loginWithGoogle, loginWithEmail, logout } from '../../services/userService'
+import { fetchUserNotes } from '../../services/dbService'
 
 import * as firebase from 'firebase';
 
@@ -15,10 +16,8 @@ export function* loginUserWithGoogle() {
             yield put(showSpinner());
             const response = yield loginWithGoogle();
             yield put(actions.loginUserSuccess(response));
-            var userId = response.user.uid;
-            const snapshot = yield firebase.database().ref('/user-notes/' + userId).once('value');
+            const snapshot = yield fetchUserNotes(response.user.uid);
             yield put(loadNotesSuccess(snapshot.val()));
-
             yield put(hideSpinner());
             hashHistory.push('/notes');
         }

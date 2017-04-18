@@ -23,7 +23,8 @@ interface INoteProps {
     note: any,
     editNote(id, title, text): void,
     moveNoteToTrash(id): void,
-    uploadToGoogleDrive(title, text): void
+    uploadToGoogleDrive(title, text): void,
+    updateNoteInFirebase(noteId, note): void
 }
 
 interface NoteState {
@@ -94,6 +95,10 @@ class NotesList extends React.Component<INoteProps, NoteState> {
 
   editNote(e) {
     this.props.editNote(this.props.note.id, this.state.title, this.state.text);
+    this.props.updateNoteInFirebase(this.props.note.id, {
+        title: this.state.title,
+        text: this.state.text
+      });
   }
 
   public render() {

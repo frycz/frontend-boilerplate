@@ -10,16 +10,24 @@ import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
-import { addNote, editNote, moveNoteToTrash, uploadToGoogleDrive, saveNoteInFirebase } from './actions';
+import { 
+  addNote,
+  editNote,
+  moveNoteToTrash,
+  uploadToGoogleDrive,
+  saveNoteInFirebase,
+  updateNoteInFirebase
+ } from './actions';
 
 interface INotesProps {
   notes: Array<any>,
   userId: Array<any>,
   addNote(stirng, string): void,
   editNote(id, title, text): void,
-  moveNoteToTrash(id): void
-  uploadToGoogleDrive(title, text): void
-  saveNoteInFirebase(userId, note): void
+  moveNoteToTrash(id): void,
+  uploadToGoogleDrive(title, text): void,
+  saveNoteInFirebase(userId, note): void,
+  updateNoteInFirebase(userId, noteId, note): void
 }
 
 interface NoteState {
@@ -40,6 +48,10 @@ class Notes extends React.Component<INotesProps, NoteState> {
 
   saveNoteInFirebase(note) {
     this.props.saveNoteInFirebase(this.props.userId, note);
+  }
+
+  updateNoteInFirebase(noteId, note) {
+    this.props.updateNoteInFirebase(this.props.userId, noteId, note);
   }
 
   public render() {
@@ -63,7 +75,8 @@ class Notes extends React.Component<INotesProps, NoteState> {
                 notes={ this.props.notes }
                 editNote={this.props.editNote.bind(this)}
                 moveNoteToTrash={this.props.moveNoteToTrash.bind(this)}
-                uploadToGoogleDrive={this.props.uploadToGoogleDrive.bind(this)}>
+                uploadToGoogleDrive={this.props.uploadToGoogleDrive.bind(this)}
+                updateNoteInFirebase={this.updateNoteInFirebase.bind(this)}>
               </NotesList>
           </div>
         </div>
@@ -85,7 +98,8 @@ const mapDispatchToProps = (dispatch) => {
       editNote: (id, title, note) => dispatch(editNote(id, title, note)),
       moveNoteToTrash: (id) => dispatch(moveNoteToTrash(id)),
       uploadToGoogleDrive: (title, text) => dispatch(uploadToGoogleDrive(title, text)),
-      saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note))
+      saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
+      updateNoteInFirebase: (userId, noteId, note) => dispatch(updateNoteInFirebase(userId, noteId, note))
   }
 };
 

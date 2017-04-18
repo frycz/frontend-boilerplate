@@ -5,6 +5,7 @@ import { MOVE_NOTE_TO_TRASH } from './constants'
 import { REMOVE_NOTE } from './constants'
 import { UPLOAD_TO_GOOGLE_DRIVE } from './constants'
 import { SAVE_NOTE_IN_FIREBASE } from './constants'
+import { UPDATE_NOTE_IN_FIREBASE } from './constants'
 
 export function loadNotesSuccess(notes) {
   return {
@@ -46,10 +47,18 @@ export function uploadToGoogleDrive(title, text) {
 }
 
 export function saveNoteInFirebase(userId, note) {
-    console.log('action saveNoteInFirebase');
   return {
     type: SAVE_NOTE_IN_FIREBASE,
     userId,
+    note
+  }
+}
+
+export function updateNoteInFirebase(userId, noteId, note) {
+  return {
+    type: UPDATE_NOTE_IN_FIREBASE,
+    userId,
+    noteId,
     note
   }
 }

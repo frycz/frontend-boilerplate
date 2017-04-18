@@ -7,7 +7,8 @@ interface INotesListProps {
     notes: Array<any>,
     editNote(id, title, text): void,
     moveNoteToTrash(id): void,
-    uploadToGoogleDrive(title, text): void
+    uploadToGoogleDrive(title, text): void,
+    updateNoteInFirebase(noteId, note): void
 }
 
 interface NotesListState {
@@ -31,7 +32,8 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
                     note={ note }
                     editNote={ this.props.editNote }
                     moveNoteToTrash={ this.props.moveNoteToTrash }
-                    uploadToGoogleDrive={ this.props.uploadToGoogleDrive }>
+                    uploadToGoogleDrive={ this.props.uploadToGoogleDrive }
+                    updateNoteInFirebase={ this.props.updateNoteInFirebase }>
                 </Note>
             )}
         </div>
