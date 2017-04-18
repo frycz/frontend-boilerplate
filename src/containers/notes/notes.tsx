@@ -10,14 +10,16 @@ import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
-import { addNote, editNote, moveNoteToTrash, uploadToGoogleDrive } from './actions';
+import { addNote, editNote, moveNoteToTrash, uploadToGoogleDrive, saveNoteInFirebase } from './actions';
 
 interface INotesProps {
   notes: Array<any>,
+  userId: Array<any>,
   addNote(stirng, string): void,
   editNote(id, title, text): void,
   moveNoteToTrash(id): void
   uploadToGoogleDrive(title, text): void
+  saveNoteInFirebase(userId, note): void
 }
 
 interface NoteState {
@@ -36,6 +38,10 @@ class Notes extends React.Component<INotesProps, NoteState> {
 
   }
 
+  saveNoteInFirebase(note) {
+    this.props.saveNoteInFirebase(this.props.userId, note);
+  }
+
   public render() {
     const style = {
       'maxWidth': '650px',
@@ -48,7 +54,8 @@ class Notes extends React.Component<INotesProps, NoteState> {
         <div className="row">
           <div style={{padding: '40px 0'}} className="input-field col s12">
             <NoteInput
-              addNote={this.props.addNote.bind(this)}>
+              addNote={this.props.addNote.bind(this)}
+              saveNoteInFirebase={this.saveNoteInFirebase.bind(this)}>
             </NoteInput>
           </div>
           <div className="col s12">
@@ -67,7 +74,8 @@ class Notes extends React.Component<INotesProps, NoteState> {
 
 const mapStateToProps = function(state){
   return {
-    notes: state.notes.notes
+    notes: state.notes.notes,
+    userId: state.login.user.user.uid
   }
 };
 
@@ -76,7 +84,8 @@ const mapDispatchToProps = (dispatch) => {
       addNote: (title, note) => dispatch(addNote(title, note)),
       editNote: (id, title, note) => dispatch(editNote(id, title, note)),
       moveNoteToTrash: (id) => dispatch(moveNoteToTrash(id)),
-      uploadToGoogleDrive: (title, text) => dispatch(uploadToGoogleDrive(title, text))
+      uploadToGoogleDrive: (title, text) => dispatch(uploadToGoogleDrive(title, text)),
+      saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note))
   }
 };
 

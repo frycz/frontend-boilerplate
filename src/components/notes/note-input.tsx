@@ -10,7 +10,8 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 interface INoteInputProps {
-  addNote(title, text): void
+  addNote(title, text): void,
+  saveNoteInFirebase(note): void
 }
 
 interface NoteInputState {
@@ -52,6 +53,10 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
   addNote() {
     if (this.state.text !== '') {
       this.props.addNote(this.state.title, this.state.text);
+      this.props.saveNoteInFirebase({
+        title: this.state.title,
+        text: this.state.text
+      });
       this.setState(merge({}, this.state, {title: '', text: '', showAddNote: false}));
     }
   }

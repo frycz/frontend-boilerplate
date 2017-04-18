@@ -3,6 +3,7 @@ import { EDIT_NOTE } from './constants'
 import { MOVE_NOTE_TO_TRASH } from './constants'
 import { REMOVE_NOTE } from './constants'
 import { UPLOAD_TO_GOOGLE_DRIVE } from './constants'
+import { SAVE_NOTE_IN_FIREBASE } from './constants'
 
 export function addNote(title, text) {
   return {
@@ -33,5 +34,14 @@ export function uploadToGoogleDrive(title, text) {
     type: UPLOAD_TO_GOOGLE_DRIVE,
     title,
     text
+  }
+}
+
+export function saveNoteInFirebase(userId, note) {
+    console.log('action saveNoteInFirebase');
+  return {
+    type: SAVE_NOTE_IN_FIREBASE,
+    userId,
+    note
   }
 }
