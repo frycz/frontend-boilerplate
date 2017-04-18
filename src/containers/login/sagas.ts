@@ -3,7 +3,10 @@ import * as actions from './actions'
 import { call, put, take, fork } from 'redux-saga/effects'
 import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../spinner/actions'
+import { loadNotesSuccess } from '../notes/actions'
 import { loginWithGoogle, loginWithEmail, logout } from '../../services/userService'
+
+import * as firebase from 'firebase';
 
 export function* loginUserWithGoogle() {
     while (true) {
@@ -12,6 +15,10 @@ export function* loginUserWithGoogle() {
             yield put(showSpinner());
             const response = yield loginWithGoogle();
             yield put(actions.loginUserSuccess(response));
+            var userId = response.user.uid;
+            const snapshot = yield firebase.database().ref('/user-notes/' + userId).once('value');
+            yield put(loadNotesSuccess(snapshot.val()));
+
             yield put(hideSpinner());
             hashHistory.push('/notes');
         }
