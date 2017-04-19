@@ -14,20 +14,17 @@ export function loadNotesSuccess(notes) {
   }
 }
 
-export function addNote(title, text) {
+export function addNote(note) {
   return {
     type: ADD_NOTE,
-    title,
-    text
+    note
   }
 }
 
-export function editNote(id, title, text) {
+export function editNote(note) {
   return {
     type: EDIT_NOTE,
-    id,
-    title,
-    text
+    note
   }
 }
 
@@ -38,11 +35,10 @@ export function moveNoteToTrash(id) {
   }
 }
 
-export function uploadToGoogleDrive(title, text) {
+export function uploadToGoogleDrive(note) {
   return {
     type: UPLOAD_TO_GOOGLE_DRIVE,
-    title,
-    text
+    note
   }
 }
 
@@ -54,11 +50,10 @@ export function saveNoteInFirebase(userId, note) {
   }
 }
 
-export function updateNoteInFirebase(userId, noteId, note) {
+export function updateNoteInFirebase(userId, note) {
   return {
     type: UPDATE_NOTE_IN_FIREBASE,
     userId,
-    noteId,
     note
   }
 }

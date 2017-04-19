@@ -10,13 +10,12 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 interface INoteInputProps {
-  addNote(title, text): void,
+  addNote(note): void,
   saveNoteInFirebase(note): void
 }
 
 interface NoteInputState {
-  title: string;
-  text: string;
+  note: any,
   showAddNote: boolean;
 }
 
@@ -24,8 +23,10 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
   constructor(props, context) {
       super(props, context);
       this.state = {
-          title: '',
-          text: '',
+          note: {
+            title: '',
+            text: ''
+          },
           showAddNote: false
       };
   }
@@ -35,15 +36,19 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
   }
 
   handleClickOutside(e) {
-    this.setState(merge({}, this.state, { title: '', text: '', showAddNote: false }));
+    this.setState(merge({}, this.state, { note: { title: '', text: '' }, showAddNote: false }));
   }
 
   handleTextChange(e) {
-    this.setState(merge({}, this.state, { text: e.target.value }));
+    this.setState(merge({}, this.state,
+      { note: merge({}, this.state.note, { text: e.target.value })}
+    ));
   }
 
   handleTitleChange(e) {
-    this.setState(merge({}, this.state, { title: e.target.value }));
+    this.setState(merge({}, this.state,
+      { note: merge({}, this.state.note, { title: e.target.value })}
+    ));
   }
 
   onFocus() {
@@ -51,13 +56,10 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
   }
 
   addNote() {
-    if (this.state.text !== '') {
-      this.props.addNote(this.state.title, this.state.text);
-      this.props.saveNoteInFirebase({
-        title: this.state.title,
-        text: this.state.text
-      });
-      this.setState(merge({}, this.state, {title: '', text: '', showAddNote: false}));
+    if (this.state.note.text !== '') {
+      this.props.addNote(this.state.note);
+      this.props.saveNoteInFirebase(this.state.note);
+      this.setState(merge({}, this.state, { note: { title: '', text: '' }, showAddNote: false }));
     }
   }
 
@@ -72,7 +74,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 multiLine={false}
                 fullWidth={true} 
                 className={this.state.showAddNote ? '' : 'hidden'}
-                value={this.state.title}
+                value={this.state.note.title}
                 onChange={this.handleTitleChange.bind(this)}
                 style={{fontWeight: 'bold', fontSize: '18px'}}
             ></TextField>
@@ -82,7 +84,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 ref="noteInput" 
                 multiLine={true}
                 fullWidth={true} 
-                value={this.state.text}
+                value={this.state.note.text}
                 onFocus={this.onFocus.bind(this)}
                 onChange={this.handleTextChange.bind(this)}
                 style={{fontSize: '14px'}}

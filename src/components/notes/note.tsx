@@ -21,15 +21,14 @@ import CloudUploadIcon from 'material-ui/svg-icons/file/cloud-upload';
 
 interface INoteProps {
     note: any,
-    editNote(id, title, text): void,
+    editNote(note): void,
     moveNoteToTrash(id): void,
-    uploadToGoogleDrive(title, text): void,
-    updateNoteInFirebase(noteId, note): void
+    uploadToGoogleDrive(note): void,
+    updateNoteInFirebase(note): void
 }
 
 interface NoteState {
-    title: string,
-    text: string,
+    note: any,
     showActionButtons: boolean,
     isEdited: false
 }
@@ -38,24 +37,28 @@ class NotesList extends React.Component<INoteProps, NoteState> {
   constructor(props, context) {
       super(props, context);
       this.state = {
-        title: '',
-        text: '',
+        note: {
+            id: null,
+            title: '',
+            text: '',
+            isInTrash: false
+        },
         showActionButtons: false,
         isEdited: false,
       };
   }
 
   componentDidMount() {
-      this.setState(merge({}, this.state, { title: this.props.note.title, text: this.props.note.text }));
+      this.setState(merge({}, this.state, { note: this.props.note }));
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(merge({}, this.state, { isEdited: false, title: nextProps.note.title, text: nextProps.note.text }));
+    this.setState(merge({}, this.state, { note: this.props.note, isEdited: false }));
   }
 
   handleClickOutside(e) {
     if(this.state.isEdited) { 
-        this.props.editNote(this.props.note.id, this.state.title, this.state.text);
+        this.props.editNote(this.state.note);
         this.setState(merge({}, this.state, { isEdited: false }));
     }
   }
@@ -81,24 +84,25 @@ class NotesList extends React.Component<INoteProps, NoteState> {
 
   handleUploadToGoogleDrive(e) {
     e.stopPropagation();
-    this.props.uploadToGoogleDrive(this.state.title, this.state.text);
+    this.props.uploadToGoogleDrive(this.state.note);
   }
 
   handleTitleChange(e) {
-    this.setState(merge({}, this.state, { title: e.target.value }));
+    this.setState(merge({}, this.state, 
+        { note: merge({}, this.state.note, { title: e.target.value })}
+    ));
   }
 
   handleTextChange(e) {
-    this.setState(merge({}, this.state, { text: e.target.value }));
+    this.setState(merge({}, this.state,
+        { note: merge({}, this.state.note, { text: e.target.value })}
+    ));
     this.props.note.text = e.target.value;
   }
 
   editNote(e) {
-    this.props.editNote(this.props.note.id, this.state.title, this.state.text);
-    this.props.updateNoteInFirebase(this.props.note.id, {
-        title: this.state.title,
-        text: this.state.text
-      });
+    this.props.editNote(this.state.note);
+    this.props.updateNoteInFirebase(this.state.note);
   }
 
   public render() {
@@ -117,12 +121,12 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                 onMouseLeave={this.onNoteLeave.bind(this)}
                 onClick={this.handleEdit.bind(this)}>
                 <CardTitle
-                    title={this.state.title}
-                    className={this.state.title ? '' : 'hidden'}
+                    title={this.state.note.title}
+                    className={this.state.note.title ? '' : 'hidden'}
                     titleStyle={{fontWeight: 'bold', fontSize: '18px'}}
                 />
                 <CardText>
-                    { this.state.text }
+                    { this.state.note.text }
                 </CardText>
                 <CardActions style={{ minHeight: '36px'}}>
                     <IconButton 
@@ -180,7 +184,7 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                     hintText="Title" 
                     multiLine={false}
                     fullWidth={true} 
-                    value={this.state.title}
+                    value={this.state.note.title}
                     onChange={this.handleTitleChange.bind(this)}
                     style={{fontWeight: 'bold', fontSize: '18px'}}
                 ></TextField>
@@ -188,7 +192,7 @@ class NotesList extends React.Component<INoteProps, NoteState> {
                     hintText="Create note..." 
                     multiLine={true}
                     fullWidth={true} 
-                    value={this.state.text}
+                    value={this.state.note.text}
                     onChange={this.handleTextChange.bind(this)}
                     style={{fontSize: '14px'}}
                 ></TextField>

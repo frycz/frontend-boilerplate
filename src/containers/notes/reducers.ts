@@ -7,6 +7,16 @@ import { forOwnRight } from 'lodash'
 
 const initialState = {
   notes: []
+
+  /*
+    notes model:
+      id,
+      title,
+      text,
+      isInTrash,
+      isArchived,
+      googleDriveId
+  */
 }
 
 export default function notesApp(state = initialState, action) {
@@ -15,10 +25,10 @@ export default function notesApp(state = initialState, action) {
     case constants.LOAD_NOTES_SUCCESS: {
       let notes = [];
       forOwnRight(action.notes, function(value, id) {
-        let note = value;
-        note.id = id;
-        note.isInTrash = false;
-        notes.push(note);
+        notes.push((<any>Object).assign({}, value, { 
+          id: id,
+          isInTrash: false
+         }));
       });
       return (<any>Object).assign({}, state, { 
         notes: notes
@@ -29,8 +39,8 @@ export default function notesApp(state = initialState, action) {
       return (<any>Object).assign({}, state, { 
         notes: [(<any>Object).assign({}, [], {
           id: state.notes.reduce((maxId, note) => Math.max(note.id, maxId), -1) + 1,
-          title: action.title,
-          text: action.text,
+          title: action.note.title,
+          text: action.note.text,
           isInTrash: false
         }),
         ...state.notes]
@@ -40,8 +50,8 @@ export default function notesApp(state = initialState, action) {
     case constants.EDIT_NOTE: {
       return (<any>Object).assign({}, state, { 
         notes: state.notes.map(note =>
-        note.id === action.id
-          ? (<any>Object).assign({}, note, {title: action.title, text: action.text}) : note
+        note.id === action.note.id
+          ? (<any>Object).assign({}, note, {title: action.note.title, text: action.note.text}) : note
         )
       })
     }

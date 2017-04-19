@@ -2,6 +2,18 @@ import * as firebase from 'firebase';
 
 export function fetchUserNotes(userId) {
     const database = firebase.database();
+
+    firebase.database().ref('/user-notes/' + userId).on('value', function(snapshot) {
+        console.log('snapshot.val()');
+        // ...
+    });
+
+    /*
+        return new Promise(function(resolve, reject) {
+            gapi.load('client:auth2', resolve);
+        });
+    */
+
     return database.ref('/user-notes/' + userId).once('value');
 }
 
@@ -14,8 +26,8 @@ export function saveUserNote(userId, note) {
     });
 }
 
-export function updateUserNote(userId, noteId, note) {
-    const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + noteId);
+export function updateUserNote(userId, note) {
+    const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + note.id);
     return notesRef.update({
         title: note.title,
         text: note.text

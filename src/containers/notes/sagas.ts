@@ -16,7 +16,7 @@ export function* saveUserNoteInFirebase() {
 export function* updateUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.UPDATE_NOTE_IN_FIREBASE);
-        const data = yield updateUserNote(action.userId, action.noteId, action.note);
+        const data = yield updateUserNote(action.userId, action.note);
     }
 }
 
@@ -29,11 +29,11 @@ export function* uploadFileToGoogleDrive() {
             yield  loadClientAuth(gapi);
             yield  initClient(gapi);
             yield  authenticateUser(gapi);
-            if(action.text) {
-                if(!action.title) {
-                    action.title = action.text.slice(0,12) + '...';
+            if(action.note.text) {
+                if(!action.note.title) {
+                    action.note.title = action.note.text.slice(0,12) + '...';
                 }
-                yield  uploadFile(gapi, action.title, action.text);
+                yield  uploadFile(gapi, action.note.title, action.note.text);
             }
         }
         catch (error) {

@@ -5,10 +5,10 @@ import Note from './note';
 
 interface INotesListProps {
     notes: Array<any>,
-    editNote(id, title, text): void,
+    editNote(id, note): void,
     moveNoteToTrash(id): void,
-    uploadToGoogleDrive(title, text): void,
-    updateNoteInFirebase(noteId, note): void
+    uploadToGoogleDrive(note): void,
+    updateNoteInFirebase(note): void
 }
 
 interface NotesListState {
@@ -26,7 +26,7 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
   public render() {
     return (
         <div>
-            {this.props.notes.filter(note => note.isInTrash === false).map(note =>
+            {this.props.notes.filter(note => note.isInTrash == false).map(note =>
                 <Note
                     key={ note.id }
                     note={ note }

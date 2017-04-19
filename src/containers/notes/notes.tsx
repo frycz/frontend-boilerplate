@@ -22,12 +22,12 @@ import {
 interface INotesProps {
   notes: Array<any>,
   userId: Array<any>,
-  addNote(stirng, string): void,
-  editNote(id, title, text): void,
+  addNote(note): void,
+  editNote(note): void,
   moveNoteToTrash(id): void,
-  uploadToGoogleDrive(title, text): void,
+  uploadToGoogleDrive(note): void,
   saveNoteInFirebase(userId, note): void,
-  updateNoteInFirebase(userId, noteId, note): void
+  updateNoteInFirebase(userId, note): void
 }
 
 interface NoteState {
@@ -51,7 +51,7 @@ class Notes extends React.Component<INotesProps, NoteState> {
   }
 
   updateNoteInFirebase(noteId, note) {
-    this.props.updateNoteInFirebase(this.props.userId, noteId, note);
+    this.props.updateNoteInFirebase(this.props.userId, note);
   }
 
   public render() {
@@ -94,12 +94,12 @@ const mapStateToProps = function(state){
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      addNote: (title, note) => dispatch(addNote(title, note)),
-      editNote: (id, title, note) => dispatch(editNote(id, title, note)),
+      addNote: (note) => dispatch(addNote(note)),
+      editNote: (note) => dispatch(editNote(note)),
       moveNoteToTrash: (id) => dispatch(moveNoteToTrash(id)),
-      uploadToGoogleDrive: (title, text) => dispatch(uploadToGoogleDrive(title, text)),
+      uploadToGoogleDrive: (note) => dispatch(uploadToGoogleDrive(note)),
       saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
-      updateNoteInFirebase: (userId, noteId, note) => dispatch(updateNoteInFirebase(userId, noteId, note))
+      updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note))
   }
 };
 
