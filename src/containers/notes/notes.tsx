@@ -50,7 +50,7 @@ class Notes extends React.Component<INotesProps, NoteState> {
     this.props.saveNoteInFirebase(this.props.userId, note);
   }
 
-  updateNoteInFirebase(noteId, note) {
+  updateNoteInFirebase(note) {
     this.props.updateNoteInFirebase(this.props.userId, note);
   }
 

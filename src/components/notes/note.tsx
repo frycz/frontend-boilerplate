@@ -33,7 +33,7 @@ interface NoteState {
     isEdited: false
 }
 
-class NotesList extends React.Component<INoteProps, NoteState> {
+class Note extends React.Component<INoteProps, NoteState> {
   constructor(props, context) {
       super(props, context);
       this.state = {
@@ -53,12 +53,12 @@ class NotesList extends React.Component<INoteProps, NoteState> {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(merge({}, this.state, { note: this.props.note, isEdited: false }));
+    this.setState(merge({}, this.state, { note: nextProps.note, isEdited: false }));
   }
 
   handleClickOutside(e) {
     if(this.state.isEdited) { 
-        this.props.editNote(this.state.note);
+        this.editNote(this.state.note);
         this.setState(merge({}, this.state, { isEdited: false }));
     }
   }
@@ -89,19 +89,17 @@ class NotesList extends React.Component<INoteProps, NoteState> {
 
   handleTitleChange(e) {
     this.setState(merge({}, this.state, 
-        { note: merge({}, this.state.note, { title: e.target.value })}
+        { note: merge({}, this.state.note, { title: e.target.value }) }
     ));
   }
 
   handleTextChange(e) {
     this.setState(merge({}, this.state,
-        { note: merge({}, this.state.note, { text: e.target.value })}
+        { note: merge({}, this.state.note, { text: e.target.value }) }
     ));
-    this.props.note.text = e.target.value;
   }
 
   editNote(e) {
-    this.props.editNote(this.state.note);
     this.props.updateNoteInFirebase(this.state.note);
   }
 
@@ -206,4 +204,4 @@ class NotesList extends React.Component<INoteProps, NoteState> {
   }
 }
 
-export default onClickOutside(NotesList);
+export default onClickOutside(Note);

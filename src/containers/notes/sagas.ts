@@ -9,14 +9,16 @@ import { saveUserNote, updateUserNote } from '../../services/dbService'
 export function* saveUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.SAVE_NOTE_IN_FIREBASE);
-        const data = yield saveUserNote(action.userId, action.note);
+        const note = yield saveUserNote(action.userId, action.note);
+        yield put(actions.addNote(note));
     }
 }
 
 export function* updateUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.UPDATE_NOTE_IN_FIREBASE);
-        const data = yield updateUserNote(action.userId, action.note);
+        const note = yield updateUserNote(action.userId, action.note);
+        yield put(actions.editNote(note));
     }
 }
 

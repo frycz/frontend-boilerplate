@@ -57,7 +57,6 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
 
   addNote() {
     if (this.state.note.text !== '') {
-      this.props.addNote(this.state.note);
       this.props.saveNoteInFirebase(this.state.note);
       this.setState(merge({}, this.state, { note: { title: '', text: '' }, showAddNote: false }));
     }

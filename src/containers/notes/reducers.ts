@@ -38,7 +38,7 @@ export default function notesApp(state = initialState, action) {
     case constants.ADD_NOTE: {
       return (<any>Object).assign({}, state, { 
         notes: [(<any>Object).assign({}, [], {
-          id: state.notes.reduce((maxId, note) => Math.max(note.id, maxId), -1) + 1,
+          id: action.note.id,
           title: action.note.title,
           text: action.note.text,
           isInTrash: false

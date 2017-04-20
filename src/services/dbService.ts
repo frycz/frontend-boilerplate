@@ -18,18 +18,23 @@ export function fetchUserNotes(userId) {
 }
 
 export function saveUserNote(userId, note) {
-    const notesRef = firebase.database().ref('/user-notes/' + userId);
-    const newNoteRef = notesRef.push();
-    return newNoteRef.set({
+    const notesRef = firebase.database().ref('/user-notes/' + userId).push();
+    const noteEntry = {
+        id: notesRef.key,
         title: note.title,
         text: note.text
-    });
+    }
+    notesRef.set(noteEntry);
+    return noteEntry;
 }
 
 export function updateUserNote(userId, note) {
     const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + note.id);
-    return notesRef.update({
+    const noteEntry = {
+        id: notesRef.key,
         title: note.title,
         text: note.text
-    });
+    }
+    notesRef.update(noteEntry);
+    return noteEntry;
 }
