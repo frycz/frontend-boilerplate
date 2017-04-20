@@ -26,7 +26,7 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
   public render() {
     return (
         <div>
-            {this.props.notes.filter(note => note.isInTrash == false).map(note =>
+            {this.props.notes.filter(note => !note.isInTrash).map(note =>
                 <Note
                     key={ note.id }
                     note={ note }

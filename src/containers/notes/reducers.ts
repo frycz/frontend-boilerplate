@@ -25,10 +25,7 @@ export default function notesApp(state = initialState, action) {
     case constants.LOAD_NOTES_SUCCESS: {
       let notes = [];
       forOwnRight(action.notes, function(value, id) {
-        notes.push((<any>Object).assign({}, value, { 
-          id: id,
-          isInTrash: false
-         }));
+        notes.push((<any>Object).assign({}, value, {}));
       });
       return (<any>Object).assign({}, state, { 
         notes: notes
