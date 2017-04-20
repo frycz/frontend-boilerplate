@@ -22,9 +22,9 @@ import CloudUploadIcon from 'material-ui/svg-icons/file/cloud-upload';
 interface INoteProps {
     note: any,
     editNote(note): void,
-    moveNoteToTrash(id): void,
     uploadToGoogleDrive(note): void,
-    updateNoteInFirebase(note): void
+    updateNoteInFirebase(note): void,
+    moveNoteToTrashInFirebase(id): void
 }
 
 interface NoteState {
@@ -79,7 +79,7 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   handleMoveToTrash(e) {
     e.stopPropagation();
-    this.props.moveNoteToTrash(this.props.note.id);
+    this.props.moveNoteToTrashInFirebase(this.props.note.id);
   }
 
   handleUploadToGoogleDrive(e) {

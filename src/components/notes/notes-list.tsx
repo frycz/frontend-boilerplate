@@ -6,9 +6,9 @@ import Note from './note';
 interface INotesListProps {
     notes: Array<any>,
     editNote(id, note): void,
-    moveNoteToTrash(id): void,
     uploadToGoogleDrive(note): void,
-    updateNoteInFirebase(note): void
+    updateNoteInFirebase(note): void,
+    moveNoteToTrashInFirebase(id): void
 }
 
 interface NotesListState {
@@ -31,9 +31,9 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
                     key={ note.id }
                     note={ note }
                     editNote={ this.props.editNote }
-                    moveNoteToTrash={ this.props.moveNoteToTrash }
                     uploadToGoogleDrive={ this.props.uploadToGoogleDrive }
-                    updateNoteInFirebase={ this.props.updateNoteInFirebase }>
+                    updateNoteInFirebase={ this.props.updateNoteInFirebase }
+                    moveNoteToTrashInFirebase={this.props.moveNoteToTrashInFirebase}>
                 </Note>
             )}
         </div>

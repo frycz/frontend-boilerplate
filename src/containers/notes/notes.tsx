@@ -13,10 +13,10 @@ import FlatButton from 'material-ui/FlatButton';
 import { 
   addNote,
   editNote,
-  moveNoteToTrash,
   uploadToGoogleDrive,
   saveNoteInFirebase,
-  updateNoteInFirebase
+  updateNoteInFirebase,
+  moveNoteToTrashInFirebase
  } from './actions';
 
 interface INotesProps {
@@ -24,10 +24,10 @@ interface INotesProps {
   userId: Array<any>,
   addNote(note): void,
   editNote(note): void,
-  moveNoteToTrash(id): void,
   uploadToGoogleDrive(note): void,
   saveNoteInFirebase(userId, note): void,
-  updateNoteInFirebase(userId, note): void
+  updateNoteInFirebase(userId, note): void,
+  moveNoteToTrashInFirebase(userId, noteId): void
 }
 
 interface NoteState {
@@ -54,6 +54,10 @@ class Notes extends React.Component<INotesProps, NoteState> {
     this.props.updateNoteInFirebase(this.props.userId, note);
   }
 
+  moveNoteToTrashInFirebase(noteId) {
+    this.props.moveNoteToTrashInFirebase(this.props.userId, noteId);
+  }
+
   public render() {
     const style = {
       'maxWidth': '650px',
@@ -74,9 +78,9 @@ class Notes extends React.Component<INotesProps, NoteState> {
               <NotesList
                 notes={ this.props.notes }
                 editNote={this.props.editNote.bind(this)}
-                moveNoteToTrash={this.props.moveNoteToTrash.bind(this)}
                 uploadToGoogleDrive={this.props.uploadToGoogleDrive.bind(this)}
-                updateNoteInFirebase={this.updateNoteInFirebase.bind(this)}>
+                updateNoteInFirebase={this.updateNoteInFirebase.bind(this)}
+                moveNoteToTrashInFirebase={this.moveNoteToTrashInFirebase.bind(this)}>
               </NotesList>
           </div>
         </div>
@@ -96,10 +100,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
       addNote: (note) => dispatch(addNote(note)),
       editNote: (note) => dispatch(editNote(note)),
-      moveNoteToTrash: (id) => dispatch(moveNoteToTrash(id)),
       uploadToGoogleDrive: (note) => dispatch(uploadToGoogleDrive(note)),
       saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
-      updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note))
+      updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note)),
+      moveNoteToTrashInFirebase: (userId, noteId) => dispatch(moveNoteToTrashInFirebase(userId, noteId))
   }
 };
 
