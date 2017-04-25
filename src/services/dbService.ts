@@ -4,7 +4,7 @@ export function fetchUserNotes(userId) {
     const database = firebase.database();
 
     firebase.database().ref('/user-notes/' + userId).on('value', function(snapshot) {
-        console.log('snapshot.val()');
+        //console.log('snapshot.val()');
         // ...
     });
 

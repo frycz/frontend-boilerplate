@@ -24,7 +24,8 @@ interface INoteProps {
     editNote(note): void,
     uploadToGoogleDrive(note): void,
     updateNoteInFirebase(note): void,
-    moveNoteToTrashInFirebase(id): void
+    //moveNoteToTrashInFirebase(id): void,
+    openRemoveDialog(id): void
 }
 
 interface NoteState {
@@ -71,7 +72,8 @@ class Note extends React.Component<INoteProps, NoteState> {
     this.setState(merge({}, this.state, { showActionButtons: false }));
   }
 
-  handleEdit() {
+  handleEdit(e) {
+    e.stopPropagation();
     if(!this.state.isEdited) { 
     this.setState(merge({}, this.state, { isEdited: true }));
     }
@@ -79,7 +81,8 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   handleMoveToTrash(e) {
     e.stopPropagation();
-    this.props.moveNoteToTrashInFirebase(this.props.note.id);
+    //this.props.moveNoteToTrashInFirebase(this.props.note.id);
+    this.props.openRemoveDialog(this.props.note.id);
   }
 
   handleUploadToGoogleDrive(e) {
@@ -127,20 +130,23 @@ class Note extends React.Component<INoteProps, NoteState> {
                     { this.state.note.text }
                 </CardText>
                 <CardActions style={{ minHeight: '36px'}}>
+                    {/*
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle} 
                         className={buttonClass}
                         tooltip="Add to favorite">
                         <StarIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle} 
                         className={buttonClass}
+                        onClick={this.handleEdit.bind(this)}
                         tooltip="Edit">
                         <ModeEditIcon />
                     </IconButton>
+                    {/*
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}
@@ -155,12 +161,14 @@ class Note extends React.Component<INoteProps, NoteState> {
                         tooltip="Archive">
                         <ArchiveIcon />
                     </IconButton>
+                    */}
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}
                         className={buttonClass}
                         onClick={this.handleMoveToTrash.bind(this)}
-                        tooltip="Move to trash">
+                        /*tooltip="Move to trash">*/
+                        tooltip="Remove">
                         <DeleteIcon />
                     </IconButton>
                     <IconButton 

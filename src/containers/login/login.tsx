@@ -99,8 +99,9 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     <RaisedButton onClick={this.onLoginUserWithGithub.bind(this)}  label="Github" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
                     <RaisedButton onClick={this.onLoginUserWithTwitter.bind(this)} label="Twitter" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
                     <RaisedButton onClick={this.onLoginUserWithFacebook.bind(this)} label="Facebook" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
-*/}
+
                     <RaisedButton onClick={this.toggleEmailLogin.bind(this)} label="Email" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
+                    */}
                   </div>
                   <div className={loginFormClasses}>
                     <TextField

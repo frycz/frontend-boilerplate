@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { merge } from 'lodash';
 
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
+
 import Note from './note';
 
 interface INotesListProps {
@@ -12,18 +15,50 @@ interface INotesListProps {
 }
 
 interface NotesListState {
-
+    isRemoveDialogOpen: boolean,
+    noteToRemoveId: number
 }
 
 class NotesList extends React.Component<INotesListProps, NotesListState> {
   constructor(props, context) {
       super(props, context);
       this.state = {
-
+        isRemoveDialogOpen: false,
+        noteToRemoveId: null
       };
   }
 
+  openRemoveDialog = (noteId) => {
+    this.setState({
+        isRemoveDialogOpen: true,
+        noteToRemoveId: noteId
+    });
+  };
+
+  closeRemoveDialog() {
+      this.setState({
+        isRemoveDialogOpen: false,
+        noteToRemoveId: null});
+  }
+
+  removeNote() {
+    this.props.moveNoteToTrashInFirebase(this.state.noteToRemoveId);
+    this.closeRemoveDialog();
+  }
+
   public render() {
+    const removeDialogActions = [
+      <RaisedButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.closeRemoveDialog.bind(this)}
+      />,
+      <RaisedButton
+        label="Remove"
+        onTouchTap={this.removeNote.bind(this)}
+      />,
+    ];
+
     return (
         <div>
             {this.props.notes.filter(note => !note.isInTrash).map(note =>
@@ -33,9 +68,20 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
                     editNote={ this.props.editNote }
                     uploadToGoogleDrive={ this.props.uploadToGoogleDrive }
                     updateNoteInFirebase={ this.props.updateNoteInFirebase }
-                    moveNoteToTrashInFirebase={this.props.moveNoteToTrashInFirebase}>
+                    /*moveNoteToTrashInFirebase={this.props.moveNoteToTrashInFirebase}>*/
+                    openRemoveDialog={this.openRemoveDialog.bind(this)}>
                 </Note>
             )}
+
+            <Dialog
+                title="Remove note"
+                actions={removeDialogActions}
+                modal={true}
+                open={this.state.isRemoveDialogOpen}
+                contentStyle={{maxWidth: '650px'}}
+                >
+                Are you sure you want to remove this note?
+            </Dialog>
         </div>
     );
   }

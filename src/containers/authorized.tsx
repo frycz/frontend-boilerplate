@@ -60,7 +60,7 @@ class Main extends React.Component<IMainProps, MainState> {
 
     const LeftIcons = (props) => (
       <div>
-        <IconButton><SearchIcon color='#fff' /></IconButton>
+        {/*<IconButton><SearchIcon color='#fff' /></IconButton>*/}
       </div>
     );
     
@@ -94,7 +94,7 @@ class Main extends React.Component<IMainProps, MainState> {
             <div style={{marginTop: '-30px'}}>adamsawicki89@gmail.com</div>
           </MenuItem>
           <Divider />
-          <MenuItem primaryText="Settings" leftIcon={<SettingsIcon />} style={{fontSize: '14px'}}/>
+          {/*<MenuItem primaryText="Settings" leftIcon={<SettingsIcon />} style={{fontSize: '14px'}}/>*/}
           <MenuItem onClick={this.props.logout} primaryText="Log out" leftIcon={<LogoutIcon />} style={{fontSize: '14px'}}/>
         </Drawer>
 
