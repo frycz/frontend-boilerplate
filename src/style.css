@@ -33,3 +33,21 @@ body {
   background-color: rgba(255,255,255,0.7);
   z-index: 999999999;
 }
+
+.login-btn {
+    margin-top: 15px;
+    box-shadow: none;
+    padding: 15px;
+    cursor: pointer;
+    color: white;
+}
+
+.login-btn.login-google {
+    background-color: #5c84f0;
+}
+
+.login-btn .login-icon {
+    float: left;
+    font-size: 22px;
+    margin-top: -6px;
+}

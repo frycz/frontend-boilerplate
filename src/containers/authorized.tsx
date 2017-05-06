@@ -37,7 +37,8 @@ const iconStyles = {
 injectTapEventPlugin();
 
 interface IMainProps {
-  logout(): void
+  logout(): void,
+  user: any
 }
 
 interface MainState {
@@ -90,8 +91,8 @@ class Main extends React.Component<IMainProps, MainState> {
               }
             }>A</div>}
              style={{fontSize: '12px'}}>
-            <div style={{fontWeight: 'bold'}}>Adam Sawicki</div>
-            <div style={{marginTop: '-30px'}}>adamsawicki89@gmail.com</div>
+            <div style={{fontWeight: 'bold'}}>{this.props.user ? this.props.user.user.email.split('@')[0] : ''}</div>
+            <div style={{marginTop: '-30px'}}>{this.props.user ? this.props.user.user.email : ''}</div>
           </MenuItem>
           <Divider />
           {/*<MenuItem primaryText="Settings" leftIcon={<SettingsIcon />} style={{fontSize: '14px'}}/>*/}
@@ -108,6 +109,7 @@ class Main extends React.Component<IMainProps, MainState> {
 
 const mapStateToProps = function(state){
   return {
+    user: state.login.user
   }
 };
 

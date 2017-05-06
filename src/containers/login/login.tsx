@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import { FaGoogle } from 'react-icons/lib/fa';
 
 import { loginUserWithGoogle, loginUserWithEmail } from './actions'
 
@@ -94,7 +95,10 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 <CardText>
                   <div style={{color: '#bd4141'}}>{this.props.error ? this.props.error.message : null}</div>
                   <div className={loginMethodsClasses}>
-                    <RaisedButton onClick={this.onLoginUserWithGoogle.bind(this)} label="Google" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
+                    <div className={'login-btn login-google'} onClick={this.onLoginUserWithGoogle.bind(this)}>
+                        <span className={'login-icon'}><FaGoogle/></span>
+                        Continue with <strong>Google</strong>
+                      </div>
 {/*
                     <RaisedButton onClick={this.onLoginUserWithGithub.bind(this)}  label="Github" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>
                     <RaisedButton onClick={this.onLoginUserWithTwitter.bind(this)} label="Twitter" fullWidth={true} style={{marginTop: '15px', boxShadow: 'none', border: '1px solid #efefef'}}/>

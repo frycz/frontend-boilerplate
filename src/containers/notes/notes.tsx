@@ -21,7 +21,7 @@ import {
 
 interface INotesProps {
   notes: Array<any>,
-  userId: Array<any>,
+  user: any,
   addNote(note): void,
   editNote(note): void,
   uploadToGoogleDrive(note): void,
@@ -47,15 +47,15 @@ class Notes extends React.Component<INotesProps, NoteState> {
   }
 
   saveNoteInFirebase(note) {
-    this.props.saveNoteInFirebase(this.props.userId, note);
+    this.props.saveNoteInFirebase(this.props.user.user.uid, note);
   }
 
   updateNoteInFirebase(note) {
-    this.props.updateNoteInFirebase(this.props.userId, note);
+    this.props.updateNoteInFirebase(this.props.user.user.uid, note);
   }
 
   moveNoteToTrashInFirebase(noteId) {
-    this.props.moveNoteToTrashInFirebase(this.props.userId, noteId);
+    this.props.moveNoteToTrashInFirebase(this.props.user.user.uid, noteId);
   }
 
   public render() {
@@ -92,7 +92,7 @@ class Notes extends React.Component<INotesProps, NoteState> {
 const mapStateToProps = function(state){
   return {
     notes: state.notes.notes,
-    userId: state.login.user.user.uid
+    user: state.login.user
   }
 };
 
