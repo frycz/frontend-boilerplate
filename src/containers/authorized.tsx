@@ -20,6 +20,7 @@ import RefreshIcon from 'material-ui/svg-icons/navigation/refresh';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import LogoutIcon from 'material-ui/svg-icons/action/power-settings-new';
+import * as Avatar from 'react-avatar';
 
 import GlobalSpinner from './spinner/globalSpinner'
 
@@ -64,7 +65,6 @@ class Main extends React.Component<IMainProps, MainState> {
         {/*<IconButton><SearchIcon color='#fff' /></IconButton>*/}
       </div>
     );
-    
     return (
       <MuiThemeProvider muiTheme={muiTheme}> 
         <div>
@@ -82,14 +82,14 @@ class Main extends React.Component<IMainProps, MainState> {
                 width: '40px',
                 height: '40px', 
                 borderRadius: '50%', 
-                backgroundColor: 'green', 
+                backgroundColor: '#455a64', 
                 color: 'white', 
                 fontSize: '22px', 
                 textAlign: 'center', 
                 lineHeight: '40px', 
                 fontWeight: 'lighter'
               }
-            }>A</div>}
+            }>{this.props.user ? this.props.user.user.email.toUpperCase().charAt(0) : ''}</div>}
              style={{fontSize: '12px'}}>
             <div style={{fontWeight: 'bold'}}>{this.props.user ? this.props.user.user.email.split('@')[0] : ''}</div>
             <div style={{marginTop: '-30px'}}>{this.props.user ? this.props.user.user.email : ''}</div>
