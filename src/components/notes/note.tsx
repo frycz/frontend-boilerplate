@@ -92,13 +92,13 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   handleTitleChange(e) {
     this.setState(merge({}, this.state, 
-        { note: merge({}, this.state.note, { title: e.target.value }) }
+        { note: merge({}, this.state.note, { title: e.target.value.replace(/\n/g, '<br/>') }) }
     ));
   }
 
   handleTextChange(e) {
     this.setState(merge({}, this.state,
-        { note: merge({}, this.state.note, { text: e.target.value }) }
+        { note: merge({}, this.state.note, { text: e.target.value.replace(/\n/g, '<br/>') }) }
     ));
   }
 
@@ -113,6 +113,10 @@ class Note extends React.Component<INoteProps, NoteState> {
     const buttonClass = this.state.showActionButtons ? '' : 'invisible';
     const iconStyle = {width: 18, height: 18, color: grey600};
     const buttonStyle = {width: 36, height: 36, padding: 0};
+    const titleClasses = classNames({
+        "wordwrap": true,
+        "hidden": !this.state.note.title
+    })
     return (
         <div>
             <Card 
@@ -122,12 +126,12 @@ class Note extends React.Component<INoteProps, NoteState> {
                 onMouseLeave={this.onNoteLeave.bind(this)}
                 onClick={this.handleEdit.bind(this)}>
                 <CardTitle
-                    title={this.state.note.title}
-                    className={this.state.note.title ? '' : 'hidden'}
+                    title={<div dangerouslySetInnerHTML={{__html: this.state.note.title}} />}
+                    className={titleClasses}
                     titleStyle={{fontWeight: 'bold', fontSize: '18px'}}
                 />
-                <CardText>
-                    { this.state.note.text }
+                <CardText className={'wordwrap'}>
+                    { <div dangerouslySetInnerHTML={{__html: this.state.note.text}} /> }
                 </CardText>
                 <CardActions style={{ minHeight: '36px'}}>
                     {/*
@@ -188,9 +192,10 @@ class Note extends React.Component<INoteProps, NoteState> {
                 <CardText>
                 <TextField 
                     hintText="Title" 
-                    multiLine={false}
+                    multiLine={true}
                     fullWidth={true} 
-                    value={this.state.note.title}
+                    rowsMax={10}
+                    value={this.state.note.title.replace(/<br\/>/g, '\n')}
                     onChange={this.handleTitleChange.bind(this)}
                     style={{fontWeight: 'bold', fontSize: '18px'}}
                 ></TextField>
@@ -198,7 +203,8 @@ class Note extends React.Component<INoteProps, NoteState> {
                     hintText="Create note..." 
                     multiLine={true}
                     fullWidth={true} 
-                    value={this.state.note.text}
+                    rowsMax={10}
+                    value={this.state.note.text.replace(/<br\/>/g, '\n')}
                     onChange={this.handleTextChange.bind(this)}
                     style={{fontSize: '14px'}}
                 ></TextField>

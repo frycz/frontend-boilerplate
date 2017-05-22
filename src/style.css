@@ -20,6 +20,11 @@ body {
     transition: opacity .15s ease-in-out;
 }
 
+.wordwrap {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
 .hovered {
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 20px, rgba(0, 0, 0, 0.117647) 0px 1px 20px !important;
 }

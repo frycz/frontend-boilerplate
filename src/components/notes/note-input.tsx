@@ -41,13 +41,13 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
 
   handleTextChange(e) {
     this.setState(merge({}, this.state,
-      { note: merge({}, this.state.note, { text: e.target.value })}
+      { note: merge({}, this.state.note, { text: e.target.value.replace(/\n/g, '<br/>') })}
     ));
   }
 
   handleTitleChange(e) {
     this.setState(merge({}, this.state,
-      { note: merge({}, this.state.note, { title: e.target.value })}
+      { note: merge({}, this.state.note, { title: e.target.value.replace(/\n/g, '<br/>') })}
     ));
   }
 
@@ -70,10 +70,11 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 hintText="Title" 
                 id="note_input"
                 ref="noteInput" 
-                multiLine={false}
+                multiLine={true}
                 fullWidth={true} 
+                rowsMax={10}
                 className={this.state.showAddNote ? '' : 'hidden'}
-                value={this.state.note.title}
+                value={this.state.note.title.replace(/<br\/>/g, '\n')}
                 onChange={this.handleTitleChange.bind(this)}
                 style={{fontWeight: 'bold', fontSize: '18px'}}
             ></TextField>
@@ -83,7 +84,8 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 ref="noteInput" 
                 multiLine={true}
                 fullWidth={true} 
-                value={this.state.note.text}
+                rowsMax={10}
+                value={this.state.note.text.replace(/<br\/>/g, '\n')}
                 onFocus={this.onFocus.bind(this)}
                 onChange={this.handleTextChange.bind(this)}
                 style={{fontSize: '14px'}}
