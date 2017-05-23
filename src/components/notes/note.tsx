@@ -130,6 +130,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                     title={<div dangerouslySetInnerHTML={{__html: this.state.note.title}} />}
                     className={titleClasses}
                     titleStyle={{fontWeight: 'bold', fontSize: '18px'}}
+                    style={{paddingBottom: 0}}
                 />
                 <CardText className={'wordwrap'}>
                     { <div dangerouslySetInnerHTML={{__html: this.state.note.text}} /> }
@@ -207,6 +208,15 @@ class Note extends React.Component<INoteProps, NoteState> {
                     disabled={false}
                     onChange={this.handleTitleChange.bind(this)}
                 />
+                <div style={{
+                        fontSize: '14px',
+                        position: 'absolute',
+                        display: this.state.note.text ? 'none' : 'inline',
+                        pointerEvents: 'none',
+                        color: 'rgba(0,0,0,.2)',
+                        lineHeight: '36px',
+                        paddingTop: '6px'
+                        }}>Write note...</div>
                 <ContentEditable
                     className={'edit-text-input'}
                     placeholder="Edit note..."

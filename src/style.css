@@ -74,6 +74,7 @@ body {
     border: none;
     width: 100%;
     resize: none;
+    padding-top: 16px;
 }
 .edit-text-input:focus {
     outline: none;
