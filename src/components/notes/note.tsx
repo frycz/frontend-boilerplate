@@ -6,6 +6,7 @@ import * as classNames from 'classnames';
 
 import * as onClickOutside from 'react-onclickoutside';
 
+import * as ContentEditable from 'react-contenteditable'
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import { grey600 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
@@ -92,13 +93,13 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   handleTitleChange(e) {
     this.setState(merge({}, this.state, 
-        { note: merge({}, this.state.note, { title: e.target.value.replace(/\n/g, '<br/>') }) }
+        { note: merge({}, this.state.note, { title: e.target.value }) }
     ));
   }
 
   handleTextChange(e) {
     this.setState(merge({}, this.state,
-        { note: merge({}, this.state.note, { text: e.target.value.replace(/\n/g, '<br/>') }) }
+        { note: merge({}, this.state.note, { text: e.target.value }) }
     ));
   }
 
@@ -190,24 +191,29 @@ class Note extends React.Component<INoteProps, NoteState> {
                 className={editClasses}
                 style={{margin: '20px 0'}}>
                 <CardText>
-                <TextField 
-                    hintText="Title" 
-                    multiLine={true}
-                    fullWidth={true} 
-                    rowsMax={10}
-                    value={this.state.note.title.replace(/<br\/>/g, '\n')}
+                    <div style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        position: 'absolute',
+                        display: this.state.note.title ? 'none' : 'inline',
+                        pointerEvents: 'none',
+                        color: 'rgba(0,0,0,.2)',
+                        lineHeight: '36px'
+                        }}>Title</div>
+                <ContentEditable 
+                    className={'edit-title-input'}
+                    placeholder="Title"
+                    html={this.state.note.title}
+                    disabled={false}
                     onChange={this.handleTitleChange.bind(this)}
-                    style={{fontWeight: 'bold', fontSize: '18px'}}
-                ></TextField>
-                <TextField 
-                    hintText="Create note..." 
-                    multiLine={true}
-                    fullWidth={true} 
-                    rowsMax={10}
-                    value={this.state.note.text.replace(/<br\/>/g, '\n')}
-                    onChange={this.handleTextChange.bind(this)}
-                    style={{fontSize: '14px'}}
-                ></TextField>
+                />
+                <ContentEditable
+                    className={'edit-text-input'}
+                    placeholder="Edit note..."
+                    html={this.state.note.text}
+                    disabled={false} 
+                    onChange={this.handleTextChange.bind(this)} 
+                />
                 </CardText>
                 <CardActions>
                 <FlatButton onClick={this.editNote.bind(this)} label="Save Note" primary={true}/>

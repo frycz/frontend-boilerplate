@@ -56,3 +56,25 @@ body {
     font-size: 22px;
     margin-top: -6px;
 }
+
+.edit-title-input {
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
+    width: 100%;
+    resize: none;
+    line-height: 36px;
+}
+.edit-title-input:focus {
+    outline: none;
+}
+
+.edit-text-input {
+    font-size: 14px;
+    border: none;
+    width: 100%;
+    resize: none;
+}
+.edit-text-input:focus {
+    outline: none;
+}
