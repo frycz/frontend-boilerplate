@@ -32,7 +32,7 @@ interface INoteProps {
 interface NoteState {
     note: any,
     showActionButtons: boolean,
-    isEdited: false
+    isEdited: boolean
 }
 
 class Note extends React.Component<INoteProps, NoteState> {
@@ -75,8 +75,8 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   handleEdit(e) {
     e.stopPropagation();
-    if(!this.state.isEdited) { 
-    this.setState(merge({}, this.state, { isEdited: true }));
+    if(!this.state.isEdited) {
+        this.setState(merge({}, this.state, { isEdited: true }));
     }
   }
 
@@ -109,89 +109,30 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   public render() {
 
-    const viewClasses = classNames({hidden: this.state.isEdited}, {hovered: this.state.showActionButtons});
-    const editClasses = classNames({hidden: !this.state.isEdited}, 'hovered');
-    const buttonClass = this.state.showActionButtons ? '' : 'invisible';
+    const noteBoxClasses = classNames({hovered: this.state.showActionButtons || this.state.isEdited});
+    const actionClasses = this.state.showActionButtons ? '' : 'invisible';
+    const actionsPanelClasses = this.state.isEdited ? 'hidden' : '';
+    const saveButtonPanelClasses = this.state.isEdited ? '' : 'hidden';
+    const placeholderClasses = this.state.isEdited ? '' : 'hidden';
     const iconStyle = {width: 18, height: 18, color: grey600};
     const buttonStyle = {width: 36, height: 36, padding: 0};
     const titleClasses = classNames({
-        "wordwrap": true,
-        "hidden": !this.state.note.title
+        "edit-title-input": true,
+    })
+    const textClasses = classNames({
+        "edit-text-input": true,
     })
     return (
         <div>
-            <Card 
-                className={viewClasses}
-                style={{margin: '20px 0'}}
-                onMouseEnter={this.onNoteHover.bind(this)}
-                onMouseLeave={this.onNoteLeave.bind(this)}
-                onClick={this.handleEdit.bind(this)}>
-                <CardTitle
-                    title={<div dangerouslySetInnerHTML={{__html: this.state.note.title}} />}
-                    className={titleClasses}
-                    titleStyle={{fontWeight: 'bold', fontSize: '18px'}}
-                    style={{paddingBottom: 0}}
-                />
-                <CardText className={'wordwrap'}>
-                    { <div dangerouslySetInnerHTML={{__html: this.state.note.text}} /> }
-                </CardText>
-                <CardActions style={{ minHeight: '36px'}}>
-                    {/*
-                    <IconButton 
-                        iconStyle={iconStyle} 
-                        style={buttonStyle} 
-                        className={buttonClass}
-                        tooltip="Add to favorite">
-                        <StarIcon />
-                    </IconButton> */}
-                    <IconButton 
-                        iconStyle={iconStyle} 
-                        style={buttonStyle} 
-                        className={buttonClass}
-                        onClick={this.handleEdit.bind(this)}
-                        tooltip="Edit">
-                        <ModeEditIcon />
-                    </IconButton>
-                    {/*
-                    <IconButton 
-                        iconStyle={iconStyle} 
-                        style={buttonStyle}
-                        className={buttonClass}
-                        tooltip="Copy">
-                        <CopyIcon />
-                    </IconButton>
-                    <IconButton 
-                        iconStyle={iconStyle} 
-                        style={buttonStyle}
-                        className={buttonClass}
-                        tooltip="Archive">
-                        <ArchiveIcon />
-                    </IconButton>
-                    */}
-                    <IconButton 
-                        iconStyle={iconStyle} 
-                        style={buttonStyle}
-                        className={buttonClass}
-                        onClick={this.handleMoveToTrash.bind(this)}
-                        /*tooltip="Move to trash">*/
-                        tooltip="Remove">
-                        <DeleteIcon />
-                    </IconButton>
-                    <IconButton 
-                        iconStyle={iconStyle} 
-                        style={buttonStyle}
-                        className={buttonClass}
-                        onClick={this.handleUploadToGoogleDrive.bind(this)}
-                        tooltip="Upload to Google Drive">
-                        <CloudUploadIcon />
-                    </IconButton>
-                </CardActions>
-            </Card>
+
 
             <Card
-                className={editClasses}
-                style={{margin: '20px 0'}}>
-                <CardText>
+                style={{margin: '20px 0'}}
+                className={noteBoxClasses}
+                onMouseEnter={this.onNoteHover.bind(this)}
+                onMouseLeave={this.onNoteLeave.bind(this)}
+                >
+                <CardText onClick={this.handleEdit.bind(this)}>
                     <div style={{
                         fontSize: '18px',
                         fontWeight: 'bold',
@@ -200,12 +141,15 @@ class Note extends React.Component<INoteProps, NoteState> {
                         pointerEvents: 'none',
                         color: 'rgba(0,0,0,.2)',
                         lineHeight: '36px'
-                        }}>Title</div>
+                        }}
+                        className={placeholderClasses}
+                        >Title</div>
                 <ContentEditable 
-                    className={'edit-title-input'}
+                    className={titleClasses}
                     placeholder="Title"
                     html={this.state.note.title}
                     disabled={false}
+                    spellCheck={false}
                     onChange={this.handleTitleChange.bind(this)}
                 />
                 <div style={{
@@ -216,16 +160,69 @@ class Note extends React.Component<INoteProps, NoteState> {
                         color: 'rgba(0,0,0,.2)',
                         lineHeight: '36px',
                         paddingTop: '6px'
-                        }}>Write note...</div>
+                        }}
+                        className={placeholderClasses}
+                        >Write note...</div>
                 <ContentEditable
-                    className={'edit-text-input'}
+                    className={textClasses}
                     placeholder="Edit note..."
                     html={this.state.note.text}
-                    disabled={false} 
-                    onChange={this.handleTextChange.bind(this)} 
+                    disabled={false}
+                    spellCheck={false}
+                    onChange={this.handleTextChange.bind(this)}
                 />
-                </CardText>
-                <CardActions>
+                </CardText >
+                <div className={actionsPanelClasses} style={{ minHeight: '36px', padding: '8px'}}>
+                    {/*
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle} 
+                        className={actionClasses}
+                        tooltip="Add to favorite">
+                        <StarIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle} 
+                        className={actionClasses}
+                        onClick={this.handleEdit.bind(this)}
+                        tooltip="Edit">
+                        <ModeEditIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={actionClasses}
+                        tooltip="Copy">
+                        <CopyIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={actionClasses}
+                        tooltip="Archive">
+                        <ArchiveIcon />
+                    </IconButton>
+                    */}
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={actionClasses}
+                        onClick={this.handleMoveToTrash.bind(this)}
+                        /*tooltip="Move to trash">*/
+                        tooltip="Remove">
+                        <DeleteIcon />
+                    </IconButton>
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={actionClasses}
+                        onClick={this.handleUploadToGoogleDrive.bind(this)}
+                        tooltip="Upload to Google Drive">
+                        <CloudUploadIcon />
+                    </IconButton>
+                </div>
+                <CardActions className={saveButtonPanelClasses}>
                 <FlatButton onClick={this.editNote.bind(this)} label="Save Note" primary={true}/>
                 </CardActions>
             </Card>

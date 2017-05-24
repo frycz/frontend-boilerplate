@@ -50,11 +50,12 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
     const removeDialogActions = [
       <RaisedButton
         label="Cancel"
-        primary={true}
+        keyboardFocused={true}
         onTouchTap={this.closeRemoveDialog.bind(this)}
       />,
       <RaisedButton
         label="Remove"
+        primary={true}
         onTouchTap={this.removeNote.bind(this)}
       />,
     ];
