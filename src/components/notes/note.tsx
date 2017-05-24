@@ -113,15 +113,8 @@ class Note extends React.Component<INoteProps, NoteState> {
     const actionClasses = this.state.showActionButtons ? '' : 'invisible';
     const actionsPanelClasses = this.state.isEdited ? 'hidden' : '';
     const saveButtonPanelClasses = this.state.isEdited ? '' : 'hidden';
-    const placeholderClasses = this.state.isEdited ? '' : 'hidden';
     const iconStyle = {width: 18, height: 18, color: grey600};
     const buttonStyle = {width: 36, height: 36, padding: 0};
-    const titleClasses = classNames({
-        "edit-title-input": true,
-    })
-    const textClasses = classNames({
-        "edit-text-input": true,
-    })
     return (
         <div>
 
@@ -133,38 +126,38 @@ class Note extends React.Component<INoteProps, NoteState> {
                 onMouseLeave={this.onNoteLeave.bind(this)}
                 >
                 <CardText onClick={this.handleEdit.bind(this)}>
-                    <div style={{
-                        fontSize: '18px',
-                        fontWeight: 'bold',
-                        position: 'absolute',
-                        display: this.state.note.title ? 'none' : 'inline',
-                        pointerEvents: 'none',
-                        color: 'rgba(0,0,0,.2)',
-                        lineHeight: '36px'
-                        }}
-                        className={placeholderClasses}
-                        >Title</div>
-                <ContentEditable 
-                    className={titleClasses}
-                    placeholder="Title"
-                    html={this.state.note.title}
-                    disabled={false}
-                    spellCheck={false}
-                    onChange={this.handleTitleChange.bind(this)}
-                />
+                    <div style={{ display: !this.state.isEdited && !this.state.note.title ? 'none' : ''}}>
+                        <div style={{
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                            position: 'absolute',
+                            display: this.state.note.title || !this.state.isEdited ? 'none' : 'inline',
+                            pointerEvents: 'none',
+                            color: 'rgba(0,0,0,.2)',
+                            lineHeight: '36px'
+                            }}
+                            >Title</div>
+                    <ContentEditable 
+                        className={'edit-title-input'}
+                        placeholder="Title"
+                        html={this.state.note.title}
+                        disabled={false}
+                        spellCheck={false}
+                        onChange={this.handleTitleChange.bind(this)}
+                    />
+                </div>
                 <div style={{
                         fontSize: '14px',
                         position: 'absolute',
-                        display: this.state.note.text ? 'none' : 'inline',
+                        display: this.state.note.text || !this.state.isEdited ? 'none' : 'inline',
                         pointerEvents: 'none',
                         color: 'rgba(0,0,0,.2)',
                         lineHeight: '36px',
                         paddingTop: '6px'
                         }}
-                        className={placeholderClasses}
                         >Write note...</div>
                 <ContentEditable
-                    className={textClasses}
+                    className={'edit-text-input'}
                     placeholder="Edit note..."
                     html={this.state.note.text}
                     disabled={false}
