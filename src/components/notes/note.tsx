@@ -125,8 +125,16 @@ class Note extends React.Component<INoteProps, NoteState> {
                 onMouseEnter={this.onNoteHover.bind(this)}
                 onMouseLeave={this.onNoteLeave.bind(this)}
                 >
-                <CardText onClick={this.handleEdit.bind(this)}>
-                    <div style={{ display: !this.state.isEdited && !this.state.note.title ? 'none' : ''}}>
+                <CardText 
+                        onClick={this.handleEdit.bind(this)}
+                        style={{
+                            maxHeight: this.state.isEdited ? '' : '245px',
+                            cursor: this.state.isEdited ? 'text' : 'default',
+                            overflow: 'hidden'
+                          }}>
+                    <div style={{ 
+                        display: !this.state.isEdited && !this.state.note.title ? 'none' : ''
+                        }}>
                         <div style={{
                             fontSize: '18px',
                             fontWeight: 'bold',
