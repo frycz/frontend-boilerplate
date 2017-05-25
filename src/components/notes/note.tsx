@@ -127,12 +127,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                 >
                 <CardText 
                         onClick={this.handleEdit.bind(this)}
-                        ref={(div) => { this.scrollableNote = div; }}
-                        style={{
-                            maxHeight: '245px',
-                            cursor: this.state.isEdited ? 'text' : 'default',
-                            overflow: this.state.isEdited ? 'scroll' : 'hidden'
-                          }}>
+                        style={{paddingRight: 0}}>
                     <div style={{ 
                         display: !this.state.isEdited && !this.state.note.title ? 'none' : ''
                         }}>
@@ -155,24 +150,32 @@ class Note extends React.Component<INoteProps, NoteState> {
                         onChange={this.handleTitleChange.bind(this)}
                     />
                 </div>
-                <div style={{
-                        fontSize: '14px',
-                        position: 'absolute',
-                        display: this.state.note.text || !this.state.isEdited ? 'none' : 'inline',
-                        pointerEvents: 'none',
-                        color: 'rgba(0,0,0,.2)',
-                        lineHeight: '36px',
-                        paddingTop: '6px'
-                        }}
-                        >Write note...</div>
-                <ContentEditable
-                    className={'edit-text-input'}
-                    placeholder="Edit note..."
-                    html={this.state.note.text}
-                    disabled={false}
-                    spellCheck={false}
-                    onChange={this.handleTextChange.bind(this)}
-                />
+                <div
+                    ref={(div) => { this.scrollableNote = div; }}
+                    style={{
+                    maxHeight: '290px',
+                    cursor: this.state.isEdited ? 'text' : 'default',
+                    overflow: this.state.isEdited ? 'scroll' : 'hidden'
+                }}>
+                    <div style={{
+                            fontSize: '14px',
+                            position: 'absolute',
+                            display: this.state.note.text || !this.state.isEdited ? 'none' : 'inline',
+                            pointerEvents: 'none',
+                            color: 'rgba(0,0,0,.2)',
+                            lineHeight: '36px',
+                            paddingTop: '6px'
+                            }}
+                            >Write note...</div>
+                    <ContentEditable
+                        className={'edit-text-input'}
+                        placeholder="Edit note..."
+                        html={this.state.note.text}
+                        disabled={false}
+                        spellCheck={false}
+                        onChange={this.handleTextChange.bind(this)}
+                    />
+                </div>
                 </CardText >
                 <div className={actionsPanelClasses} style={{ minHeight: '36px', padding: '8px'}}>
                     {/*
