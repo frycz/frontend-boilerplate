@@ -36,6 +36,7 @@ interface NoteState {
 }
 
 class Note extends React.Component<INoteProps, NoteState> {
+  scrollableNote: any;
   constructor(props, context) {
       super(props, context);
       this.state = {
@@ -61,6 +62,7 @@ class Note extends React.Component<INoteProps, NoteState> {
   handleClickOutside(e) {
     if(this.state.isEdited) { 
         this.editNote(this.state.note);
+        ReactDOM.findDOMNode(this.scrollableNote).scrollTop = 0;
         this.setState(merge({}, this.state, { isEdited: false }));
     }
   }
@@ -117,8 +119,6 @@ class Note extends React.Component<INoteProps, NoteState> {
     const buttonStyle = {width: 36, height: 36, padding: 0};
     return (
         <div>
-
-
             <Card
                 style={{margin: '20px 0'}}
                 className={noteBoxClasses}
@@ -127,10 +127,11 @@ class Note extends React.Component<INoteProps, NoteState> {
                 >
                 <CardText 
                         onClick={this.handleEdit.bind(this)}
+                        ref={(div) => { this.scrollableNote = div; }}
                         style={{
-                            maxHeight: this.state.isEdited ? '' : '245px',
+                            maxHeight: '245px',
                             cursor: this.state.isEdited ? 'text' : 'default',
-                            overflow: 'hidden'
+                            overflow: this.state.isEdited ? 'scroll' : 'hidden'
                           }}>
                     <div style={{ 
                         display: !this.state.isEdited && !this.state.note.title ? 'none' : ''
