@@ -2,11 +2,12 @@ import { LOAD_NOTES_SUCCESS } from './constants'
 import { ADD_NOTE } from './constants'
 import { EDIT_NOTE } from './constants'
 import { MOVE_NOTE_TO_TRASH } from './constants'
-import { REMOVE_NOTE } from './constants'
+import { DISCARD_NOTE } from './constants'
 import { UPLOAD_TO_GOOGLE_DRIVE } from './constants'
 import { SAVE_NOTE_IN_FIREBASE } from './constants'
 import { UPDATE_NOTE_IN_FIREBASE } from './constants'
 import { MOVE_NOTE_TO_TRASH_IN_FIREBASE } from './constants'
+import { DISCARD_NOTE_IN_FIREBASE } from './constants'
 
 export function loadNotesSuccess(notes) {
   return {
@@ -32,6 +33,13 @@ export function editNote(note) {
 export function moveNoteToTrash(id) {
   return {
     type: MOVE_NOTE_TO_TRASH,
+    id
+  }
+}
+
+export function discardNote(id) {
+  return {
+    type: DISCARD_NOTE,
     id
   }
 }
@@ -62,6 +70,14 @@ export function updateNoteInFirebase(userId, note) {
 export function moveNoteToTrashInFirebase(userId, noteId) {
   return {
     type: MOVE_NOTE_TO_TRASH_IN_FIREBASE,
+    userId,
+    noteId
+  }
+}
+
+export function discardNoteInFirebase(userId, noteId) {
+  return {
+    type: DISCARD_NOTE_IN_FIREBASE,
     userId,
     noteId
   }

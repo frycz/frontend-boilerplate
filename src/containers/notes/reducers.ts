@@ -62,6 +62,14 @@ export default function notesApp(state = initialState, action) {
       })
     }
 
+    case constants.DISCARD_NOTE: {
+      return (<any>Object).assign({}, state, { 
+        notes: state.notes.filter(note =>
+         note.id !== action.id
+        )
+      })
+    }
+
     default:
       return state
   }

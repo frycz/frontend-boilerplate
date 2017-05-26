@@ -16,7 +16,8 @@ import {
   uploadToGoogleDrive,
   saveNoteInFirebase,
   updateNoteInFirebase,
-  moveNoteToTrashInFirebase
+  moveNoteToTrashInFirebase,
+  discardNoteInFirebase
  } from './actions';
 
 interface INotesProps {
@@ -28,6 +29,7 @@ interface INotesProps {
   saveNoteInFirebase(userId, note): void,
   updateNoteInFirebase(userId, note): void,
   moveNoteToTrashInFirebase(userId, noteId): void
+  discardNoteInFirebase(userId, noteId): void
 }
 
 interface NoteState {
@@ -58,6 +60,10 @@ class Notes extends React.Component<INotesProps, NoteState> {
     this.props.moveNoteToTrashInFirebase(this.props.user.user.uid, noteId);
   }
 
+  discardNoteInFirebase(noteId) {
+    this.props.discardNoteInFirebase(this.props.user.user.uid, noteId);
+  }
+
   public render() {
     const style = {
       'maxWidth': '650px',
@@ -80,7 +86,9 @@ class Notes extends React.Component<INotesProps, NoteState> {
                 editNote={this.props.editNote.bind(this)}
                 uploadToGoogleDrive={this.props.uploadToGoogleDrive.bind(this)}
                 updateNoteInFirebase={this.updateNoteInFirebase.bind(this)}
-                moveNoteToTrashInFirebase={this.moveNoteToTrashInFirebase.bind(this)}>
+                moveNoteToTrashInFirebase={this.moveNoteToTrashInFirebase.bind(this)}
+                discardNoteInFirebase={this.discardNoteInFirebase.bind(this)}
+                >
               </NotesList>
           </div>
         </div>
@@ -103,7 +111,8 @@ const mapDispatchToProps = (dispatch) => {
       uploadToGoogleDrive: (note) => dispatch(uploadToGoogleDrive(note)),
       saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
       updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note)),
-      moveNoteToTrashInFirebase: (userId, noteId) => dispatch(moveNoteToTrashInFirebase(userId, noteId))
+      moveNoteToTrashInFirebase: (userId, noteId) => dispatch(moveNoteToTrashInFirebase(userId, noteId)),
+      discardNoteInFirebase: (userId, noteId) => dispatch(discardNoteInFirebase(userId, noteId))
   }
 };
 

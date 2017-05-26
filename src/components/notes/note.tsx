@@ -25,7 +25,7 @@ interface INoteProps {
     editNote(note): void,
     uploadToGoogleDrive(note): void,
     updateNoteInFirebase(note): void,
-    //moveNoteToTrashInFirebase(id): void,
+    discardNoteInFirebase(id): void,
     openRemoveDialog(id): void
 }
 
@@ -62,8 +62,11 @@ class Note extends React.Component<INoteProps, NoteState> {
   handleClickOutside(e) {
     if(this.state.isEdited) { 
         this.editNote(this.state.note);
-        ReactDOM.findDOMNode(this.scrollableNote).scrollTop = 0;
-        this.setState(merge({}, this.state, { isEdited: false }));
+        const noteDom = ReactDOM.findDOMNode(this.scrollableNote);
+        if (noteDom) {
+            noteDom.scrollTop = 0;
+            this.setState(merge({}, this.state, { isEdited: false }));
+        }
     }
   }
 
@@ -84,7 +87,6 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   handleMoveToTrash(e) {
     e.stopPropagation();
-    //this.props.moveNoteToTrashInFirebase(this.props.note.id);
     this.props.openRemoveDialog(this.props.note.id);
   }
 
@@ -106,7 +108,12 @@ class Note extends React.Component<INoteProps, NoteState> {
   }
 
   editNote(e) {
-    this.props.updateNoteInFirebase(this.state.note);
+      console.log('this.state.note', this.state.note);
+    if (this.state.note.title !== '' || this.state.note.text !== '') {
+        this.props.updateNoteInFirebase(this.state.note);
+    } else {
+        this.props.discardNoteInFirebase(this.state.note.id);
+    }
   }
 
   public render() {

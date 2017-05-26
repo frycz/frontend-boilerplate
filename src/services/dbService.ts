@@ -35,3 +35,9 @@ export function moveUserNoteToTrash(userId, noteId) {
     notesRef.update({isInTrash: true});
     return noteId;
 }
+
+export function discardNote(userId, noteId) {
+    const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + noteId);
+    notesRef.remove();
+    return noteId;
+}

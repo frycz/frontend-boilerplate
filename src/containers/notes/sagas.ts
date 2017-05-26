@@ -4,7 +4,7 @@ import { call, put, take, fork } from 'redux-saga/effects'
 import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../../containers/spinner/actions'
 import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } from '../../services/googleService'
-import { saveUserNote, updateUserNote, moveUserNoteToTrash } from '../../services/dbService'
+import { saveUserNote, updateUserNote, moveUserNoteToTrash, discardNote } from '../../services/dbService'
 
 export function* saveUserNoteInFirebase() {
     while (true) {
@@ -27,6 +27,14 @@ export function* moveNoteToTrashInFirebase() {
         const action = yield take(constants.MOVE_NOTE_TO_TRASH_IN_FIREBASE);
         const noteId = yield moveUserNoteToTrash(action.userId, action.noteId);
         yield put(actions.moveNoteToTrash(noteId));
+    }
+}
+
+export function* discardNoteInFirebase() {
+    while (true) {
+        const action = yield take(constants.DISCARD_NOTE_IN_FIREBASE);
+        const noteId = yield discardNote(action.userId, action.noteId);
+        yield put(actions.discardNote(noteId));
     }
 }
 
@@ -68,6 +76,7 @@ function startSagas(...sagas) {
 export default startSagas(
         uploadFileToGoogleDrive,
         saveUserNoteInFirebase,
+        updateUserNoteInFirebase,
         moveNoteToTrashInFirebase,
-        updateUserNoteInFirebase
+        discardNoteInFirebase
     )
