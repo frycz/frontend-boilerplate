@@ -108,7 +108,6 @@ class Note extends React.Component<INoteProps, NoteState> {
   }
 
   editNote(e) {
-      console.log('this.state.note', this.state.note);
     if (this.state.note.title !== '' || this.state.note.text !== '') {
         this.props.updateNoteInFirebase(this.state.note);
     } else {
