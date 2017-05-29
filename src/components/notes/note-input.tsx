@@ -9,6 +9,8 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { preventEnterDefault } from '../../helpers/form';
+
 interface INoteInputProps {
   addNote(note): void,
   saveNoteInFirebase(note): void
@@ -76,6 +78,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
                 className={this.state.showAddNote ? '' : 'hidden'}
                 value={this.state.note.title.replace(/<br\/>/g, '\n')}
                 onChange={this.handleTitleChange.bind(this)}
+                onKeyPress={preventEnterDefault}
                 style={{fontWeight: 'bold', fontSize: '18px'}}
             ></TextField>
             <TextField 
@@ -92,7 +95,7 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
             ></TextField>
             </CardText>
             <CardActions className={this.state.showAddNote ? '' : 'hidden'}>
-              <RaisedButton onClick={this.addNote.bind(this)} label="Add Note" primary={true}/>
+              <RaisedButton onClick={this.addNote.bind(this)} label="Done" primary={true}/>
             </CardActions>
         </Card>
     );

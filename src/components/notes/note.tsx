@@ -20,6 +20,8 @@ import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
 import CloudUploadIcon from 'material-ui/svg-icons/file/cloud-upload';
 
+import { preventEnterDefault } from '../../helpers/form';
+
 interface INoteProps {
     note: any,
     editNote(note): void,
@@ -37,6 +39,7 @@ interface NoteState {
 
 class Note extends React.Component<INoteProps, NoteState> {
   scrollableNote: any;
+  textInput: any;
   constructor(props, context) {
       super(props, context);
       this.state = {
@@ -154,6 +157,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                         disabled={false}
                         spellCheck={false}
                         onChange={this.handleTitleChange.bind(this)}
+                        onKeyPress={preventEnterDefault}
                     />
                 </div>
                 <div
@@ -180,6 +184,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                         disabled={false}
                         spellCheck={false}
                         onChange={this.handleTextChange.bind(this)}
+                        ref={(input) => { this.textInput = input; }}
                     />
                 </div>
                 </CardText >
@@ -234,7 +239,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                     </IconButton>
                 </div>
                 <CardActions className={saveButtonPanelClasses}>
-                <FlatButton onClick={this.editNote.bind(this)} label="Save Note" primary={true}/>
+                <FlatButton onClick={this.editNote.bind(this)} label="Done" primary={true}/>
                 </CardActions>
             </Card>
         </div>
