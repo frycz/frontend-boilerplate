@@ -52,7 +52,9 @@ export function* uploadFileToGoogleDrive() {
             const gapi = yield initGapi();
             yield  loadClientAuth(gapi);
             yield  initClient(gapi);
-            yield  authenticateUser(gapi);
+            if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+                yield  authenticateUser(gapi);
+            }
             if(action.note.text) {
                 if(!action.note.title) {
                     action.note.title = action.note.text.slice(0,12) + '...';
@@ -61,7 +63,7 @@ export function* uploadFileToGoogleDrive() {
             }
         }
         catch (error) {
-
+            console.error(error);
         }
         yield put(hideSpinner());
     }
