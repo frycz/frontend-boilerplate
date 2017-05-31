@@ -131,7 +131,7 @@ class Note extends React.Component<INoteProps, NoteState> {
             <Card
                 style={{margin: '20px 0'}}
                 className={noteBoxClasses}
-                onMouseEnter={this.onNoteHover.bind(this)}
+                onMouseOver={this.onNoteHover.bind(this)}
                 onMouseLeave={this.onNoteLeave.bind(this)}
                 >
                 <CardText 
