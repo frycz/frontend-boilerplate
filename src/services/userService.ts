@@ -19,6 +19,9 @@ export function loginWithGoogle() {
   const provider = new Firebase.auth.GoogleAuthProvider();
   provider.addScope('profile');
   provider.addScope('email');
+  provider.setCustomParameters({
+    prompt: 'select_account'
+  });
   return Firebase.auth().signInWithPopup(provider);
 }
 
