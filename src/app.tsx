@@ -8,6 +8,8 @@ import { fork } from 'redux-saga/effects'
 
 import * as firebase from "firebase"
 
+import { setUser } from "./containers/login/actions"
+
 import loginSaga from "./containers/login/sagas"
 import notesSaga from "./containers/notes/sagas"
 
@@ -51,6 +53,12 @@ function* sagas() {
 }
 
 sagaMiddleware.run(sagas);
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+      store.dispatch(setUser({user: user}));
+  }
+});
 
 function requireAuth(nextState, replace) {
   if (!store.getState().login.user) {

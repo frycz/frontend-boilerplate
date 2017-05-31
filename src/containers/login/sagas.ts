@@ -9,6 +9,17 @@ import { fetchUserNotes } from '../../services/dbService'
 
 import * as firebase from 'firebase';
 
+export function* setUser() {
+    while (true) {
+        const action = yield take(constants.SET_USER);
+        yield put(showSpinner());
+        const snapshot = yield fetchUserNotes(action.user.user.uid);
+        yield put(loadNotesSuccess(snapshot.val()));
+        yield put(hideSpinner());
+        hashHistory.push('/notes');
+    }
+}
+
 export function* loginUserWithGoogle() {
     while (true) {
         try {
@@ -59,4 +70,4 @@ function startSagas(...sagas) {
     }
 }
 
-export default startSagas(loginUserWithGoogle, loginUserWithEmail, logoutUser)
+export default startSagas(setUser, loginUserWithGoogle, loginUserWithEmail, logoutUser)

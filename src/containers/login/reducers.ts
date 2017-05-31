@@ -9,6 +9,9 @@ const userReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
+        case (constants.SET_USER):
+            return Object.assign({}, state, {user: action.user, error: null});
+
         case (constants.LOGIN_USER_WITH_GOOGLE):
             return Object.assign({}, state, {error: null});
 

@@ -1,5 +1,12 @@
 import * as constants from './constants'
 
+export function setUser(user) {
+  return {
+    type: constants.SET_USER,
+    user
+  }
+}
+
 export function loginUserWithGoogle() {
   return {
     type: constants.LOGIN_USER_WITH_GOOGLE
