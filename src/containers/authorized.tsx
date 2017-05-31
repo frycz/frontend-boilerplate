@@ -65,6 +65,8 @@ class Main extends React.Component<IMainProps, MainState> {
         {/*<IconButton><SearchIcon color='#fff' /></IconButton>*/}
       </div>
     );
+
+    const backgroundImage = this.props.user ? this.props.user.user.providerData[0].photoURL : null;
     return (
       <MuiThemeProvider muiTheme={muiTheme}> 
         <div>
@@ -77,21 +79,24 @@ class Main extends React.Component<IMainProps, MainState> {
 
           <Drawer open={this.state.open} docked={false} onRequestChange={this.handleToggle.bind(this)}>
           <MenuItem onClick={this.handleToggle.bind(this)} leftIcon={
+            /*<Avatar googleId={this.props.user ? this.props.user.user.providerData[0].uid : ''} size={40} round={true} />*/
             <div style={
               {
                 width: '40px',
                 height: '40px', 
                 borderRadius: '50%', 
                 backgroundColor: '#455a64', 
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'contain',
                 color: 'white', 
                 fontSize: '22px', 
                 textAlign: 'center', 
                 lineHeight: '40px', 
                 fontWeight: 'lighter'
               }
-            }>{this.props.user ? this.props.user.user.email.toUpperCase().charAt(0) : ''}</div>}
+            }>{!backgroundImage && this.props.user ? this.props.user.user.email.toUpperCase().charAt(0) : ''}</div>}
              style={{fontSize: '12px'}}>
-            <div style={{fontWeight: 'bold'}}>{this.props.user ? this.props.user.user.email.split('@')[0] : ''}</div>
+            <div style={{fontWeight: 'bold'}}>{this.props.user ? this.props.user.user.providerData[0].displayName : ''}</div>
             <div style={{marginTop: '-30px'}}>{this.props.user ? this.props.user.user.email : ''}</div>
           </MenuItem>
           <Divider />
