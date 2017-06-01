@@ -3,6 +3,7 @@ import * as actions from './actions'
 import { call, put, take, fork } from 'redux-saga/effects'
 import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../../containers/spinner/actions'
+import { showGlobalMessage } from '../../containers/message/actions'
 import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } from '../../services/googleService'
 import { saveUserNote, updateUserNote, moveUserNoteToTrash, discardNote } from '../../services/dbService'
 
@@ -59,7 +60,8 @@ export function* uploadFileToGoogleDrive() {
                 if(!action.note.title) {
                     action.note.title = action.note.text.slice(0,12) + '...';
                 }
-                yield  uploadFile(gapi, action.note.title, action.note.text);
+                yield uploadFile(gapi, action.note.title, action.note.text);
+                yield put(showGlobalMessage('Note uploaded successfully'));
             }
         }
         catch (error) {

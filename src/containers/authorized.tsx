@@ -23,6 +23,7 @@ import LogoutIcon from 'material-ui/svg-icons/action/power-settings-new';
 import * as Avatar from 'react-avatar';
 
 import GlobalSpinner from './spinner/globalSpinner'
+import GlobalMessage from './message/globalMessage'
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -106,6 +107,7 @@ class Main extends React.Component<IMainProps, MainState> {
 
           <div>{this.props.children}</div>
           <GlobalSpinner />
+          <GlobalMessage />
         </div>
       </MuiThemeProvider>
     );
