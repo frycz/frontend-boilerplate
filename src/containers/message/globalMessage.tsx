@@ -6,7 +6,8 @@ import { hideGlobalMessage } from './actions'
 
 interface IGlobalMessageProps {
     isOpen: boolean,
-    message: string
+    message: string,
+    hideGlobalMessage(note): void 
 }
 
 interface IGlobalMessageState {
