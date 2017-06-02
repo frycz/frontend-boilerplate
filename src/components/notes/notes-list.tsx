@@ -8,6 +8,7 @@ import Note from './note';
 
 interface INotesListProps {
     notes: Array<any>,
+    user: any,
     editNote(id, note): void,
     uploadToGoogleDrive(note): void,
     updateNoteInFirebase(note): void,
@@ -67,6 +68,7 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
                 <Note
                     key={ note.id }
                     note={ note }
+                    user={ this.props.user }
                     editNote={ this.props.editNote }
                     uploadToGoogleDrive={ this.props.uploadToGoogleDrive }
                     updateNoteInFirebase={ this.props.updateNoteInFirebase }

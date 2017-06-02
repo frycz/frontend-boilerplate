@@ -83,6 +83,7 @@ class Notes extends React.Component<INotesProps, NoteState> {
           <div className="col s12">
               <NotesList
                 notes={ this.props.notes }
+                user={ this.props.user }
                 editNote={this.props.editNote.bind(this)}
                 uploadToGoogleDrive={this.props.uploadToGoogleDrive.bind(this)}
                 updateNoteInFirebase={this.updateNoteInFirebase.bind(this)}

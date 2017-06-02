@@ -24,6 +24,7 @@ import { preventEnterDefault } from '../../helpers/form';
 
 interface INoteProps {
     note: any,
+    user: any,
     editNote(note): void,
     uploadToGoogleDrive(note): void,
     updateNoteInFirebase(note): void,
@@ -119,7 +120,6 @@ class Note extends React.Component<INoteProps, NoteState> {
   }
 
   public render() {
-
     const noteBoxClasses = classNames({hovered: this.state.showActionButtons || this.state.isEdited});
     const actionClasses = this.state.showActionButtons ? '' : 'invisible';
     const actionsPanelClasses = this.state.isEdited ? 'hidden' : '';
@@ -137,6 +137,8 @@ class Note extends React.Component<INoteProps, NoteState> {
                 <CardText 
                         onClick={this.handleEdit.bind(this)}
                         style={{paddingRight: 0}}>
+                        {this.props.note.ownerId && this.props.note.ownerId !== this.props.user.user.uid ? '(shared to you)' : null}
+                        {this.props.note.ownerId && this.props.note.isShared && this.props.note.ownerId === this.props.user.user.uid ? '(shared by me)' : null}
                     <div style={{ 
                         display: !this.state.isEdited && !this.state.note.title ? 'none' : ''
                         }}>
@@ -220,6 +222,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                         <ArchiveIcon />
                     </IconButton>
                     */}
+                    {this.props.note.ownerId && this.props.note.ownerId === this.props.user.user.uid ?
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}
@@ -228,7 +231,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                         /*tooltip="Move to trash">*/
                         tooltip="Remove">
                         <DeleteIcon />
-                    </IconButton>
+                    </IconButton> : null}
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}

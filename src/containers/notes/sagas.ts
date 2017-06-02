@@ -5,7 +5,7 @@ import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../../containers/spinner/actions'
 import { showGlobalMessage } from '../../containers/message/actions'
 import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } from '../../services/googleService'
-import { saveUserNote, updateUserNote, moveUserNoteToTrash, discardNote } from '../../services/dbService'
+import { saveUserNote, updateUserNote, moveUserNoteToTrash, discardUserNote } from '../../services/dbService'
 
 export function* saveUserNoteInFirebase() {
     while (true) {
@@ -34,7 +34,7 @@ export function* moveNoteToTrashInFirebase() {
 export function* discardNoteInFirebase() {
     while (true) {
         const action = yield take(constants.DISCARD_NOTE_IN_FIREBASE);
-        const noteId = yield discardNote(action.userId, action.noteId);
+        const noteId = yield discardUserNote(action.userId, action.noteId);
         yield put(actions.discardNote(noteId));
     }
 }

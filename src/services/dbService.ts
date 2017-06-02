@@ -17,6 +17,16 @@ export function fetchUserNotes(userId) {
     return database.ref('/user-notes/' + userId).once('value');
 }
 
+export function fetchSharedToUserNotes(userId) {
+    return firebase.database().ref('/shared-notes/' + userId).once('value');
+}
+
+export function shareUserNote(collaboratorId, note) {
+    const notesRef = firebase.database().ref('/shared-notes/' + collaboratorId + '/' + note.id);
+    notesRef.update(note);
+    return note;
+}
+
 export function saveUserNote(userId, note) {
     const notesRef = firebase.database().ref('/user-notes/' + userId).push();
     const noteEntry = (<any>Object).assign({}, note, {id: notesRef.key});
@@ -25,8 +35,14 @@ export function saveUserNote(userId, note) {
 }
 
 export function updateUserNote(userId, note) {
-    const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + note.id);
-    notesRef.update(note);
+    var updates = {};
+    updates['/user-notes/' + userId + '/' + note.id] = note;
+    if (note.sharedTo) {
+        note.sharedTo.split(',').forEach((collaboratorId) => {
+            updates['/shared-notes/' + collaboratorId + '/' + note.id] = note;
+        })
+    }
+    firebase.database().ref().update(updates);
     return note;
 }
 
@@ -36,7 +52,7 @@ export function moveUserNoteToTrash(userId, noteId) {
     return noteId;
 }
 
-export function discardNote(userId, noteId) {
+export function discardUserNote(userId, noteId) {
     const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + noteId);
     notesRef.remove();
     return noteId;
