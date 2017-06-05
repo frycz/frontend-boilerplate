@@ -57,3 +57,14 @@ export function discardUserNote(userId, noteId) {
     notesRef.remove();
     return noteId;
 }
+
+export function updateUserData(userId, user) {
+    var userData = {
+        email: user.providerData[0].email,
+        displayName: user.providerData[0].displayName,
+        lastLogin: new Date()
+    }
+    const notesRef = firebase.database().ref('/users/' + userId);
+    notesRef.update(userData);
+    return userData;
+}
