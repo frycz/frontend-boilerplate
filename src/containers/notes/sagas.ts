@@ -74,8 +74,12 @@ export function* uploadFileToGoogleDrive() {
 export function* searchUserInFirebase() {
     while (true) {
         const action = yield take(constants.SEARCH_USER_IN_FIREBASE);
-        const snapshot = yield searchUser(action.searchText);
-        yield put(actions.searchUserInFirebaseSuccess(snapshot.val()));
+        let users = null;
+        if (action.searchText.length > 1) {
+            const snapshot = yield searchUser(action.searchText);
+            users = snapshot.val();
+        }
+        yield put(actions.searchUserInFirebaseSuccess(users));
     }
 }
 

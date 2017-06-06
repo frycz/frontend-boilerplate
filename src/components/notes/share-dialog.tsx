@@ -2,6 +2,7 @@ import * as React from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import AutoComplete from 'material-ui/AutoComplete';
 
 interface IShareDialogProps {
   foundUsers: Array<any>,
@@ -12,23 +13,76 @@ interface IShareDialogProps {
 
 interface ShareDialogState {
   searchText: string
+  usersListData: Array<any>,
+  selectedUser: any
 }
 
 class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
   constructor(props, context) {
       super(props, context);
       this.state = {
-        searchText: ''
+        searchText: '',
+        usersListData: [],
+        selectedUser: null
       };
   }
 
   componentWillMount() {
     // fetch collaborators
+    this.setState({
+        usersListData: this.prepareUsersListData(this.props.foundUsers) 
+    })
   }
 
-  handleSearchTextChange(e) {
-    this.props.searchUser(e.target.value);
-    this.setState({searchText: e.target.value})
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+        usersListData: this.prepareUsersListData(nextProps.foundUsers) 
+    })
+  }
+
+  prepareUsersListData(foundUsers) {
+    let usersListData = [];
+    if (foundUsers) {
+      Object.keys(foundUsers).map((id, index) =>
+          { 
+            usersListData.push({
+              text: foundUsers[id].fullName,
+              value: foundUsers[id]
+            })
+            /*
+            usersListData.push({
+              text: foundUsers[id].fullName,
+              value: foundUsers[id]
+            })
+            usersListData.push({
+              text: foundUsers[id].fullName,
+              value: foundUsers[id]
+            })
+            usersListData.push({
+              text: foundUsers[id].fullName,
+              value: foundUsers[id]
+            })
+            usersListData.push({
+              text: foundUsers[id].fullName,
+              value: foundUsers[id]
+            })
+            usersListData.push({
+              text: foundUsers[id].fullName,
+              value: foundUsers[id]
+            })*/
+          }
+      )
+    }
+    return usersListData;
+  }
+
+  selectUser(user) {
+    this.setState({selectedUser: user})
+  }
+
+  handleSearchTextChange(searchText) {
+    this.setState({searchText: searchText})
+    this.props.searchUser(searchText);
   }
 
   render() {
@@ -46,6 +100,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
     ];
     return (
         <Dialog
+          className={'share-dialog'}
           title="Collabolators"
           actions={actions}
           modal={false}
@@ -71,20 +126,14 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
                 </div>
               </div>
           </div>
-
-          <div>
-            {Object.keys(this.props.foundUsers).map((id, index) =>
-                <div key={ index }>
-                  {this.props.foundUsers[id].fullName}
-                </div>
-            )}
+          <div className={'collabolators-search-box'}>
+            <AutoComplete
+              hintText="Type collabolator e-mail address"
+              onNewRequest={this.selectUser.bind(this)}
+              dataSource={this.state.usersListData}
+              onUpdateInput={this.handleSearchTextChange.bind(this)}
+            />
           </div>
-
-          <TextField
-            hintText="Type collabolator e-mail address"
-            value={this.state.searchText}
-            onChange={this.handleSearchTextChange.bind(this)}
-          />
         </Dialog>
     );
   }
