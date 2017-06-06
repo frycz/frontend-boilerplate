@@ -8,6 +8,8 @@ import { SAVE_NOTE_IN_FIREBASE } from './constants'
 import { UPDATE_NOTE_IN_FIREBASE } from './constants'
 import { MOVE_NOTE_TO_TRASH_IN_FIREBASE } from './constants'
 import { DISCARD_NOTE_IN_FIREBASE } from './constants'
+import { SEARCH_USER_IN_FIREBASE } from './constants'
+import { SEARCH_USER_IN_FIREBASE_SUCCESS } from './constants'
 
 export function loadNotesSuccess(notes) {
   return {
@@ -80,5 +82,19 @@ export function discardNoteInFirebase(userId, noteId) {
     type: DISCARD_NOTE_IN_FIREBASE,
     userId,
     noteId
+  }
+}
+
+export function searchUserInFirebase(searchText) {
+  return {
+    type: SEARCH_USER_IN_FIREBASE,
+    searchText
+  }
+}
+
+export function searchUserInFirebaseSuccess(users) {
+  return {
+    type: SEARCH_USER_IN_FIREBASE_SUCCESS,
+    users
   }
 }

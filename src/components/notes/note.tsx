@@ -19,6 +19,7 @@ import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
 import CloudUploadIcon from 'material-ui/svg-icons/file/cloud-upload';
+import ShareIcon from 'material-ui/svg-icons/social/share';
 
 import { preventEnterDefault } from '../../helpers/form';
 
@@ -30,6 +31,7 @@ interface INoteProps {
     updateNoteInFirebase(note): void,
     discardNoteInFirebase(id): void,
     openRemoveDialog(id): void
+    openShareDialog(id): void
 }
 
 interface NoteState {
@@ -92,6 +94,11 @@ class Note extends React.Component<INoteProps, NoteState> {
   handleMoveToTrash(e) {
     e.stopPropagation();
     this.props.openRemoveDialog(this.props.note.id);
+  }
+
+  handleShareNote(e) {
+    e.stopPropagation();
+    this.props.openShareDialog(this.props.note.id);
   }
 
   handleUploadToGoogleDrive(e) {
@@ -231,6 +238,16 @@ class Note extends React.Component<INoteProps, NoteState> {
                         /*tooltip="Move to trash">*/
                         tooltip="Remove">
                         <DeleteIcon />
+                    </IconButton> : null}
+                    {this.props.note.ownerId && this.props.note.ownerId === this.props.user.user.uid ?
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={actionClasses}
+                        onClick={this.handleShareNote.bind(this)}
+                        /*tooltip="Move to trash">*/
+                        tooltip="Share">
+                        <ShareIcon />
                     </IconButton> : null}
                     <IconButton 
                         iconStyle={iconStyle} 

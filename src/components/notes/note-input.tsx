@@ -70,8 +70,6 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
             <CardText>
             <TextField 
                 hintText="Title" 
-                id="note_input"
-                ref="noteInput" 
                 multiLine={true}
                 fullWidth={true} 
                 rowsMax={10}
@@ -83,8 +81,6 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
             ></TextField>
             <TextField 
                 hintText="Create note..." 
-                id="note_input"
-                ref="noteInput" 
                 multiLine={true}
                 fullWidth={true} 
                 rowsMax={10}

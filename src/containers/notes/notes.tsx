@@ -17,12 +17,14 @@ import {
   saveNoteInFirebase,
   updateNoteInFirebase,
   moveNoteToTrashInFirebase,
-  discardNoteInFirebase
+  discardNoteInFirebase,
+  searchUserInFirebase
  } from './actions';
 
 interface INotesProps {
   notes: Array<any>,
   user: any,
+  foundUsers: Array<any>,
   addNote(note): void,
   editNote(note): void,
   uploadToGoogleDrive(note): void,
@@ -30,6 +32,7 @@ interface INotesProps {
   updateNoteInFirebase(userId, note): void,
   moveNoteToTrashInFirebase(userId, noteId): void
   discardNoteInFirebase(userId, noteId): void
+  searchUserInFirebase(searchText): void
 }
 
 interface NoteState {
@@ -84,11 +87,13 @@ class Notes extends React.Component<INotesProps, NoteState> {
               <NotesList
                 notes={ this.props.notes }
                 user={ this.props.user }
+                foundUsers={ this.props.foundUsers }
                 editNote={this.props.editNote.bind(this)}
                 uploadToGoogleDrive={this.props.uploadToGoogleDrive.bind(this)}
                 updateNoteInFirebase={this.updateNoteInFirebase.bind(this)}
                 moveNoteToTrashInFirebase={this.moveNoteToTrashInFirebase.bind(this)}
                 discardNoteInFirebase={this.discardNoteInFirebase.bind(this)}
+                searchUserInFirebase={this.props.searchUserInFirebase.bind(this)}
                 >
               </NotesList>
           </div>
@@ -101,6 +106,7 @@ class Notes extends React.Component<INotesProps, NoteState> {
 const mapStateToProps = function(state){
   return {
     notes: state.notes.notes,
+    foundUsers: state.notes.foundUsers,
     user: state.login.user
   }
 };
@@ -113,7 +119,8 @@ const mapDispatchToProps = (dispatch) => {
       saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
       updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note)),
       moveNoteToTrashInFirebase: (userId, noteId) => dispatch(moveNoteToTrashInFirebase(userId, noteId)),
-      discardNoteInFirebase: (userId, noteId) => dispatch(discardNoteInFirebase(userId, noteId))
+      discardNoteInFirebase: (userId, noteId) => dispatch(discardNoteInFirebase(userId, noteId)),
+      searchUserInFirebase: (searchText) => dispatch(searchUserInFirebase(searchText))
   }
 };
 

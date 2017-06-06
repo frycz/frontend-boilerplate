@@ -5,7 +5,7 @@ import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../../containers/spinner/actions'
 import { showGlobalMessage } from '../../containers/message/actions'
 import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } from '../../services/googleService'
-import { saveUserNote, updateUserNote, moveUserNoteToTrash, discardUserNote } from '../../services/dbService'
+import { saveUserNote, updateUserNote, moveUserNoteToTrash, discardUserNote, searchUser } from '../../services/dbService'
 
 export function* saveUserNoteInFirebase() {
     while (true) {
@@ -71,6 +71,14 @@ export function* uploadFileToGoogleDrive() {
     }
 }
 
+export function* searchUserInFirebase() {
+    while (true) {
+        const action = yield take(constants.SEARCH_USER_IN_FIREBASE);
+        const snapshot = yield searchUser(action.searchText);
+        yield put(actions.searchUserInFirebaseSuccess(snapshot.val()));
+    }
+}
+
 function startSagas(...sagas) {
     return function* rootSaga() {
         yield sagas.map(saga => fork(saga))
@@ -82,5 +90,6 @@ export default startSagas(
         saveUserNoteInFirebase,
         updateUserNoteInFirebase,
         moveNoteToTrashInFirebase,
-        discardNoteInFirebase
+        discardNoteInFirebase,
+        searchUserInFirebase
     )

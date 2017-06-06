@@ -6,7 +6,8 @@ import { editNote } from './actions'
 import { forOwnRight } from 'lodash'
 
 const initialState = {
-  notes: []
+  notes: [],
+  foundUsers: []
 
   /*
     notes model:
@@ -67,6 +68,12 @@ export default function notesApp(state = initialState, action) {
         notes: state.notes.filter(note =>
          note.id !== action.id
         )
+      })
+    }
+
+    case constants.SEARCH_USER_IN_FIREBASE_SUCCESS: {
+      return (<any>Object).assign({}, state, { 
+        foundUsers: action.users
       })
     }
 

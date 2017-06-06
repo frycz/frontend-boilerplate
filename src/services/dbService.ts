@@ -21,10 +21,21 @@ export function fetchSharedToUserNotes(userId) {
     return firebase.database().ref('/shared-notes/' + userId).once('value');
 }
 
-export function shareUserNote(collaboratorId, note) {
-    const notesRef = firebase.database().ref('/shared-notes/' + collaboratorId + '/' + note.id);
-    notesRef.update(note);
-    return note;
+export function shareUserNote(collaborator, note) {
+    var updates = {};
+    let sharedNote = note;
+    sharedNote.shared = true;
+    /*if (sharedNote.sharedTo) { // should be here ????
+        if (!sharedNote.sharedTo.includes(collaborator.id)) {
+            sharedNote.sharedTo = sharedNote.sharedTo + ',' + collaborator.id;
+        }
+    } else {
+        sharedNote.sharedTo = collaborator.id;
+    }*/
+    updates['/shared-notes/' + collaborator.id + '/' + sharedNote.id] = sharedNote;
+    updates['/collaborators/' + sharedNote.id] = sharedNote;
+    firebase.database().ref().update(updates);
+    return sharedNote;
 }
 
 export function saveUserNote(userId, note) {
@@ -60,11 +71,22 @@ export function discardUserNote(userId, noteId) {
 
 export function updateUserData(userId, user) {
     var userData = {
+        id: user.uid,
         email: user.providerData[0].email,
         displayName: user.providerData[0].displayName,
+        photoURL: user.providerData[0].photoURL,
+        fullName: user.providerData[0].displayName + '(' + user.providerData[0].email + ')',
         lastLogin: new Date()
     }
     const notesRef = firebase.database().ref('/users/' + userId);
     notesRef.update(userData);
     return userData;
+}
+
+export function fetchUsers() {
+    return firebase.database().ref('/uses').once('value');
+}
+
+export function searchUser(searchText) {
+    return firebase.database().ref('/users').orderByChild('fullName').startAt(searchText).once('value');
 }
