@@ -74,8 +74,9 @@ export function updateUserData(userId, user) {
         id: user.uid,
         email: user.providerData[0].email,
         displayName: user.providerData[0].displayName,
+        fullDisplayName: (user.providerData[0].displayName + ' (' + user.providerData[0].email + ')'),
+        fullName: (user.providerData[0].displayName + ' (' + user.providerData[0].email + ')').toLowerCase(),
         photoURL: user.providerData[0].photoURL,
-        fullName: (user.providerData[0].displayName + '(' + user.providerData[0].email + ')').toLowerCase(),
         lastLogin: new Date()
     }
     const notesRef = firebase.database().ref('/users/' + userId);
@@ -89,5 +90,10 @@ export function fetchUsers() {
 
 export function searchUser(searchText) {
     const searchString = searchText.toLowerCase();
-    return firebase.database().ref('/users').orderByChild('fullName').startAt(searchString).once('value');
+    return firebase.database()
+        .ref('/users')
+        .orderByChild('fullName')
+        .limitToFirst(5)
+        .startAt(searchString)
+        .once('value');
 }

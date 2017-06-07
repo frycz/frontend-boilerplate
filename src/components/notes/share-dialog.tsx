@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import AutoComplete from 'material-ui/AutoComplete';
+import { remove, find } from 'lodash'
 
 interface IShareDialogProps {
   foundUsers: Array<any>,
@@ -14,6 +15,7 @@ interface IShareDialogProps {
 interface ShareDialogState {
   searchText: string
   usersListData: Array<any>,
+  usersToShare: Array<any>,
   selectedUser: any
 }
 
@@ -23,6 +25,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
       this.state = {
         searchText: '',
         usersListData: [],
+        usersToShare: [],
         selectedUser: null
       };
   }
@@ -42,34 +45,23 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
 
   prepareUsersListData(foundUsers) {
     let usersListData = [];
+    let usersSuggestions = [];
+    const usersToShare = this.state.usersToShare;
     if (foundUsers) {
       Object.keys(foundUsers).map((id, index) =>
           { 
+            usersSuggestions.push(foundUsers[id])
+          }
+      )
+      remove(usersSuggestions, function (user) {
+          return find(usersToShare, {id: user.id});
+      });
+      usersSuggestions.map((user) =>
+          { 
             usersListData.push({
-              text: foundUsers[id].fullName,
-              value: foundUsers[id]
+              text: user.fullDisplayName,
+              value: user
             })
-            /*
-            usersListData.push({
-              text: foundUsers[id].fullName,
-              value: foundUsers[id]
-            })
-            usersListData.push({
-              text: foundUsers[id].fullName,
-              value: foundUsers[id]
-            })
-            usersListData.push({
-              text: foundUsers[id].fullName,
-              value: foundUsers[id]
-            })
-            usersListData.push({
-              text: foundUsers[id].fullName,
-              value: foundUsers[id]
-            })
-            usersListData.push({
-              text: foundUsers[id].fullName,
-              value: foundUsers[id]
-            })*/
           }
       )
     }
@@ -77,7 +69,15 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
   }
 
   selectUser(user) {
-    this.setState({selectedUser: user})
+    if (user.value.id) {
+      let usersToShare = this.state.usersToShare.slice();
+      usersToShare.push(user.value);
+      this.setState({
+        usersToShare: usersToShare,
+        searchText: '',
+        usersListData: []
+      })
+    }
   }
 
   handleSearchTextChange(searchText) {
@@ -108,27 +108,33 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
           onRequestClose={this.props.handleClose.bind(this)}
           contentStyle={{maxWidth: '650px'}}
         >
-          <div>
-            <div style={{'fontSize': '13px'}}>
-              <div style={{'padding': '5px'}}>
-                <div className="EDlbXc-x3Eknd-HiaYvf">
-                  <div className="EDlbXc-x3Eknd-HiaYvf-bN97Pc" style={{"backgroundImage": "url('https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5MNBoJQKATMGFb8cnm9WQR3AIhkKAWEQ____________ARibr4X4______8B/photo.jpg?sz=100')"}}>
-                  </div>
-                  </div>
-                  <div className="EDlbXc-x3Eknd-fmcmS-haAclf">
-                    <div className="EDlbXc-x3Eknd-fmcmS-k77Iif-haAclf">
-                      <span className="EDlbXc-x3Eknd-fmcmS-k77Iif">Adam Sawicki</span>
-                      <span className="EDlbXc-x3Eknd-fmcmS-k77Iif-UjZuef">(Owner)</span>
+          {this.state.usersToShare.map(user =>
+            <div key={user.id}>
+              <div style={{'fontSize': '13px'}}>
+                <div style={{'padding': '5px'}}>
+                  <div className="EDlbXc-x3Eknd-HiaYvf">
+                    <div className="EDlbXc-x3Eknd-HiaYvf-bN97Pc" style={{"backgroundImage": "url('" + user.profileURL + "')"}}>
                     </div>
-                    <div className="EDlbXc-x3Eknd-fmcmS-K4efff">adamsawicki89@gmail.com</div>
+                    </div>
+                    <div className="EDlbXc-x3Eknd-fmcmS-haAclf">
+                      <div className="EDlbXc-x3Eknd-fmcmS-k77Iif-haAclf">
+                        <span className="EDlbXc-x3Eknd-fmcmS-k77Iif">{user.displayName}</span>
+                        {/*<span className="EDlbXc-x3Eknd-fmcmS-k77Iif-UjZuef">(Owner)</span>*/}
+                      </div>
+                      <div className="EDlbXc-x3Eknd-fmcmS-K4efff">{user.email}</div>
+                    </div>
+                    <div role="button" className="Q0hgme-LgbsSe Q0hgme-Bz112c-LgbsSe EDlbXc-x3Eknd-VkLyEc VIpgJd-LgbsSe" aria-label="Delete" aria-hidden="true" style={{userSelect: 'none', display: 'none'}}></div>
                   </div>
-                  <div role="button" className="Q0hgme-LgbsSe Q0hgme-Bz112c-LgbsSe EDlbXc-x3Eknd-VkLyEc VIpgJd-LgbsSe" aria-label="Delete" aria-hidden="true" style={{userSelect: 'none', display: 'none'}}></div>
                 </div>
-              </div>
-          </div>
-          <div className={'collabolators-search-box'}>
+            </div>
+          )}
+
+          <div className={'collabolators-search-box'} style={{width: '70%'}}>
             <AutoComplete
               hintText="Type collabolator e-mail address"
+              listStyle={{fontSize: '13px'}}
+              fullWidth={true}
+              searchText={this.state.searchText}
               onNewRequest={this.selectUser.bind(this)}
               dataSource={this.state.usersListData}
               onUpdateInput={this.handleSearchTextChange.bind(this)}
