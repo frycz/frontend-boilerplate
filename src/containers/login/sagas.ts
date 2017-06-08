@@ -17,6 +17,7 @@ export function* setUser() {
         const userNotesSnapshot = yield fetchUserNotes(action.user.user.uid);
         const sharedNotesSnapshot = yield fetchSharedToUserNotes(action.user.user.uid);
         const notes = Object.assign({}, userNotesSnapshot.val(), sharedNotesSnapshot.val());
+
         for (let key of Object.keys(notes)) {
             if (notes[key].isShared) {
                 const noteSnapshot = yield fetchNoteCollaborators(notes[key].id);
@@ -24,6 +25,7 @@ export function* setUser() {
                 Object.assign(notes[key].collaborators, noteSnapshot.val());
             }
 	    }
+        console.log('notes', notes);
         yield put(loadNotesSuccess(notes));
         yield put(hideSpinner());
         hashHistory.push('/notes');

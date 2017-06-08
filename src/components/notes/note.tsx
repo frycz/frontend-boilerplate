@@ -98,7 +98,7 @@ class Note extends React.Component<INoteProps, NoteState> {
 
   handleShareNote(e) {
     e.stopPropagation();
-    this.props.openShareDialog(this.props.note.id);
+    this.props.openShareDialog(this.props.note);
   }
 
   handleUploadToGoogleDrive(e) {

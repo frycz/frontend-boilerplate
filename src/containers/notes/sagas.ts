@@ -5,7 +5,14 @@ import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../../containers/spinner/actions'
 import { showGlobalMessage } from '../../containers/message/actions'
 import { initGapi, loadClientAuth, initClient, authenticateUser, uploadFile } from '../../services/googleService'
-import { saveUserNote, updateUserNote, moveUserNoteToTrash, discardUserNote, searchUser } from '../../services/dbService'
+import { 
+    saveUserNote,
+    updateUserNote,
+    moveUserNoteToTrash,
+    discardUserNote,
+    searchUser,
+    updateCollaborators 
+} from '../../services/dbService'
 
 export function* saveUserNoteInFirebase() {
     while (true) {
@@ -83,6 +90,18 @@ export function* searchUserInFirebase() {
     }
 }
 
+export function* updateUserNoteCollaborators() {
+    while (true) {
+        const action = yield take(constants.UPDATE_USER_NOTE_COLLABORATORS);
+        yield updateCollaborators(
+            action.note,
+            action.collaborators,
+            action.usersToShareNote,
+            action.usersToRemoveNote
+        );
+    }
+}
+
 function startSagas(...sagas) {
     return function* rootSaga() {
         yield sagas.map(saga => fork(saga))
@@ -95,5 +114,6 @@ export default startSagas(
         updateUserNoteInFirebase,
         moveNoteToTrashInFirebase,
         discardNoteInFirebase,
-        searchUserInFirebase
+        searchUserInFirebase,
+        updateUserNoteCollaborators
     )

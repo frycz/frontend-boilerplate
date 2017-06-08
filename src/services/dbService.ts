@@ -46,14 +46,17 @@ export function updateUserNote(userId, note) {
     return note;
 }
 
-export function updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote) {
+export function updateCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote) {
     var updates = {};
-    if (collaborators.length == 0) {
+    console.log('collaborators', collaborators);
+    console.log('usersToShareNote', usersToShareNote);
+    console.log('usersToRemoveNote', usersToRemoveNote);
+    if (Object.keys(collaborators).length == 0) {
         firebase.database().ref('/collaborators/' + note.id).remove();
-        updates['/user-notes/' + note.ownerId + '/' + note.id] = {isShared: false};
+        updates['/user-notes/' + note.ownerId + '/' + note.id] = Object.assign({}, note, {isShared: false});
     } else {
         updates['/collaborators/' + note.id] = collaborators;
-        updates['/user-notes/' + note.ownerId + '/' + note.id] = {isShared: true};
+        updates['/user-notes/' + note.ownerId + '/' + note.id] = Object.assign({}, note, {isShared: true});
         /*
         if (note.sharedTo) {
             note.sharedTo.split(',').forEach((collaboratorId) => {
@@ -61,11 +64,11 @@ export function updateUserNoteCollaborators(note, collaborators, usersToShareNot
             })
         }*/
     }
-    usersToShareNote.forEach(userId => {
-        updates['/shared-notes/' + userId + '/' + note.id] = note;
+    Object.keys(usersToShareNote).forEach(key => {
+        updates['/shared-notes/' + usersToShareNote[key].id + '/' + note.id] = note;
     })
-    usersToRemoveNote.forEach(userId => {
-        firebase.database().ref('/shared-notes/' + userId + '/' + note.id).remove();
+    Object.keys(usersToRemoveNote).forEach(key => {
+        firebase.database().ref('/shared-notes/' + usersToRemoveNote[key].id + '/' + note.id).remove();
     })
 
     firebase.database().ref().update(updates);

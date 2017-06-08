@@ -7,16 +7,20 @@ import { remove, find } from 'lodash'
 
 interface IShareDialogProps {
   foundUsers: Array<any>,
+  actualCollaborators: any,
   open: boolean
+  note: any
   handleClose(): void,
+  handleShare(note, collaborators, usersToShareNote, usersToRemoveNote): void,
   searchUser(searchText): void,
 }
 
 interface ShareDialogState {
   searchText: string
-  usersListData: Array<any>,
-  usersToShare: Array<any>,
-  selectedUser: any
+  usersList: Array<any>,
+  newCollaborators: any,
+  usersToShareNote: any,
+  usersToRemoveNote: any
 }
 
 class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
@@ -24,28 +28,31 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
       super(props, context);
       this.state = {
         searchText: '',
-        usersListData: [],
-        usersToShare: [],
-        selectedUser: null
+        usersList: [],
+        newCollaborators: {},
+        usersToShareNote: {},
+        usersToRemoveNote: {}
       };
   }
 
   componentWillMount() {
     this.setState({
-        usersListData: this.prepareUsersListData(this.props.foundUsers) 
+        usersList: this.prepareusersList(this.props.foundUsers),
+        newCollaborators: this.props.actualCollaborators
     })
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-        usersListData: this.prepareUsersListData(nextProps.foundUsers) 
+        usersList: this.prepareusersList(nextProps.foundUsers),
+        newCollaborators: Object.assign({}, this.state.newCollaborators, nextProps.actualCollaborators)
     })
   }
 
-  prepareUsersListData(foundUsers) {
-    let usersListData = [];
+  prepareusersList(foundUsers) {
+    let usersList = [];
     let usersSuggestions = [];
-    const usersToShare = this.state.usersToShare;
+    const newCollaborators = this.state.newCollaborators;
     if (foundUsers) {
       Object.keys(foundUsers).map((id, index) =>
           { 
@@ -53,30 +60,42 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
           }
       )
       remove(usersSuggestions, function (user) {
-          return find(usersToShare, {id: user.id});
+          return find(newCollaborators, {id: user.id});
       });
       usersSuggestions.map((user) =>
           { 
-            usersListData.push({
+            usersList.push({
               text: user.fullDisplayName,
               value: user
             })
           }
       )
     }
-    return usersListData;
+    return usersList;
   }
 
   selectUser(user) {
     if (user.value.id) {
-      let usersToShare = this.state.usersToShare.slice();
-      usersToShare.push(user.value);
+      let newCollaborators = Object.assign({}, this.state.newCollaborators);
+      let usersToShareNote = Object.assign({}, this.state.usersToShareNote)
+      newCollaborators[user.value.id] = user.value;
+      usersToShareNote[user.value.id] = user.value;
       this.setState({
-        usersToShare: usersToShare,
+        newCollaborators: newCollaborators,
+        usersToShareNote: usersToShareNote,
         searchText: '',
-        usersListData: []
+        usersList: []
       })
     }
+  }
+
+  handleShare() {
+    this.props.handleShare(
+      this.props.note,
+      this.state.newCollaborators,
+      this.state.usersToShareNote,
+      this.state.usersToRemoveNote
+    );
   }
 
   handleSearchTextChange(searchText) {
@@ -94,7 +113,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
         label="Share"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.props.handleClose.bind(this)}
+        onTouchTap={this.handleShare.bind(this)}
       />,
     ];
     return (
@@ -107,20 +126,20 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
           onRequestClose={this.props.handleClose.bind(this)}
           contentStyle={{maxWidth: '650px'}}
         >
-          {this.state.usersToShare.map(user =>
-            <div key={user.id}>
+          {Object.keys(this.state.newCollaborators).map(key =>
+            <div key={this.state.newCollaborators[key].id}>
               <div style={{'fontSize': '13px'}}>
                 <div style={{'padding': '5px'}}>
                   <div className="EDlbXc-x3Eknd-HiaYvf">
-                    <div className="EDlbXc-x3Eknd-HiaYvf-bN97Pc" style={{"backgroundImage": "url('" + user.profileURL + "')"}}>
+                    <div className="EDlbXc-x3Eknd-HiaYvf-bN97Pc" style={{"backgroundImage": "url('" + this.state.newCollaborators[key].profileURL + "')"}}>
                     </div>
                     </div>
                     <div className="EDlbXc-x3Eknd-fmcmS-haAclf">
                       <div className="EDlbXc-x3Eknd-fmcmS-k77Iif-haAclf">
-                        <span className="EDlbXc-x3Eknd-fmcmS-k77Iif">{user.displayName}</span>
+                        <span className="EDlbXc-x3Eknd-fmcmS-k77Iif">{this.state.newCollaborators[key].displayName}</span>
                         {/*<span className="EDlbXc-x3Eknd-fmcmS-k77Iif-UjZuef">(Owner)</span>*/}
                       </div>
-                      <div className="EDlbXc-x3Eknd-fmcmS-K4efff">{user.email}</div>
+                      <div className="EDlbXc-x3Eknd-fmcmS-K4efff">{this.state.newCollaborators[key].email}</div>
                     </div>
                     <div role="button" className="Q0hgme-LgbsSe Q0hgme-Bz112c-LgbsSe EDlbXc-x3Eknd-VkLyEc VIpgJd-LgbsSe" aria-label="Delete" aria-hidden="true" style={{userSelect: 'none', display: 'none'}}></div>
                   </div>
@@ -135,7 +154,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
               fullWidth={true}
               searchText={this.state.searchText}
               onNewRequest={this.selectUser.bind(this)}
-              dataSource={this.state.usersListData}
+              dataSource={this.state.usersList}
               onUpdateInput={this.handleSearchTextChange.bind(this)}
             />
           </div>

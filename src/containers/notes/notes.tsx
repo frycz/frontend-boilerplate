@@ -17,7 +17,8 @@ import {
   updateNoteInFirebase,
   moveNoteToTrashInFirebase,
   discardNoteInFirebase,
-  searchUserInFirebase
+  searchUserInFirebase,
+  updateUserNoteCollaborators
  } from './actions';
 
 interface INotesProps {
@@ -97,6 +98,7 @@ class Notes extends React.Component<INotesProps, NoteState> {
                 moveNoteToTrashInFirebase={this.moveNoteToTrashInFirebase.bind(this)}
                 discardNoteInFirebase={this.discardNoteInFirebase.bind(this)}
                 searchUserInFirebase={this.props.searchUserInFirebase.bind(this)}
+                updateUserNoteCollaborators={this.props.updateUserNoteCollaborators.bind(this)}
                 >
               </NotesList>
           </div>
@@ -123,6 +125,7 @@ const mapDispatchToProps = (dispatch) => {
       moveNoteToTrashInFirebase: (userId, noteId) => dispatch(moveNoteToTrashInFirebase(userId, noteId)),
       discardNoteInFirebase: (userId, noteId) => dispatch(discardNoteInFirebase(userId, noteId)),
       searchUserInFirebase: (searchText) => dispatch(searchUserInFirebase(searchText))
+      updateUserNoteCollaborators: (note, collaborators, usersToShareNote, usersToRemoveNote) => dispatch(updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote))
   }
 };
 

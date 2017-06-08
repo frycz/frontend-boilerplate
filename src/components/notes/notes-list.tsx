@@ -17,13 +17,14 @@ interface INotesListProps {
     moveNoteToTrashInFirebase(id): void
     discardNoteInFirebase(id): void
     searchUserInFirebase(searchText): void
+    updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote): void
 }
 
 interface NotesListState {
     isRemoveDialogOpen: boolean,
     isShareDialogOpen: boolean,
     noteToRemoveId: number,
-    noteToShareId: number,
+    noteToShare: any,
 }
 
 class NotesList extends React.Component<INotesListProps, NotesListState> {
@@ -33,7 +34,7 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
         isRemoveDialogOpen: false,
         isShareDialogOpen: false,
         noteToRemoveId: null,
-        noteToShareId: null,
+        noteToShare: null,
       };
   }
 
@@ -50,17 +51,21 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
         noteToRemoveId: null});
   }
 
-  openShareDialog = (noteId) => {
+  openShareDialog = (note) => {
     this.setState({
         isShareDialogOpen: true,
-        noteToShareId: noteId
+        noteToShare: note
     });
   };
 
   closeShareDialog() {
       this.setState({
         isShareDialogOpen: false,
-        noteToShareId: null});
+        noteToShare: null});
+  }
+
+  shareNotes(note, collaborators, usersToShareNote, usersToRemoveNote) {
+      this.props.updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote);
   }
 
   removeNote() {
@@ -81,7 +86,6 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
         onTouchTap={this.removeNote.bind(this)}
       />,
     ];
-
     return (
         <div>
             {this.props.notes.filter(note => !note.isInTrash).map(note =>
@@ -109,9 +113,12 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
             </Dialog>
             <ShareDialog
                 open={this.state.isShareDialogOpen}
+                note={this.state.noteToShare}
                 handleClose={this.closeShareDialog.bind(this)}
+                handleShare={this.shareNotes.bind(this)}
                 searchUser={this.props.searchUserInFirebase.bind(this)}
                 foundUsers={this.props.foundUsers}
+                actualCollaborators={this.state.noteToShare ? this.state.noteToShare.collaborators : {}}
             />
         </div>
     );
