@@ -5,7 +5,7 @@ import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../spinner/actions'
 import { loadNotesSuccess } from '../notes/actions'
 import { loginWithGoogle, loginWithEmail, logout } from '../../services/userService'
-import { fetchUserNotes, fetchSharedToUserNotes, updateUserData } from '../../services/dbService'
+import { fetchUserNotes, fetchSharedToUserNotes, fetchNoteCollaborators, updateUserData } from '../../services/dbService'
 
 import * as firebase from 'firebase';
 
@@ -16,7 +16,15 @@ export function* setUser() {
         yield updateUserData(action.user.user.uid, action.user.user);
         const userNotesSnapshot = yield fetchUserNotes(action.user.user.uid);
         const sharedNotesSnapshot = yield fetchSharedToUserNotes(action.user.user.uid);
-        const notes = (<any>Object).assign({}, userNotesSnapshot.val(), sharedNotesSnapshot.val());
+        const notes = Object.assign({}, userNotesSnapshot.val(), sharedNotesSnapshot.val());
+        for (let key of Object.keys(notes)) {
+            if (notes[key].sharedTo) {
+                const noteSnapshot = yield fetchNoteCollaborators(notes[key].id);
+                notes[key].collaborators = [];
+                notes[key].collaborators.push(noteSnapshot.val());
+            }
+	    }
+        console.log('notes', notes);
         yield put(loadNotesSuccess(notes));
         yield put(hideSpinner());
         hashHistory.push('/notes');

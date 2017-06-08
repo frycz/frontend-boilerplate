@@ -17,6 +17,10 @@ export function fetchUserNotes(userId) {
     return database.ref('/user-notes/' + userId).once('value');
 }
 
+export function fetchNoteCollaborators(noteId) {
+    return firebase.database().ref('/collaborators/' + noteId).once('value');
+}
+
 export function fetchSharedToUserNotes(userId) {
     return firebase.database().ref('/shared-notes/' + userId).once('value');
 }
