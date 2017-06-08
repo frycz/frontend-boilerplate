@@ -18,9 +18,10 @@ export function loadNotesSuccess(notes) {
   }
 }
 
-export function addNote(note) {
+export function addNote(userId, note) {
   return {
     type: ADD_NOTE,
+    userId,
     note
   }
 }

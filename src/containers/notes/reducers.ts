@@ -35,12 +35,7 @@ export default function notesApp(state = initialState, action) {
 
     case constants.ADD_NOTE: {
       return (<any>Object).assign({}, state, { 
-        notes: [(<any>Object).assign({}, [], {
-          id: action.note.id,
-          title: action.note.title,
-          text: action.note.text,
-          isInTrash: false
-        }),
+        notes: [(<any>Object).assign({}, [], action.note),
         ...state.notes]
       })
     }

@@ -4,16 +4,8 @@ export function fetchUserNotes(userId) {
     const database = firebase.database();
 
     firebase.database().ref('/user-notes/' + userId).on('value', function(snapshot) {
-        //console.log('snapshot.val()');
         // ...
     });
-
-    /*
-        return new Promise(function(resolve, reject) {
-            gapi.load('client:auth2', resolve);
-        });
-    */
-
     return database.ref('/user-notes/' + userId).once('value');
 }
 
@@ -29,13 +21,6 @@ export function shareUserNote(collaborator, note) {
     var updates = {};
     let sharedNote = note;
     sharedNote.shared = true;
-    /*if (sharedNote.sharedTo) { // should be here ????
-        if (!sharedNote.sharedTo.includes(collaborator.id)) {
-            sharedNote.sharedTo = sharedNote.sharedTo + ',' + collaborator.id;
-        }
-    } else {
-        sharedNote.sharedTo = collaborator.id;
-    }*/
     updates['/shared-notes/' + collaborator.id + '/' + sharedNote.id] = sharedNote;
     updates['/collaborators/' + sharedNote.id] = sharedNote;
     firebase.database().ref().update(updates);
@@ -59,6 +44,32 @@ export function updateUserNote(userId, note) {
     }
     firebase.database().ref().update(updates);
     return note;
+}
+
+export function updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote) {
+    var updates = {};
+    if (collaborators.length == 0) {
+        firebase.database().ref('/collaborators/' + note.id).remove();
+        updates['/user-notes/' + note.ownerId + '/' + note.id] = {isShared: false};
+    } else {
+        updates['/collaborators/' + note.id] = collaborators;
+        updates['/user-notes/' + note.ownerId + '/' + note.id] = {isShared: true};
+        /*
+        if (note.sharedTo) {
+            note.sharedTo.split(',').forEach((collaboratorId) => {
+                updates['/shared-notes/' + collaboratorId + '/' + note.id] = note;
+            })
+        }*/
+    }
+    usersToShareNote.forEach(userId => {
+        updates['/shared-notes/' + userId + '/' + note.id] = note;
+    })
+    usersToRemoveNote.forEach(userId => {
+        firebase.database().ref('/shared-notes/' + userId + '/' + note.id).remove();
+    })
+
+    firebase.database().ref().update(updates);
+    return true;
 }
 
 export function moveUserNoteToTrash(userId, noteId) {

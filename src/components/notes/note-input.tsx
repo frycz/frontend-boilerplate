@@ -12,7 +12,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { preventEnterDefault } from '../../helpers/form';
 
 interface INoteInputProps {
-  addNote(note): void,
   saveNoteInFirebase(note): void
 }
 

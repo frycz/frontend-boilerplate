@@ -11,7 +11,6 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
 import { 
-  addNote,
   editNote,
   uploadToGoogleDrive,
   saveNoteInFirebase,
@@ -25,7 +24,6 @@ interface INotesProps {
   notes: Array<any>,
   user: any,
   foundUsers: Array<any>,
-  addNote(note): void,
   editNote(note): void,
   uploadToGoogleDrive(note): void,
   saveNoteInFirebase(userId, note): void,
@@ -52,7 +50,13 @@ class Notes extends React.Component<INotesProps, NoteState> {
   }
 
   saveNoteInFirebase(note) {
-    this.props.saveNoteInFirebase(this.props.user.user.uid, note);
+    const fullNote = Object.assign({},note, {
+      isInTrash: false,
+      isShared: false,
+      ownerId: this.props.user.user.uid,
+      createdAt: (new Date()).toString()
+    })
+    this.props.saveNoteInFirebase(this.props.user.user.uid, fullNote);
   }
 
   updateNoteInFirebase(note) {
@@ -79,7 +83,6 @@ class Notes extends React.Component<INotesProps, NoteState> {
         <div className="row">
           <div style={{padding: '40px 0'}} className="input-field col s12">
             <NoteInput
-              addNote={this.props.addNote.bind(this)}
               saveNoteInFirebase={this.saveNoteInFirebase.bind(this)}>
             </NoteInput>
           </div>
@@ -113,7 +116,6 @@ const mapStateToProps = function(state){
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      addNote: (note) => dispatch(addNote(note)),
       editNote: (note) => dispatch(editNote(note)),
       uploadToGoogleDrive: (note) => dispatch(uploadToGoogleDrive(note)),
       saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
