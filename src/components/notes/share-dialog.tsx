@@ -31,7 +31,6 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
   }
 
   componentWillMount() {
-    // fetch collaborators
     this.setState({
         usersListData: this.prepareUsersListData(this.props.foundUsers) 
     })

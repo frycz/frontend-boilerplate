@@ -18,10 +18,10 @@ export function* setUser() {
         const sharedNotesSnapshot = yield fetchSharedToUserNotes(action.user.user.uid);
         const notes = Object.assign({}, userNotesSnapshot.val(), sharedNotesSnapshot.val());
         for (let key of Object.keys(notes)) {
-            if (notes[key].sharedTo) {
+            if (notes[key].isShared) {
                 const noteSnapshot = yield fetchNoteCollaborators(notes[key].id);
-                notes[key].collaborators = [];
-                notes[key].collaborators.push(noteSnapshot.val());
+                notes[key].collaborators = {};
+                Object.assign(notes[key].collaborators, noteSnapshot.val());
             }
 	    }
         console.log('notes', notes);
