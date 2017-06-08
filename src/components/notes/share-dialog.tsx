@@ -53,6 +53,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
     let usersList = [];
     let usersSuggestions = [];
     const newCollaborators = this.state.newCollaborators;
+    const props = Object.assign({}, this.props);
     if (foundUsers) {
       Object.keys(foundUsers).map((id, index) =>
           { 
@@ -60,7 +61,8 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
           }
       )
       remove(usersSuggestions, function (user) {
-          return find(newCollaborators, {id: user.id});
+        console.log('props.note.ownerId', props.note.ownerId);
+          return find(newCollaborators, {id: user.id}) || user.id == props.note.ownerId;
       });
       usersSuggestions.map((user) =>
           { 

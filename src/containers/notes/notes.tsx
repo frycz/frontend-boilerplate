@@ -31,7 +31,8 @@ interface INotesProps {
   updateNoteInFirebase(userId, note): void,
   moveNoteToTrashInFirebase(userId, noteId): void
   discardNoteInFirebase(userId, noteId): void
-  searchUserInFirebase(searchText): void
+  searchUserInFirebase(searchText): void,
+  updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote): void
 }
 
 interface NoteState {
@@ -124,7 +125,7 @@ const mapDispatchToProps = (dispatch) => {
       updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note)),
       moveNoteToTrashInFirebase: (userId, noteId) => dispatch(moveNoteToTrashInFirebase(userId, noteId)),
       discardNoteInFirebase: (userId, noteId) => dispatch(discardNoteInFirebase(userId, noteId)),
-      searchUserInFirebase: (searchText) => dispatch(searchUserInFirebase(searchText))
+      searchUserInFirebase: (searchText) => dispatch(searchUserInFirebase(searchText)),
       updateUserNoteCollaborators: (note, collaborators, usersToShareNote, usersToRemoveNote) => dispatch(updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote))
   }
 };
