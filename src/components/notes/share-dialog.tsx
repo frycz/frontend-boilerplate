@@ -44,12 +44,15 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
         note: this.props.note,
         usersList: this.prepareusersList(this.props.foundUsers),
         actualCollaborators: this.props.actualCollaborators,
-        newCollaborators: this.props.actualCollaborators ? this.props.actualCollaborators : {},
+        //newCollaborators: this.props.actualCollaborators ? this.props.actualCollaborators : {},
     })
   }
 
   componentWillReceiveProps(nextProps) {
-    const newCollaborators = this.state.actualCollaborators ? this.state.newCollaborators : Object.assign({}, this.state.newCollaborators, nextProps.actualCollaborators);
+    //const newCollaborators = this.state.actualCollaborators ? this.state.newCollaborators : Object.assign({}, this.state.newCollaborators, nextProps.actualCollaborators);
+    let newCollaborators = {};
+    let tmpNewCollaborators = (this.state.note && nextProps.note && this.state.note.id == nextProps.note.id) ? this.state.newCollaborators : nextProps.actualCollaborators;
+    newCollaborators = tmpNewCollaborators || newCollaborators;
     this.setState({
         note: nextProps.note,
         usersList: this.prepareusersList(nextProps.foundUsers),
