@@ -99,8 +99,12 @@ export function updateUserData(userId, user) {
     return userData;
 }
 
+export function fetchUser(userId) {
+    return firebase.database().ref('/users/' + userId).once('value');
+}
+
 export function fetchUsers() {
-    return firebase.database().ref('/uses').once('value');
+    return firebase.database().ref('/users').once('value');
 }
 
 export function searchUser(searchText) {

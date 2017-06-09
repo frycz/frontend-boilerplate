@@ -16,7 +16,8 @@ interface IShareDialogProps {
 }
 
 interface ShareDialogState {
-  searchText: string
+  searchText: string,
+  note: any,
   usersList: Array<any>,
   actualCollaborators: any,  
   newCollaborators: any,
@@ -29,6 +30,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
       super(props, context);
       this.state = {
         searchText: '',
+        note: null,
         usersList: [],
         actualCollaborators: null,
         newCollaborators: {},
@@ -39,6 +41,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
 
   componentWillMount() {
     this.setState({
+        note: this.props.note,
         usersList: this.prepareusersList(this.props.foundUsers),
         actualCollaborators: this.props.actualCollaborators,
         newCollaborators: this.props.actualCollaborators ? this.props.actualCollaborators : {},
@@ -48,6 +51,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
   componentWillReceiveProps(nextProps) {
     const newCollaborators = this.state.actualCollaborators ? this.state.newCollaborators : Object.assign({}, this.state.newCollaborators, nextProps.actualCollaborators);
     this.setState({
+        note: nextProps.note,
         usersList: this.prepareusersList(nextProps.foundUsers),
         actualCollaborators: nextProps.actualCollaborators,
         newCollaborators: newCollaborators
@@ -123,6 +127,18 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
     this.prepareUsersToManageCollaboration();
   }
 
+  resetForm() {
+    this.setState({
+        searchText: '',
+        note: null,
+        usersList: [],
+        actualCollaborators: null,
+        newCollaborators: {},
+        usersToShareNote: {},
+        usersToRemoveNote: {}
+      })
+  }
+
   handleShare() {
     this.props.handleShare(
       this.props.note,
@@ -130,6 +146,12 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
       this.state.usersToShareNote,
       this.state.usersToRemoveNote
     );
+    this.resetForm();
+  }
+
+  handleClose() {
+    this.props.handleClose();
+    this.resetForm();
   }
 
   handleSearchTextChange(searchText) {
@@ -141,13 +163,13 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
     const actions = [
       <RaisedButton
         label="Cancel"
-        onTouchTap={this.props.handleClose.bind(this)}
+        onClick={this.handleClose.bind(this)}
       />,
       <RaisedButton
         label="Share"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleShare.bind(this)}
+        onClick={this.handleShare.bind(this)}
       />,
     ];
     return (
@@ -182,7 +204,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
                           style={{float: 'right'}}>
                             Remove
                         </button> :
-                        null
+                        <span style={{float: 'right'}}>{'(Owner)'}</span>
                       }
                   </div>
                 </div>

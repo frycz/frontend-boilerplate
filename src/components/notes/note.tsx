@@ -107,22 +107,28 @@ class Note extends React.Component<INoteProps, NoteState> {
   }
 
   handleTitleChange(e) {
-    this.setState(merge({}, this.state, 
-        { note: merge({}, this.state.note, { title: e.target.value }) }
-    ));
+    if (this.state.note.ownerId == this.props.user.user.id) {
+        this.setState(merge({}, this.state, 
+            { note: merge({}, this.state.note, { title: e.target.value }) }
+        ));
+    }
   }
 
   handleTextChange(e) {
-    this.setState(merge({}, this.state,
-        { note: merge({}, this.state.note, { text: e.target.value }) }
-    ));
+    if (this.state.note.ownerId == this.props.user.user.id) {
+        this.setState(merge({}, this.state,
+            { note: merge({}, this.state.note, { text: e.target.value }) }
+        ));
+    }
   }
 
   editNote(e) {
-    if (this.state.note.title !== '' || this.state.note.text !== '') {
-        this.props.updateNoteInFirebase(this.state.note);
-    } else {
-        this.props.discardNoteInFirebase(this.state.note.id);
+    if (this.state.note.ownerId == this.props.user.user.id) {
+        if ((this.state.note.title !== '' || this.state.note.text !== '')) {
+            this.props.updateNoteInFirebase(this.state.note);
+        } else {
+            this.props.discardNoteInFirebase(this.state.note.id);
+        }
     }
   }
 
@@ -144,7 +150,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                 <CardText 
                         onClick={this.handleEdit.bind(this)}
                         style={{paddingRight: 0}}>
-                        {this.props.note.ownerId && this.props.note.ownerId !== this.props.user.user.uid ? '(shared to you)' : null}
+                        {this.props.note.ownerId && this.props.note.ownerId !== this.props.user.user.uid ? '(read only)' : null}
                         {this.props.note.ownerId && this.props.note.isShared && this.props.note.ownerId === this.props.user.user.uid ? '(shared by me)' : null}
                     <div style={{ 
                         display: !this.state.isEdited && !this.state.note.title ? 'none' : ''
