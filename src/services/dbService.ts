@@ -48,9 +48,6 @@ export function updateUserNote(userId, note) {
 
 export function updateCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote) {
     var updates = {};
-    console.log('collaborators', collaborators);
-    console.log('usersToShareNote', usersToShareNote);
-    console.log('usersToRemoveNote', usersToRemoveNote);
     if (Object.keys(collaborators).length == 0) {
         firebase.database().ref('/collaborators/' + note.id).remove();
         updates['/user-notes/' + note.ownerId + '/' + note.id] = Object.assign({}, note, {isShared: false});

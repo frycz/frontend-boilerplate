@@ -64,8 +64,9 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
         noteToShare: null});
   }
 
-  shareNotes(note, collaborators, usersToShareNote, usersToRemoveNote) {
+  shareNote(note, collaborators, usersToShareNote, usersToRemoveNote) {
       this.props.updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote);
+      this.closeShareDialog();
   }
 
   removeNote() {
@@ -115,10 +116,10 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
                 open={this.state.isShareDialogOpen}
                 note={this.state.noteToShare}
                 handleClose={this.closeShareDialog.bind(this)}
-                handleShare={this.shareNotes.bind(this)}
+                handleShare={this.shareNote.bind(this)}
                 searchUser={this.props.searchUserInFirebase.bind(this)}
                 foundUsers={this.props.foundUsers}
-                actualCollaborators={this.state.noteToShare ? this.state.noteToShare.collaborators : {}}
+                actualCollaborators={this.state.noteToShare ? this.state.noteToShare.collaborators : null}
             />
         </div>
     );

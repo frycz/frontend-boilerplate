@@ -25,7 +25,6 @@ export function* setUser() {
                 Object.assign(notes[key].collaborators, noteSnapshot.val());
             }
 	    }
-        console.log('notes', notes);
         yield put(loadNotesSuccess(notes));
         yield put(hideSpinner());
         hashHistory.push('/notes');

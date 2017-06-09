@@ -18,6 +18,7 @@ interface IShareDialogProps {
 interface ShareDialogState {
   searchText: string
   usersList: Array<any>,
+  actualCollaborators: any,  
   newCollaborators: any,
   usersToShareNote: any,
   usersToRemoveNote: any
@@ -29,6 +30,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
       this.state = {
         searchText: '',
         usersList: [],
+        actualCollaborators: null,
         newCollaborators: {},
         usersToShareNote: {},
         usersToRemoveNote: {}
@@ -38,14 +40,36 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
   componentWillMount() {
     this.setState({
         usersList: this.prepareusersList(this.props.foundUsers),
-        newCollaborators: this.props.actualCollaborators
+        actualCollaborators: this.props.actualCollaborators,
+        newCollaborators: this.props.actualCollaborators ? this.props.actualCollaborators : {},
     })
   }
 
   componentWillReceiveProps(nextProps) {
+    const newCollaborators = this.state.actualCollaborators ? this.state.newCollaborators : Object.assign({}, this.state.newCollaborators, nextProps.actualCollaborators);
     this.setState({
         usersList: this.prepareusersList(nextProps.foundUsers),
-        newCollaborators: Object.assign({}, this.state.newCollaborators, nextProps.actualCollaborators)
+        actualCollaborators: nextProps.actualCollaborators,
+        newCollaborators: newCollaborators
+    })
+  }
+
+  prepareUsersToManageCollaboration() {
+    let usersToShareNote = {};//Object.assign({}, this.state.newCollaborators);
+    let usersToRemoveNote = {};//Object.assign({}, this.state.newCollaborators);
+    Object.keys(this.state.newCollaborators).map((key) => { 
+          if (!find(this.state.actualCollaborators, {id: this.state.newCollaborators[key].id})) {
+            usersToShareNote[key] = this.state.newCollaborators[key]
+          }}
+    )
+    Object.keys(this.state.actualCollaborators).map((key) => { 
+          if (!find(this.state.newCollaborators, {id: this.state.actualCollaborators[key].id})) {
+            usersToShareNote[key] = this.state.actualCollaborators[key]
+          }}
+    )
+    this.setState({
+        usersToShareNote: usersToShareNote,
+        usersToRemoveNote: usersToRemoveNote
     })
   }
 
@@ -53,7 +77,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
     let usersList = [];
     let usersSuggestions = [];
     const newCollaborators = this.state.newCollaborators;
-    const props = Object.assign({}, this.props);
+    const ownerId = this.props.note ? this.props.note.ownerId : null
     if (foundUsers) {
       Object.keys(foundUsers).map((id, index) =>
           { 
@@ -61,8 +85,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
           }
       )
       remove(usersSuggestions, function (user) {
-        console.log('props.note.ownerId', props.note.ownerId);
-          return find(newCollaborators, {id: user.id}) || user.id == props.note.ownerId;
+          return find(newCollaborators, {id: user.id}) || user.id == ownerId;
       });
       usersSuggestions.map((user) =>
           { 
@@ -79,16 +102,25 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
   selectUser(user) {
     if (user.value.id) {
       let newCollaborators = Object.assign({}, this.state.newCollaborators);
-      let usersToShareNote = Object.assign({}, this.state.usersToShareNote)
       newCollaborators[user.value.id] = user.value;
-      usersToShareNote[user.value.id] = user.value;
       this.setState({
         newCollaborators: newCollaborators,
-        usersToShareNote: usersToShareNote,
         searchText: '',
         usersList: []
       })
+      this.prepareUsersToManageCollaboration();
     }
+  }
+
+  removeUser(userId) {
+    let newCollaborators = Object.assign({}, this.state.newCollaborators);
+    delete newCollaborators[userId];
+    this.setState({
+      newCollaborators: newCollaborators,
+      searchText: '',
+      usersList: []
+    })
+    this.prepareUsersToManageCollaboration();
   }
 
   handleShare() {
@@ -143,7 +175,15 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
                       </div>
                       <div className="EDlbXc-x3Eknd-fmcmS-K4efff">{this.state.newCollaborators[key].email}</div>
                     </div>
-                    <div role="button" className="Q0hgme-LgbsSe Q0hgme-Bz112c-LgbsSe EDlbXc-x3Eknd-VkLyEc VIpgJd-LgbsSe" aria-label="Delete" aria-hidden="true" style={{userSelect: 'none', display: 'none'}}></div>
+                      {this.props.note && this.state.newCollaborators[key].id !== this.props.note.ownerId ?
+                        <button 
+                          onClick={() => {this.removeUser(this.state.newCollaborators[key].id)}} 
+                          className="Q0hgme-LgbsSe Q0hgme-Bz112c-LgbsSe EDlbXc-x3Eknd-VkLyEc VIpgJd-LgbsSe" 
+                          style={{float: 'right'}}>
+                            Remove
+                        </button> :
+                        null
+                      }
                   </div>
                 </div>
             </div>
