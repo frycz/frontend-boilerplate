@@ -69,11 +69,13 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
             usersToShareNote[key] = this.state.newCollaborators[key]
           }}
     )
-    Object.keys(this.state.actualCollaborators).map((key) => { 
-          if (!find(this.state.newCollaborators, {id: this.state.actualCollaborators[key].id})) {
-            usersToShareNote[key] = this.state.actualCollaborators[key]
-          }}
-    )
+    if (this.state.actualCollaborators) {
+      Object.keys(this.state.actualCollaborators).map((key) => { 
+            if (!find(this.state.newCollaborators, {id: this.state.actualCollaborators[key].id})) {
+              usersToRemoveNote[key] = this.state.actualCollaborators[key]
+            }}
+      )
+    }
     this.setState({
         usersToShareNote: usersToShareNote,
         usersToRemoveNote: usersToRemoveNote
