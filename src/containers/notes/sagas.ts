@@ -99,6 +99,7 @@ export function* updateUserNoteCollaborators() {
             action.usersToShareNote,
             action.usersToRemoveNote
         );
+        yield put(actions.updateUserNoteCollaboratorsSuccess(action.note, action.collaborators));
     }
 }
 

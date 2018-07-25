@@ -112,15 +112,15 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
                 >
                 Are you sure you want to remove this note?
             </Dialog>
-            <ShareDialog
-                open={this.state.isShareDialogOpen}
+            {this.state.isShareDialogOpen ? <ShareDialog
+                open={true}
                 note={this.state.noteToShare}
                 handleClose={this.closeShareDialog.bind(this)}
                 handleShare={this.shareNote.bind(this)}
                 searchUser={this.props.searchUserInFirebase.bind(this)}
                 foundUsers={this.props.foundUsers}
                 actualCollaborators={this.state.noteToShare ? this.state.noteToShare.collaborators : null}
-            />
+            /> : null}
         </div>
     );
   }

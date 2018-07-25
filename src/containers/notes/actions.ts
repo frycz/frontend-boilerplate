@@ -11,6 +11,7 @@ import { DISCARD_NOTE_IN_FIREBASE } from './constants'
 import { SEARCH_USER_IN_FIREBASE } from './constants'
 import { SEARCH_USER_IN_FIREBASE_SUCCESS } from './constants'
 import { UPDATE_USER_NOTE_COLLABORATORS } from './constants'
+import { UPDATE_USER_NOTE_COLLABORATORS_SUCCESS } from './constants'
 
 export function loadNotesSuccess(notes) {
   return {
@@ -108,5 +109,13 @@ export function updateUserNoteCollaborators(note, collaborators, usersToShareNot
     collaborators,
     usersToShareNote,
     usersToRemoveNote
+  }
+}
+
+export function updateUserNoteCollaboratorsSuccess(note, collaborators) {
+  return {
+    type: UPDATE_USER_NOTE_COLLABORATORS_SUCCESS,
+    note,
+    collaborators,
   }
 }
