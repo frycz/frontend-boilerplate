@@ -73,7 +73,7 @@ class Main extends React.Component<IMainProps, MainState> {
         <div>
           <AppBar
             title="QuickNote"
-            onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
+            onLeftIconButtonClick={this.handleToggle.bind(this)}
             iconElementRight={<LeftIcons/>}
             style={{ position: "fixed", top: 0, }}
           />

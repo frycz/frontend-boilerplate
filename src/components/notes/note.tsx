@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { merge } from 'lodash';
 import * as classNames from 'classnames';
 
-import * as onClickOutside from 'react-onclickoutside';
+import onClickOutside from 'react-onclickoutside';
 
 import * as ContentEditable from 'react-contenteditable'
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
@@ -68,7 +68,7 @@ class Note extends React.Component<INoteProps, NoteState> {
   handleClickOutside(e) {
     if(this.state.isEdited) { 
         this.editNote(this.state.note);
-        const noteDom = ReactDOM.findDOMNode(this.scrollableNote);
+        const noteDom = ReactDOM.findDOMNode(this.scrollableNote) as HTMLDivElement;
         if (noteDom) {
             noteDom.scrollTop = 0;
             this.setState(merge({}, this.state, { isEdited: false }));
