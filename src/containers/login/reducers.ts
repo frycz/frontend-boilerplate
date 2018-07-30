@@ -19,7 +19,7 @@ const userReducer = (state = initialState, action) => {
             return Object.assign({}, state, {error: null});
         
         case (constants.LOGIN_USER_SUCCESS):
-            return Object.assign({}, state, {user: action.user, error: null});
+            return Object.assign({}, state, {user: action, error: null});
         
         case (constants.LOGIN_USER_ERROR):
             return Object.assign({}, state, {error: action.error});

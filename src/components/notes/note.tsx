@@ -150,8 +150,8 @@ class Note extends React.Component<INoteProps, NoteState> {
                 <CardText 
                         onClick={this.handleEdit.bind(this)}
                         style={{paddingRight: 0}}>
-                        {this.props.note.ownerId && this.props.note.ownerId !== this.props.user.user.uid ? '(read only)' : null}
-                        {this.props.note.ownerId && this.props.note.isShared && this.props.note.ownerId === this.props.user.user.uid ? '(shared by me)' : null}
+                        {this.props.note.ownerId && this.props.user && this.props.note.ownerId !== this.props.user.user.uid ? '(read only)' : null}
+                        {this.props.note.ownerId && this.props.user && this.props.note.isShared && this.props.note.ownerId === this.props.user.user.uid ? '(shared by me)' : null}
                     <div style={{ 
                         display: !this.state.isEdited && !this.state.note.title ? 'none' : ''
                         }}>
@@ -235,7 +235,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                         <ArchiveIcon />
                     </IconButton>
                     */}
-                    {this.props.note.ownerId && this.props.note.ownerId === this.props.user.user.uid ?
+                    {this.props.note.ownerId && this.props.user && this.props.note.ownerId === this.props.user.user.uid ?
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}
@@ -245,7 +245,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                         tooltip="Remove">
                         <DeleteIcon />
                     </IconButton> : null}
-                    {this.props.note.ownerId && this.props.note.ownerId === this.props.user.user.uid ?
+                    {this.props.note.ownerId && this.props.user && this.props.note.ownerId === this.props.user.user.uid ?
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}

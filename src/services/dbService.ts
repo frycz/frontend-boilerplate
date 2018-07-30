@@ -14,16 +14,6 @@ export function fetchSharedToUserNotes(userId) {
     return firebase.database().ref('/shared-notes/' + userId).once('value');
 }
 
-export function shareUserNote(collaborator, note) {
-    var updates = {};
-    let sharedNote = note;
-    sharedNote.shared = true;
-    updates['/shared-notes/' + collaborator.id + '/' + sharedNote.id] = sharedNote;
-    updates['/collaborators/' + sharedNote.id] = sharedNote;
-    firebase.database().ref().update(updates);
-    return sharedNote;
-}
-
 export function saveUserNote(userId, note) {
     const notesRef = firebase.database().ref('/user-notes/' + userId).push();
     const noteEntry = (<any>Object).assign({}, note, {id: notesRef.key});

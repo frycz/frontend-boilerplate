@@ -38,9 +38,14 @@ export function* loginUserWithGoogle() {
         try {
             const action = yield take(constants.LOGIN_USER_WITH_GOOGLE);
             yield put(showSpinner());
-            const response = yield loginWithGoogle();
-            yield put(actions.loginUserSuccess(response));
-            const snapshot = yield fetchUserNotes(response.user.uid);
+            const googleUser = yield loginWithGoogle();
+            const firebaseuserSnapshot = yield fetchUser(googleUser.user.uid);
+            const firebaseUser = firebaseuserSnapshot.val();
+            yield put(actions.loginUserSuccess({
+                ...googleUser.user,
+                firebaseUser
+            }));
+            const snapshot = yield fetchUserNotes(googleUser.user.uid);
             yield put(loadNotesSuccess(snapshot.val()));
             yield put(hideSpinner());
             hashHistory.push('/notes');
