@@ -1,3 +1,4 @@
+import * as _ from 'lodash'
 import * as constants from './constants'
 import * as actions from './actions'
 import { call, put, take, fork } from 'redux-saga/effects'
@@ -17,7 +18,8 @@ import {
 export function* saveUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.SAVE_NOTE_IN_FIREBASE);
-        const note = yield saveUserNote(action.userId, action.note);
+        const note = _.omit(action.note, ['collaborators']);
+        yield saveUserNote(action.userId, note);
         yield put(actions.addNote(action.userId, note));
     }
 }
@@ -25,8 +27,10 @@ export function* saveUserNoteInFirebase() {
 export function* updateUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.UPDATE_NOTE_IN_FIREBASE);
-        const note = yield updateUserNote(action.userId, action.note);
-        yield put(actions.editNote(note));
+        const note = _.omit(action.note, ['collaborators']);
+        const collaborators = _.pick(action.note, ['collaborators']);
+        yield updateUserNote(action.userId, note, collaborators);
+        yield put(actions.editNote(action.note));
     }
 }
 
@@ -93,13 +97,16 @@ export function* searchUserInFirebase() {
 export function* updateUserNoteCollaborators() {
     while (true) {
         const action = yield take(constants.UPDATE_USER_NOTE_COLLABORATORS);
+        const {collaborators, usersToShareNote, usersToRemoveNote} = action;
+        const isShared = !!(Object.keys(action.collaborators).length > 0);
+        const note = { ...action.note, isShared };
         yield updateCollaborators(
-            action.note,
-            action.collaborators,
-            action.usersToShareNote,
-            action.usersToRemoveNote
+            note,
+            collaborators,
+            usersToShareNote,
+            usersToRemoveNote
         );
-        yield put(actions.updateUserNoteCollaboratorsSuccess(action.note, action.collaborators));
+        yield put(actions.updateUserNoteCollaboratorsSuccess(note, collaborators));
     }
 }
 

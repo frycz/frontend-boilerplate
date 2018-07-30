@@ -107,7 +107,7 @@ class Note extends React.Component<INoteProps, NoteState> {
   }
 
   handleTitleChange(e) {
-    if (this.state.note.ownerId == this.props.user.user.id) {
+    if (this.state.note.ownerId == this.props.user.user.uid) {
         this.setState(merge({}, this.state, 
             { note: merge({}, this.state.note, { title: e.target.value }) }
         ));
@@ -115,7 +115,7 @@ class Note extends React.Component<INoteProps, NoteState> {
   }
 
   handleTextChange(e) {
-    if (this.state.note.ownerId == this.props.user.user.id) {
+    if (this.state.note.ownerId == this.props.user.user.uid) {
         this.setState(merge({}, this.state,
             { note: merge({}, this.state.note, { text: e.target.value }) }
         ));
@@ -123,7 +123,7 @@ class Note extends React.Component<INoteProps, NoteState> {
   }
 
   editNote(e) {
-    if (this.state.note.ownerId == this.props.user.user.id) {
+    if (this.state.note.ownerId == this.props.user.user.uid) {
         if ((this.state.note.title !== '' || this.state.note.text !== '')) {
             this.props.updateNoteInFirebase(this.state.note);
         } else {

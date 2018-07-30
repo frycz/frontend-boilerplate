@@ -1,11 +1,8 @@
+import * as _ from 'lodash';
 import * as firebase from 'firebase';
 
 export function fetchUserNotes(userId) {
     const database = firebase.database();
-
-    firebase.database().ref('/user-notes/' + userId).on('value', function(snapshot) {
-        // ...
-    });
     return database.ref('/user-notes/' + userId).once('value');
 }
 
@@ -34,33 +31,20 @@ export function saveUserNote(userId, note) {
     return noteEntry;
 }
 
-export function updateUserNote(userId, note) {
+export function updateUserNote(userId, note, collaborators) {
     var updates = {};
     updates['/user-notes/' + userId + '/' + note.id] = note;
-    if (note.sharedTo) {
-        note.sharedTo.split(',').forEach((collaboratorId) => {
-            updates['/shared-notes/' + collaboratorId + '/' + note.id] = note;
-        })
-    }
+    _.toArray(collaborators).forEach(collaborator => {
+        updates['/shared-notes/' + collaborator.id + '/' + note.id] = note;
+    });
     firebase.database().ref().update(updates);
     return note;
 }
 
 export function updateCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote) {
     var updates = {};
-    if (Object.keys(collaborators).length == 0) {
-        firebase.database().ref('/collaborators/' + note.id).remove();
-        updates['/user-notes/' + note.ownerId + '/' + note.id] = Object.assign({}, note, {isShared: false});
-    } else {
-        updates['/collaborators/' + note.id] = collaborators;
-        updates['/user-notes/' + note.ownerId + '/' + note.id] = Object.assign({}, note, {isShared: true});
-        /*
-        if (note.sharedTo) {
-            note.sharedTo.split(',').forEach((collaboratorId) => {
-                updates['/shared-notes/' + collaboratorId + '/' + note.id] = note;
-            })
-        }*/
-    }
+    updates['/user-notes/' + note.ownerId + '/' + note.id] = note;
+    updates['/collaborators/' + note.id] = collaborators;
     Object.keys(usersToShareNote).forEach(key => {
         updates['/shared-notes/' + usersToShareNote[key].id + '/' + note.id] = note;
     })
