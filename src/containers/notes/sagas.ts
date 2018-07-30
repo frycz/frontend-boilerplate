@@ -98,7 +98,7 @@ export function* updateUserNoteCollaborators() {
     while (true) {
         const action = yield take(constants.UPDATE_USER_NOTE_COLLABORATORS);
         const {collaborators, usersToShareNote, usersToRemoveNote} = action;
-        const isShared = !!(Object.keys(action.collaborators).length > 0);
+        const isShared = !!(Object.keys(action.collaborators).length > 1);
         const note = { ...action.note, isShared };
         yield updateCollaborators(
             note,

@@ -73,7 +73,7 @@ export default function notesApp(state = initialState, action) {
     }
 
     case constants.UPDATE_USER_NOTE_COLLABORATORS_SUCCESS: {
-      const isShared = !!(Object.keys(action.collaborators).length > 0);
+      const isShared = !!(Object.keys(action.collaborators).length > 1);
       return (<any>Object).assign({}, state, {
         notes: state.notes.map(note =>
         note.id === action.note.id
