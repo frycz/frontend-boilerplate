@@ -37,7 +37,7 @@ export function* updateUserNoteInFirebase() {
 export function* moveNoteToTrashInFirebase() {
     while (true) {
         const action = yield take(constants.MOVE_NOTE_TO_TRASH_IN_FIREBASE);
-        const noteId = yield moveUserNoteToTrash(action.userId, action.noteId);
+        const noteId = yield moveUserNoteToTrash(action.userId, action.note, action.collaborators);
         yield put(actions.moveNoteToTrash(noteId));
     }
 }

@@ -46,14 +46,22 @@ export function updateCollaborators(note, collaborators, usersToShareNote, users
     return true;
 }
 
-export function moveUserNoteToTrash(userId, noteId) {
-    const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + noteId);
-    notesRef.update({isInTrash: true});
-    return noteId;
+export function moveUserNoteToTrash(userId, note, collaborators) {
+    var updates = {};
+    const noteInTrash = { ...note, isInTrash: true };
+    updates['/user-notes/' + userId + '/' + note.id] = noteInTrash;
+    _.toArray(collaborators).forEach(collaborator => {
+        updates['/shared-notes/' + collaborator.id + '/' + note.id] = noteInTrash;
+    });
+    firebase.database().ref().update(updates);
+    return note.id;
 }
 
 export function discardUserNote(userId, noteId) {
+    // check if is owner
     const notesRef = firebase.database().ref('/user-notes/' + userId + '/' + noteId);
+    // update shared notes too
+    // remove collabolators
     notesRef.remove();
     return noteId;
 }
@@ -69,6 +77,7 @@ export function updateUserData(userId, user) {
         lastLogin: new Date()
     }
     const notesRef = firebase.database().ref('/users/' + userId);
+    // update collaborators
     notesRef.update(userData);
     return userData;
 }

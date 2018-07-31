@@ -29,7 +29,7 @@ interface INotesProps {
   uploadToGoogleDrive(note): void,
   saveNoteInFirebase(userId, note): void,
   updateNoteInFirebase(userId, note): void,
-  moveNoteToTrashInFirebase(userId, noteId): void
+  moveNoteToTrashInFirebase(userId, note, collaborators): void
   discardNoteInFirebase(userId, noteId): void
   searchUserInFirebase(searchText): void,
   updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote): void
@@ -65,8 +65,8 @@ class Notes extends React.Component<INotesProps, NoteState> {
     this.props.updateNoteInFirebase(this.props.user.user.uid, note);
   }
 
-  moveNoteToTrashInFirebase(noteId) {
-    this.props.moveNoteToTrashInFirebase(this.props.user.user.uid, noteId);
+  moveNoteToTrashInFirebase(note, collaborators) {
+    this.props.moveNoteToTrashInFirebase(this.props.user.user.uid, note, collaborators);
   }
 
   discardNoteInFirebase(noteId) {
@@ -123,7 +123,7 @@ const mapDispatchToProps = (dispatch) => {
       uploadToGoogleDrive: (note) => dispatch(uploadToGoogleDrive(note)),
       saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
       updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note)),
-      moveNoteToTrashInFirebase: (userId, noteId) => dispatch(moveNoteToTrashInFirebase(userId, noteId)),
+      moveNoteToTrashInFirebase: (userId, note, collaborators) => dispatch(moveNoteToTrashInFirebase(userId, note, collaborators)),
       discardNoteInFirebase: (userId, noteId) => dispatch(discardNoteInFirebase(userId, noteId)),
       searchUserInFirebase: (searchText) => dispatch(searchUserInFirebase(searchText)),
       updateUserNoteCollaborators: (note, collaborators, usersToShareNote, usersToRemoveNote) => dispatch(updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote))

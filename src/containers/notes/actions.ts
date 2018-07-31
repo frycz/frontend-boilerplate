@@ -72,11 +72,12 @@ export function updateNoteInFirebase(userId, note) {
   }
 }
 
-export function moveNoteToTrashInFirebase(userId, noteId) {
+export function moveNoteToTrashInFirebase(userId, note, collaborators) {
   return {
     type: MOVE_NOTE_TO_TRASH_IN_FIREBASE,
     userId,
-    noteId
+    note,
+    collaborators
   }
 }
 

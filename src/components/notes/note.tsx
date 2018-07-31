@@ -24,6 +24,7 @@ import ShareIcon from 'material-ui/svg-icons/social/share';
 import { preventEnterDefault } from '../../helpers/form';
 
 interface INoteProps {
+    key: any,
     note: any,
     user: any,
     editNote(note): void,
@@ -140,7 +141,7 @@ class Note extends React.Component<INoteProps, NoteState> {
     const iconStyle = {width: 18, height: 18, color: grey600};
     const buttonStyle = {width: 36, height: 36, padding: 0};
     return (
-        <div>
+        <div key={this.props.key}>
             <Card
                 style={{margin: '20px 0'}}
                 className={noteBoxClasses}

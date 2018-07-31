@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { merge } from 'lodash';
+import * as _ from 'lodash';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -14,7 +14,7 @@ interface INotesListProps {
     editNote(id, note): void,
     uploadToGoogleDrive(note): void,
     updateNoteInFirebase(note): void,
-    moveNoteToTrashInFirebase(id): void
+    moveNoteToTrashInFirebase(note, collaborators): void
     discardNoteInFirebase(id): void
     searchUserInFirebase(searchText): void
     updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote): void
@@ -70,7 +70,9 @@ class NotesList extends React.Component<INotesListProps, NotesListState> {
   }
 
   removeNote() {
-    this.props.moveNoteToTrashInFirebase(this.state.noteToRemoveId);
+    const note = _.find(this.props.notes, {id: this.state.noteToRemoveId});
+    const collaborators = note.collaborators;
+    this.props.moveNoteToTrashInFirebase(note, collaborators);
     this.closeRemoveDialog();
   }
 
