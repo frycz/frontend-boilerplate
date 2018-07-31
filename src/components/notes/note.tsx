@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { merge } from 'lodash';
 import * as classNames from 'classnames';
 
-import * as onClickOutside from 'react-onclickoutside';
+import onClickOutside from 'react-onclickoutside';
 
 import * as ContentEditable from 'react-contenteditable'
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
@@ -19,16 +19,20 @@ import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
 import CloudUploadIcon from 'material-ui/svg-icons/file/cloud-upload';
+import ShareIcon from 'material-ui/svg-icons/social/share';
 
 import { preventEnterDefault } from '../../helpers/form';
 
 interface INoteProps {
+    key: any,
     note: any,
+    user: any,
     editNote(note): void,
     uploadToGoogleDrive(note): void,
     updateNoteInFirebase(note): void,
     discardNoteInFirebase(id): void,
     openRemoveDialog(id): void
+    openShareDialog(id): void
 }
 
 interface NoteState {
@@ -65,7 +69,7 @@ class Note extends React.Component<INoteProps, NoteState> {
   handleClickOutside(e) {
     if(this.state.isEdited) { 
         this.editNote(this.state.note);
-        const noteDom = ReactDOM.findDOMNode(this.scrollableNote);
+        const noteDom = ReactDOM.findDOMNode(this.scrollableNote) as HTMLDivElement;
         if (noteDom) {
             noteDom.scrollTop = 0;
             this.setState(merge({}, this.state, { isEdited: false }));
@@ -93,33 +97,43 @@ class Note extends React.Component<INoteProps, NoteState> {
     this.props.openRemoveDialog(this.props.note.id);
   }
 
+  handleShareNote(e) {
+    e.stopPropagation();
+    this.props.openShareDialog(this.props.note);
+  }
+
   handleUploadToGoogleDrive(e) {
     e.stopPropagation();
     this.props.uploadToGoogleDrive(this.state.note);
   }
 
   handleTitleChange(e) {
-    this.setState(merge({}, this.state, 
-        { note: merge({}, this.state.note, { title: e.target.value }) }
-    ));
+    if (this.state.note.ownerId == this.props.user.user.uid) {
+        this.setState(merge({}, this.state, 
+            { note: merge({}, this.state.note, { title: e.target.value }) }
+        ));
+    }
   }
 
   handleTextChange(e) {
-    this.setState(merge({}, this.state,
-        { note: merge({}, this.state.note, { text: e.target.value }) }
-    ));
+    if (this.state.note.ownerId == this.props.user.user.uid) {
+        this.setState(merge({}, this.state,
+            { note: merge({}, this.state.note, { text: e.target.value }) }
+        ));
+    }
   }
 
   editNote(e) {
-    if (this.state.note.title !== '' || this.state.note.text !== '') {
-        this.props.updateNoteInFirebase(this.state.note);
-    } else {
-        this.props.discardNoteInFirebase(this.state.note.id);
+    if (this.state.note.ownerId == this.props.user.user.uid) {
+        if ((this.state.note.title !== '' || this.state.note.text !== '')) {
+            this.props.updateNoteInFirebase(this.state.note);
+        } else {
+            this.props.discardNoteInFirebase(this.state.note.id);
+        }
     }
   }
 
   public render() {
-
     const noteBoxClasses = classNames({hovered: this.state.showActionButtons || this.state.isEdited});
     const actionClasses = this.state.showActionButtons ? '' : 'invisible';
     const actionsPanelClasses = this.state.isEdited ? 'hidden' : '';
@@ -127,7 +141,7 @@ class Note extends React.Component<INoteProps, NoteState> {
     const iconStyle = {width: 18, height: 18, color: grey600};
     const buttonStyle = {width: 36, height: 36, padding: 0};
     return (
-        <div>
+        <div key={this.props.key}>
             <Card
                 style={{margin: '20px 0'}}
                 className={noteBoxClasses}
@@ -137,6 +151,8 @@ class Note extends React.Component<INoteProps, NoteState> {
                 <CardText 
                         onClick={this.handleEdit.bind(this)}
                         style={{paddingRight: 0}}>
+                        {this.props.note.ownerId && this.props.user && this.props.note.ownerId !== this.props.user.user.uid ? '(read only)' : null}
+                        {this.props.note.ownerId && this.props.user && this.props.note.isShared && this.props.note.ownerId === this.props.user.user.uid ? '(shared by me)' : null}
                     <div style={{ 
                         display: !this.state.isEdited && !this.state.note.title ? 'none' : ''
                         }}>
@@ -220,6 +236,7 @@ class Note extends React.Component<INoteProps, NoteState> {
                         <ArchiveIcon />
                     </IconButton>
                     */}
+                    {this.props.note.ownerId && this.props.user && this.props.note.ownerId === this.props.user.user.uid ?
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}
@@ -228,7 +245,17 @@ class Note extends React.Component<INoteProps, NoteState> {
                         /*tooltip="Move to trash">*/
                         tooltip="Remove">
                         <DeleteIcon />
-                    </IconButton>
+                    </IconButton> : null}
+                    {this.props.note.ownerId && this.props.user && this.props.note.ownerId === this.props.user.user.uid ?
+                    <IconButton 
+                        iconStyle={iconStyle} 
+                        style={buttonStyle}
+                        className={actionClasses}
+                        onClick={this.handleShareNote.bind(this)}
+                        /*tooltip="Move to trash">*/
+                        tooltip="Share">
+                        <ShareIcon />
+                    </IconButton> : null}
                     <IconButton 
                         iconStyle={iconStyle} 
                         style={buttonStyle}

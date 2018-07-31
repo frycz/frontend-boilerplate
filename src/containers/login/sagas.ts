@@ -5,7 +5,7 @@ import {hashHistory} from 'react-router'
 import { showSpinner, hideSpinner } from '../spinner/actions'
 import { loadNotesSuccess } from '../notes/actions'
 import { loginWithGoogle, loginWithEmail, logout } from '../../services/userService'
-import { fetchUserNotes } from '../../services/dbService'
+import { fetchUserNotes, fetchSharedToUserNotes, fetchNoteCollaborators, fetchUser, updateUserData } from '../../services/dbService'
 
 import * as firebase from 'firebase';
 
@@ -13,8 +13,21 @@ export function* setUser() {
     while (true) {
         const action = yield take(constants.SET_USER);
         yield put(showSpinner());
-        const snapshot = yield fetchUserNotes(action.user.user.uid);
-        yield put(loadNotesSuccess(snapshot.val()));
+        yield updateUserData(action.user.user.uid, action.user.user);
+        const userNotesSnapshot = yield fetchUserNotes(action.user.user.uid);
+        const sharedNotesSnapshot = yield fetchSharedToUserNotes(action.user.user.uid);
+        const notes = Object.assign({}, userNotesSnapshot.val(), sharedNotesSnapshot.val());
+
+        for (let key of Object.keys(notes)) {
+            notes[key].collaborators = {};
+            const ownerSnapshot = yield fetchUser(notes[key].ownerId);
+            notes[key].collaborators[notes[key].ownerId] = ownerSnapshot.val();
+            if (notes[key].isShared) {
+                const collaboratorsSnapshot = yield fetchNoteCollaborators(notes[key].id);
+                Object.assign(notes[key].collaborators, collaboratorsSnapshot.val());
+            }
+	    }
+        yield put(loadNotesSuccess(notes));
         yield put(hideSpinner());
         hashHistory.push('/notes');
     }
@@ -25,9 +38,14 @@ export function* loginUserWithGoogle() {
         try {
             const action = yield take(constants.LOGIN_USER_WITH_GOOGLE);
             yield put(showSpinner());
-            const response = yield loginWithGoogle();
-            yield put(actions.loginUserSuccess(response));
-            const snapshot = yield fetchUserNotes(response.user.uid);
+            const googleUser = yield loginWithGoogle();
+            const firebaseuserSnapshot = yield fetchUser(googleUser.user.uid);
+            const firebaseUser = firebaseuserSnapshot.val();
+            yield put(actions.loginUserSuccess({
+                ...googleUser.user,
+                firebaseUser
+            }));
+            const snapshot = yield fetchUserNotes(googleUser.user.uid);
             yield put(loadNotesSuccess(snapshot.val()));
             yield put(hideSpinner());
             hashHistory.push('/notes');

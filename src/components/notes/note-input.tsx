@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
-import * as onClickOutside from 'react-onclickoutside';
+import onClickOutside from 'react-onclickoutside';
 
 import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
@@ -12,7 +12,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { preventEnterDefault } from '../../helpers/form';
 
 interface INoteInputProps {
-  addNote(note): void,
   saveNoteInFirebase(note): void
 }
 
@@ -70,8 +69,6 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
             <CardText>
             <TextField 
                 hintText="Title" 
-                id="note_input"
-                ref="noteInput" 
                 multiLine={true}
                 fullWidth={true} 
                 rowsMax={10}
@@ -83,8 +80,6 @@ class NoteInput extends React.Component<INoteInputProps, NoteInputState> {
             ></TextField>
             <TextField 
                 hintText="Create note..." 
-                id="note_input"
-                ref="noteInput" 
                 multiLine={true}
                 fullWidth={true} 
                 rowsMax={10}

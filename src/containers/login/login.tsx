@@ -78,7 +78,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
       margin: '0 auto',
       padding: '0 10px',
       textAlign: 'center'
-    }
+    } as React.CSSProperties
     const loginMethodsClasses = classNames({
       'hidden': this.state.loginWithEmail
     })

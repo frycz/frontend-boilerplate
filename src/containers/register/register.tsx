@@ -30,7 +30,7 @@ class Register extends React.Component<IRegisterProps, {}> {
       margin: '0 auto',
       padding: '0 10px',
       textAlign: 'center'
-    }
+    } as React.CSSProperties
     return (
       <div
         style={style}>

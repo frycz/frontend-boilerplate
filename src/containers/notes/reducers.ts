@@ -6,7 +6,8 @@ import { editNote } from './actions'
 import { forOwnRight } from 'lodash'
 
 const initialState = {
-  notes: []
+  notes: [],
+  foundUsers: []
 
   /*
     notes model:
@@ -34,12 +35,7 @@ export default function notesApp(state = initialState, action) {
 
     case constants.ADD_NOTE: {
       return (<any>Object).assign({}, state, { 
-        notes: [(<any>Object).assign({}, [], {
-          id: action.note.id,
-          title: action.note.title,
-          text: action.note.text,
-          isInTrash: false
-        }),
+        notes: [(<any>Object).assign({}, [], action.note),
         ...state.notes]
       })
     }
@@ -66,6 +62,25 @@ export default function notesApp(state = initialState, action) {
       return (<any>Object).assign({}, state, { 
         notes: state.notes.filter(note =>
          note.id !== action.id
+        )
+      })
+    }
+
+    case constants.SEARCH_USER_IN_FIREBASE_SUCCESS: {
+      return (<any>Object).assign({}, state, { 
+        foundUsers: action.users
+      })
+    }
+
+    case constants.UPDATE_USER_NOTE_COLLABORATORS_SUCCESS: {
+      const isShared = !!(Object.keys(action.collaborators).length > 1);
+      return (<any>Object).assign({}, state, {
+        notes: state.notes.map(note =>
+        note.id === action.note.id
+          ? (<any>Object).assign({}, note, {
+            collaborators: action.collaborators,
+            isShared
+          }) : note
         )
       })
     }

@@ -8,6 +8,10 @@ import { SAVE_NOTE_IN_FIREBASE } from './constants'
 import { UPDATE_NOTE_IN_FIREBASE } from './constants'
 import { MOVE_NOTE_TO_TRASH_IN_FIREBASE } from './constants'
 import { DISCARD_NOTE_IN_FIREBASE } from './constants'
+import { SEARCH_USER_IN_FIREBASE } from './constants'
+import { SEARCH_USER_IN_FIREBASE_SUCCESS } from './constants'
+import { UPDATE_USER_NOTE_COLLABORATORS } from './constants'
+import { UPDATE_USER_NOTE_COLLABORATORS_SUCCESS } from './constants'
 
 export function loadNotesSuccess(notes) {
   return {
@@ -16,9 +20,10 @@ export function loadNotesSuccess(notes) {
   }
 }
 
-export function addNote(note) {
+export function addNote(userId, note) {
   return {
     type: ADD_NOTE,
+    userId,
     note
   }
 }
@@ -67,11 +72,12 @@ export function updateNoteInFirebase(userId, note) {
   }
 }
 
-export function moveNoteToTrashInFirebase(userId, noteId) {
+export function moveNoteToTrashInFirebase(userId, note, collaborators) {
   return {
     type: MOVE_NOTE_TO_TRASH_IN_FIREBASE,
     userId,
-    noteId
+    note,
+    collaborators
   }
 }
 
@@ -80,5 +86,37 @@ export function discardNoteInFirebase(userId, noteId) {
     type: DISCARD_NOTE_IN_FIREBASE,
     userId,
     noteId
+  }
+}
+
+export function searchUserInFirebase(searchText) {
+  return {
+    type: SEARCH_USER_IN_FIREBASE,
+    searchText
+  }
+}
+
+export function searchUserInFirebaseSuccess(users) {
+  return {
+    type: SEARCH_USER_IN_FIREBASE_SUCCESS,
+    users
+  }
+}
+
+export function updateUserNoteCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote) {
+  return {
+    type: UPDATE_USER_NOTE_COLLABORATORS,
+    note,
+    collaborators,
+    usersToShareNote,
+    usersToRemoveNote
+  }
+}
+
+export function updateUserNoteCollaboratorsSuccess(note, collaborators) {
+  return {
+    type: UPDATE_USER_NOTE_COLLABORATORS_SUCCESS,
+    note,
+    collaborators,
   }
 }
