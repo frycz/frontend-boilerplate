@@ -104,8 +104,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
         newCollaborators: newCollaborators,
         searchText: '',
         usersList: []
-      })
-      this.prepareUsersToManageCollaboration();
+      }, this.prepareUsersToManageCollaboration);
     }
   }
 
@@ -116,8 +115,7 @@ class ShareDialog extends React.Component<IShareDialogProps, ShareDialogState> {
       newCollaborators: newCollaborators,
       searchText: '',
       usersList: []
-    })
-    this.prepareUsersToManageCollaboration();
+    }, this.prepareUsersToManageCollaboration);
   }
 
   resetForm() {
