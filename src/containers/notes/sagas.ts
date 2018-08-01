@@ -12,15 +12,22 @@ import {
     moveUserNoteToTrash,
     discardUserNote,
     searchUser,
-    updateCollaborators 
+    updateCollaborators,
+    fetchUser,
 } from '../../services/dbService'
 
 export function* saveUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.SAVE_NOTE_IN_FIREBASE);
         const note = _.omit(action.note, ['collaborators']);
-        const savedNote = yield saveUserNote(action.userId, note);
-        yield put(actions.addNote(action.userId, savedNote));
+        const savedNote = yield saveUserNote(action.user.id, note);
+        const stateNote = {
+            ...savedNote,
+            collaborators: {
+                [action.user.id]: action.user
+            }
+        };
+        yield put(actions.addNote(action.user.id, stateNote));
     }
 }
 

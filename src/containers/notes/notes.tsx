@@ -10,6 +10,8 @@ import { Card, CardActions, CardHeader, CardText, CardTitle } from 'material-ui/
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
+import { toFirebaseUser } from '../../helpers/user';
+
 import { 
   editNote,
   uploadToGoogleDrive,
@@ -27,7 +29,7 @@ interface INotesProps {
   foundUsers: Array<any>,
   editNote(note): void,
   uploadToGoogleDrive(note): void,
-  saveNoteInFirebase(userId, note): void,
+  saveNoteInFirebase(user, note): void,
   updateNoteInFirebase(userId, note): void,
   moveNoteToTrashInFirebase(userId, note, collaborators): void
   discardNoteInFirebase(userId, noteId): void
@@ -58,7 +60,10 @@ class Notes extends React.Component<INotesProps, NoteState> {
       ownerId: this.props.user.user.uid,
       createdAt: (new Date()).toString()
     })
-    this.props.saveNoteInFirebase(this.props.user.user.uid, fullNote);
+    this.props.saveNoteInFirebase(
+      toFirebaseUser(this.props.user.user),
+      fullNote
+    );
   }
 
   updateNoteInFirebase(note) {
@@ -121,7 +126,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
       editNote: (note) => dispatch(editNote(note)),
       uploadToGoogleDrive: (note) => dispatch(uploadToGoogleDrive(note)),
-      saveNoteInFirebase: (userId, note) => dispatch(saveNoteInFirebase(userId, note)),
+      saveNoteInFirebase: (user, note) => dispatch(saveNoteInFirebase(user, note)),
       updateNoteInFirebase: (userId, note) => dispatch(updateNoteInFirebase(userId, note)),
       moveNoteToTrashInFirebase: (userId, note, collaborators) => dispatch(moveNoteToTrashInFirebase(userId, note, collaborators)),
       discardNoteInFirebase: (userId, noteId) => dispatch(discardNoteInFirebase(userId, noteId)),

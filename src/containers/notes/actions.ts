@@ -56,10 +56,10 @@ export function uploadToGoogleDrive(note) {
   }
 }
 
-export function saveNoteInFirebase(userId, note) {
+export function saveNoteInFirebase(user, note) {
   return {
     type: SAVE_NOTE_IN_FIREBASE,
-    userId,
+    user,
     note
   }
 }

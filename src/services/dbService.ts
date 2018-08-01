@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import * as firebase from 'firebase';
+import { toFirebaseUser } from '../helpers/user';
 
 export function fetchUserNotes(userId) {
     const database = firebase.database();
@@ -33,6 +34,7 @@ export function updateUserNote(userId, note, collaborators) {
 
 export function updateCollaborators(note, collaborators, usersToShareNote, usersToRemoveNote) {
     var updates = {};
+    // TODO: do not save coll with note
     updates['/user-notes/' + note.ownerId + '/' + note.id] = note;
     updates['/collaborators/' + note.id] = collaborators;
     Object.keys(usersToShareNote).forEach(key => {
@@ -68,12 +70,7 @@ export function discardUserNote(userId, noteId) {
 
 export function updateUserData(userId, user) {
     var userData = {
-        id: user.uid,
-        email: user.providerData[0].email,
-        displayName: user.providerData[0].displayName,
-        fullDisplayName: (user.providerData[0].displayName + ' (' + user.providerData[0].email + ')'),
-        fullName: (user.providerData[0].displayName + ' (' + user.providerData[0].email + ')').toLowerCase(),
-        photoURL: user.providerData[0].photoURL,
+        ...toFirebaseUser(user),
         lastLogin: new Date()
     }
     const notesRef = firebase.database().ref('/users/' + userId);
