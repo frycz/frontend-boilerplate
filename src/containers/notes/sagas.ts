@@ -19,8 +19,8 @@ export function* saveUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.SAVE_NOTE_IN_FIREBASE);
         const note = _.omit(action.note, ['collaborators']);
-        yield saveUserNote(action.userId, note);
-        yield put(actions.addNote(action.userId, note));
+        const savedNote = yield saveUserNote(action.userId, note);
+        yield put(actions.addNote(action.userId, savedNote));
     }
 }
 
