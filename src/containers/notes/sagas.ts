@@ -28,7 +28,7 @@ export function* updateUserNoteInFirebase() {
     while (true) {
         const action = yield take(constants.UPDATE_NOTE_IN_FIREBASE);
         const note = _.omit(action.note, ['collaborators']);
-        const collaborators = _.pick(action.note, ['collaborators']);
+        const collaborators = action.note.collaborators;
         yield updateUserNote(action.userId, note, collaborators);
         yield put(actions.editNote(action.note));
     }
